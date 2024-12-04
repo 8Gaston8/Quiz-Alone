@@ -83,6 +83,51 @@ document.addEventListener('DOMContentLoaded', () => {
         [landingEl, quizEl, statementEl, resultsEl].forEach(section => {
             section.classList.toggle('active', section === sectionToShow);
         });
+        
+        // Track screen view with unique names
+        let screenName;
+        if (sectionToShow === landingEl) {
+            screenName = 'welcome_screen';
+        } else if (sectionToShow === quizEl) {
+            // Get unique name based on current question
+            const question = quizData[currentQuestion];
+            switch(currentQuestion) {
+                case 0: screenName = 'dining_worry_frequency'; break;
+                case 1: screenName = 'email_collection'; break;
+                case 2: screenName = 'biggest_challenge'; break;
+                case 3: screenName = 'discovery_methods'; break;
+                case 4: screenName = 'reaction_experience'; break;
+                case 5: screenName = 'travel_distance'; break;
+                case 6: screenName = 'cuisine_preference'; break;
+                case 7: screenName = 'staff_interaction_confidence'; break;
+                case 8: screenName = 'cooking_frequency'; break;
+                case 9: screenName = 'travel_difficulty'; break;
+                case 10: screenName = 'readiness_check'; break;
+                default: screenName = `question_${currentQuestion + 1}`;
+            }
+        } else if (sectionToShow === statementEl) {
+            // Get unique name for each fact screen
+            switch(currentQuestion) {
+                case 0: screenName = 'celiac_stats_fact'; break;
+                case 1: screenName = 'email_safety_fact'; break;
+                case 2: screenName = 'menu_error_fact'; break;
+                case 3: screenName = 'discovery_community_fact'; break;
+                case 4: screenName = 'kitchen_safety_fact'; break;
+                case 5: screenName = 'location_planning_fact'; break;
+                case 6: screenName = 'cuisine_filter_fact'; break;
+                case 7: screenName = 'staff_knowledge_fact'; break;
+                case 8: screenName = 'dining_confidence_fact'; break;
+                case 9: screenName = 'travel_support_fact'; break;
+                case 10: screenName = 'time_saving_fact'; break;
+                default: screenName = `fact_${currentQuestion + 1}`;
+            }
+        } else if (sectionToShow === resultsEl) {
+            screenName = 'final_results';
+        }
+        
+        if (screenName) {
+            trackQuizScreenView(screenName);
+        }
     }
 
     function loadQuestion() {
@@ -90,15 +135,33 @@ document.addEventListener('DOMContentLoaded', () => {
         questionEl.textContent = question.question;
         
         choicesEl.innerHTML = '';
-        question.options.forEach((option, index) => {
-            const button = document.createElement('button');
-            button.textContent = option;
-            button.classList.add('choice-button');
-            button.addEventListener('click', () => selectChoice(index));
-            choicesEl.appendChild(button);
-        });
         
-        submitBtn.disabled = true;
+        if (question.type === 'email') {
+            const emailInput = document.createElement('input');
+            emailInput.type = 'email';
+            emailInput.placeholder = 'Enter your email address';
+            emailInput.pattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
+            emailInput.classList.add('email-input');
+            emailInput.addEventListener('input', () => {
+                // Check both the native email validation and the pattern
+                const emailRegex = new RegExp(emailInput.pattern);
+                const isValid = emailInput.value.trim() !== '' && emailRegex.test(emailInput.value);
+                submitBtn.disabled = !isValid;
+                emailInput.classList.toggle('invalid', !isValid);
+            });
+            submitBtn.disabled = true; // Initially disable the button
+            choicesEl.appendChild(emailInput);
+        } else {
+            question.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.classList.add('choice-button');
+                button.addEventListener('click', () => selectChoice(index));
+                choicesEl.appendChild(button);
+            });
+            submitBtn.disabled = true;
+        }
+        
         updateProgress();
     }
 
@@ -120,12 +183,33 @@ document.addEventListener('DOMContentLoaded', () => {
         showSection(statementEl);
     }
 
-    function submitAnswer() {
-        const selectedChoice = choicesEl.querySelector('.choice-button.selected');
-        if (!selectedChoice) return;
-        
-        const answerIndex = Array.from(choicesEl.children).indexOf(selectedChoice);
-        userAnswers.push(answerIndex);
+    async function submitAnswer() {
+        if (quizData[currentQuestion].type === 'email') {
+            const emailInput = choicesEl.querySelector('.email-input');
+            if (!emailInput || !emailInput.value || !emailInput.checkValidity()) {
+                emailInput.classList.add('invalid');
+                return;
+            }
+            const email = emailInput.value;
+            userAnswers.push(email);
+
+            // Make API calls when email is submitted
+            try {
+                const result = await handleQuizSubmission(email);
+                if (result?.sessionUrl) {
+                    // Store the session URL for later use
+                    window.quizSessionUrl = result.sessionUrl;
+                }
+            } catch (error) {
+                console.error('Error submitting quiz:', error);
+                return; // Don't proceed if API call fails
+            }
+        } else {
+            const selectedChoice = choicesEl.querySelector('.choice-button.selected');
+            if (!selectedChoice) return;
+            const answerIndex = Array.from(choicesEl.children).indexOf(selectedChoice);
+            userAnswers.push(answerIndex);
+        }
         
         if (currentQuestion < quizData.length - 1) {
             showStatement();
@@ -169,7 +253,15 @@ document.addEventListener('DOMContentLoaded', () => {
     const downloadMapBtn = document.getElementById('download-map');
     if (downloadMapBtn) {
         downloadMapBtn.addEventListener('click', () => {
-            window.location.href = 'https://pay.atly.com/b/8wMeYN15Xb4ubEkfZ2';
+            // Track checkout event
+            trackQuizCheckout();
+            
+            // Get the email from user answers
+            const email = userAnswers.find(answer => typeof answer === 'string' && answer.includes('@'));
+            // Use the stored session URL if available, otherwise fallback to default with email
+            window.location.href = window.quizSessionUrl || 
+                (email ? `${CHECKOUT_URL}?prefilled_email=${encodeURIComponent(email)}` : 
+                '${CHECKOUT_URL}');
         });
     }
 }); 

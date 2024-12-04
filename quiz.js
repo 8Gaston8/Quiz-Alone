@@ -11,6 +11,12 @@ const quizData = [
         funFact: "Celiac disease affects about 1% of the global population, but many cases go undiagnosed. Apps like Atly help users feel safer by highlighting verified gluten-free options."
     },
     {
+        question: "What's your email address? (We'll save your progress)",
+        options: [],
+        type: "email",
+        funFact: "Your email is safe with us! We'll use it to save your progress and send you personalized gluten-free recommendations."
+    },
+    {
         question: "What's your biggest challenge finding gluten-free spots?",
         options: [
             "Unclear menu labeling",

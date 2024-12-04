@@ -284,4 +284,31 @@ body {
     .choice-button {
         padding: 14px 20px;
     }
+}
+
+.email-input {
+    width: 100%;
+    padding: 16px 24px;
+    border: 2px solid rgba(0, 28, 61, 0.1);
+    border-radius: 12px;
+    font-size: 16px;
+    font-weight: 500;
+    transition: all 0.2s ease;
+    margin-bottom: 30px;
+    color: var(--text-color);
+}
+
+.email-input:focus {
+    outline: none;
+    border-color: var(--gradient-start);
+    background: rgba(240, 30, 111, 0.05);
+}
+
+.email-input.invalid {
+    border-color: #ff4444;
+    background: rgba(255, 68, 68, 0.05);
+}
+
+.email-input::placeholder {
+    color: rgba(0, 28, 61, 0.5);
 } 
