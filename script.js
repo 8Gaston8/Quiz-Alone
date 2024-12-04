@@ -140,11 +140,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const emailInput = document.createElement('input');
             emailInput.type = 'email';
             emailInput.placeholder = 'Enter your email address';
-            emailInput.pattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
+            emailInput.pattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$';
             emailInput.classList.add('email-input');
             emailInput.addEventListener('input', () => {
-                // Check both the native email validation and the pattern
-                const emailRegex = new RegExp(emailInput.pattern);
+                const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$/;
                 const isValid = emailInput.value.trim() !== '' && emailRegex.test(emailInput.value);
                 submitBtn.disabled = !isValid;
                 emailInput.classList.toggle('invalid', !isValid);
@@ -193,6 +192,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const email = emailInput.value;
             userAnswers.push(email);
 
+            // Disable button and show loading state
+            submitBtn.disabled = true;
+            submitBtn.innerHTML = 'Processing... ⏳';
+
             // Make API calls when email is submitted
             try {
                 const result = await handleQuizSubmission(email);
@@ -202,8 +205,14 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             } catch (error) {
                 console.error('Error submitting quiz:', error);
+                // Reset button state on error
+                submitBtn.disabled = false;
+                submitBtn.innerHTML = 'Next 👉';
                 return; // Don't proceed if API call fails
             }
+
+            // Reset button state
+            submitBtn.innerHTML = 'Next 👉';
         } else {
             const selectedChoice = choicesEl.querySelector('.choice-button.selected');
             if (!selectedChoice) return;
