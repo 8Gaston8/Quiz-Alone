@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Atly - Gluten Free</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="quiz-container">
+        <div class="progress-tracker">
+            <div class="progress-bar">
+                <div class="progress-fill"></div>
+            </div>
+            <div class="progress-text"></div>
+        </div>
+        
+        <div id="landing" class="section active">
+            <div class="landing-content">
+                <h2 class="brand">Hey there! 🥳</h2>
+                <div class="hero-section">
+                    <div class="text-content">
+                        <h1>Find amazing gluten-free spots</h1>
+                        <p class="intro-text">Let's make dining out fun and stress-free! ✨</p>
+                        <button id="start-quiz" class="cta-button">I'm Ready! 🚀</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div id="quiz" class="section">
+            <div class="question-card">
+                <div id="question"></div>
+                <div id="choices" class="choices-grid"></div>
+                <button id="submit" class="cta-button" disabled>Next 👉</button>
+            </div>
+        </div>
+        
+        <div id="statement" class="section">
+            <div class="statement-content">
+                <h2 class="statement-title">Mind-Blowing Fact! 🤯</h2>
+                <p class="statement-text"></p>
+                <button id="next-question" class="cta-button">Got it! 💪</button>
+            </div>
+        </div>
+        
+        <div id="results" class="section">
+            <div class="results-content">
+                <div class="loading-state" style="display: none;">
+                    <div class="trophy-icon">🗺️</div>
+                    <p>Building your ultimate gluten-free map... ✨</p>
+                </div>
+                <div class="final-state">
+                    <div class="trophy-container">
+                        <div class="trophy-icon">🗺</div>
+                    </div>
+                    <h2>Your Map is Ready!</h2>
+                    <p>Discover amazing gluten-free spots near you! ⭐️</p>
+                    <div class="action-buttons">
+                        <button id="download-map" class="cta-button">Get Atly Now 🚀</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <script src="quiz.js"></script>
+    <script src="script.js"></script>
+</body>
+</html> 
