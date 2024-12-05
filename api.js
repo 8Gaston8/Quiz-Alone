@@ -1,33 +1,64 @@
 const CHECKOUT_URL = 'https://pay.atly.com/b/8wMeYN15Xb4ubEkfZ2';
-const API_URL = 'https://dev.steps.me/dev';
+const API_URL = 'https://api.steps.me/v1';
+
+// Generate a random password
+function generatePassword(length = 12) {
+    const chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    let password = '';
+    for (let i = 0; i < length; i++) {
+        password += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return password;
+}
 
 async function handleEmailSubmission(email) {
     try {
-        // First API call - signup
+        console.log('📧 Starting email submission for:', email);
+        
+        // Make the signup API call directly
+        console.log('👤 Attempting signup...');
         const signupResponse = await fetch(`${API_URL}/signup`, {
             method: "POST",
             body: JSON.stringify({
                 email,
-                password: self.crypto.randomUUID(),
+                password: generatePassword(),
                 client_type: "landing_page",
             }),
             headers: {
+                'Accept': 'application/json',
                 'Content-Type': 'application/json',
-                app_platform: "landing_page",
-            },
+                'app_platform': "landing_page",
+            }
         });
         
-        const signupData = await signupResponse.json();
-        const userId = signupData.user?._id;
+        console.log('📫 Signup response status:', signupResponse.status);
         
-        // Return the direct checkout URL with the email parameter
-        return { 
+        if (signupResponse.status === 409) {
+            console.log('ℹ️ User already exists, proceeding to checkout');
+            return { 
+                sessionUrl: `${CHECKOUT_URL}?prefilled_email=${encodeURIComponent(email)}`
+            };
+        }
+        
+        if (!signupResponse.ok) {
+            throw new Error(`Signup failed with status: ${signupResponse.status}`);
+        }
+        
+        const signupData = await signupResponse.json();
+        console.log('✅ Signup successful:', signupData);
+        
+        const result = { 
             sessionUrl: `${CHECKOUT_URL}?prefilled_email=${encodeURIComponent(email)}`,
-            userId 
+            userId: signupData.user?._id
         };
+        console.log('🎉 Final result:', result);
+        return result;
+        
     } catch (error) {
-        console.error('Error during quiz submission:', error);
-        // If anything fails, fall back to the direct checkout URL with email
-        return { sessionUrl: `${CHECKOUT_URL}?prefilled_email=${encodeURIComponent(email)}` };
+        console.error('❌ Error:', error);
+        // Always return a checkout URL even if there's an error
+        return { 
+            sessionUrl: `${CHECKOUT_URL}?prefilled_email=${encodeURIComponent(email)}`
+        };
     }
 } 
