@@ -201,11 +201,36 @@ body {
     font-size: 16px;
     font-weight: 600;
     cursor: pointer;
-    transition: transform 0.2s ease;
+    transition: all 0.3s ease;
 }
 
 .cta-button:hover {
     transform: translateY(-2px);
+}
+
+/* Specific animation for intro screen button */
+#start-quiz {
+    animation: glowAndGrow 2s ease-in-out infinite;
+}
+
+#start-quiz:hover {
+    transform: scale(1.05);
+    filter: brightness(1.1);
+}
+
+@keyframes glowAndGrow {
+    0% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
+    50% {
+        transform: scale(1.03);
+        filter: brightness(1.15);
+    }
+    100% {
+        transform: scale(1);
+        filter: brightness(1);
+    }
 }
 
 .cta-button:disabled {
@@ -316,4 +341,16 @@ body {
 
 .email-input::placeholder {
     color: rgba(0, 28, 61, 0.5);
+}
+
+@keyframes gradientShift {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+@keyframes pulse {
+    0% { box-shadow: 0 0 0 0 rgba(240, 30, 111, 0.4); }
+    70% { box-shadow: 0 0 0 10px rgba(240, 30, 111, 0); }
+    100% { box-shadow: 0 0 0 0 rgba(240, 30, 111, 0); }
 } 
