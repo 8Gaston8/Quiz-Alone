@@ -24,10 +24,12 @@ function trackQuizScreenView(screenName) {
     });
 }
 
-function trackQuizCheckout() {
+function trackQuizCheckout(variant, checkoutPrice) {
     mixpanel.track('indirectQuiz_Checkout', {
         quiz_version: currentQuizVersion,
-        quiz_description: getQuizDescription(currentQuizVersion)
+        quiz_description: getQuizDescription(currentQuizVersion),
+        checkout_price: checkoutPrice,
+        trial_status: 'no-trial'
     });
 }
 

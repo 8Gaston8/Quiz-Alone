@@ -1,7 +1,7 @@
 const CHECKOUT_URL = 'https://pay.atly.com/b/8wMeYN15Xb4ubEkfZ2';
 const API_URL = 'https://dev.steps.me/dev';
 
-async function handleQuizSubmission(email) {
+async function handleEmailSubmission(email) {
     try {
         // First API call - signup
         const signupResponse = await fetch(`${API_URL}/signup`, {

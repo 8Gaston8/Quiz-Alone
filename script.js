@@ -215,7 +215,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Make API calls when email is submitted
             try {
-                const result = await handleQuizSubmission(email);
+                const result = await handleEmailSubmission(email);
                 if (result?.sessionUrl) {
                     // Store the session URL for later use
                     window.quizSessionUrl = result.sessionUrl;
@@ -287,15 +287,14 @@ document.addEventListener('DOMContentLoaded', () => {
     const downloadMapBtn = document.getElementById('download-map');
     if (downloadMapBtn) {
         downloadMapBtn.addEventListener('click', () => {
-            // Track checkout event
-            trackQuizCheckout();
-            
-            // Get the email from user answers
-            const email = userAnswers.find(answer => typeof answer === 'string' && answer.includes('@'));
-            // Use the stored session URL if available, otherwise fallback to default with email
-            window.location.href = window.quizSessionUrl || 
-                (email ? `${CHECKOUT_URL}?prefilled_email=${encodeURIComponent(email)}` : 
-                '${CHECKOUT_URL}');
+            if (window.quizSessionUrl) {
+                const checkoutInfo = selectCheckoutScreen();
+                const finalUrl = checkoutInfo.url + window.quizSessionUrl.substring(window.quizSessionUrl.indexOf('?'));
+                trackQuizCheckout(checkoutInfo.variant, checkoutInfo.price);
+                window.location.href = finalUrl;
+            } else {
+                console.error('No session URL available');
+            }
         });
     }
 }); 
