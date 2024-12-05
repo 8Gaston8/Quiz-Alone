@@ -5,13 +5,26 @@ let currentQuizVersion = '';
 
 // Checkout screen configuration
 const CHECKOUT_SCREENS = {
-    STANDARD: {
+    STRIPE_59: {
         url: 'https://pay.atly.com/b/8wMeYN15Xb4ubEkfZ2',
-        price: '59.99'
+        price: '59.99',
+        checkout_medium: 'web',
+        trial_status: 'no-trial',
+        active: true
     },
-    PREMIUM: {
+    STRIPE_69: {
         url: 'https://pay.atly.com/b/6oEaIxdSJa0qgYE9AD',
-        price: '79.99'
+        price: '79.99',
+        checkout_medium: 'web',
+        trial_status: 'no-trial',
+        active: true
+    },
+    APP_CHECKOUT: {
+        url: 'https://web.steps.me/m/CwX3l0tJjXE',
+        price: '',
+        checkout_medium: 'app',
+        trial_status: 'trial',
+        active: false
     }
 };
 
@@ -55,11 +68,20 @@ function selectRandomQuiz() {
 
 // Function to randomly select a checkout screen
 function selectCheckoutScreen() {
-    const variant = Math.random() < 0.5 ? 'STANDARD' : 'PREMIUM';
+    const activeVariants = Object.entries(CHECKOUT_SCREENS)
+        .filter(([_, config]) => config.active)
+        .map(([variant]) => variant);
+    
+    const randomIndex = Math.floor(Math.random() * activeVariants.length);
+    const variant = activeVariants[randomIndex];
+    const screen = CHECKOUT_SCREENS[variant];
+    
     return {
-        url: CHECKOUT_SCREENS[variant].url,
-        price: CHECKOUT_SCREENS[variant].price,
-        variant
+        url: screen.url,
+        price: screen.price,
+        variant,
+        checkout_medium: screen.checkout_medium,
+        trial_status: screen.trial_status
     };
 }
 

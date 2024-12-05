@@ -25,11 +25,13 @@ function trackQuizScreenView(screenName) {
 }
 
 function trackQuizCheckout(variant, checkoutPrice) {
+    const screen = CHECKOUT_SCREENS[variant];
     mixpanel.track('indirectQuiz_Checkout', {
         quiz_version: currentQuizVersion,
         quiz_description: getQuizDescription(currentQuizVersion),
         checkout_price: checkoutPrice,
-        trial_status: 'no-trial'
+        trial_status: screen.trial_status,
+        checkout_medium: screen.checkout_medium
     });
 }
 
