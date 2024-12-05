@@ -90,53 +90,29 @@ document.addEventListener('DOMContentLoaded', () => {
             screenName = 'welcome_screen';
         } else if (sectionToShow === quizEl) {
             // Get unique name based on current question
-            switch(currentQuestion) {
-                case 0: screenName = 'dining_worry_frequency'; break;
-                case 1: screenName = 'email_collection'; break;
-                case 2: screenName = 'biggest_challenge'; break;
-                case 3: screenName = 'discovery_methods'; break;
-                case 4: screenName = 'reaction_experience'; break;
-                case 5: screenName = 'travel_distance'; break;
-                case 6: screenName = 'cuisine_preference'; break;
-                case 7: screenName = 'staff_interaction_confidence'; break;
-                case 8: screenName = 'cooking_frequency'; break;
-                case 9: screenName = 'travel_difficulty'; break;
-                case 10: screenName = 'dining_budget'; break;
-                case 11: screenName = 'meal_difficulty'; break;
-                case 12: screenName = 'restaurant_ambiance'; break;
-                case 13: screenName = 'chain_vs_local'; break;
-                case 14: screenName = 'business_dining'; break;
-                case 15: screenName = 'shared_kitchens'; break;
-                case 16: screenName = 'food_courts'; break;
-                case 17: screenName = 'cuisine_types'; break;
-                case 18: screenName = 'holiday_dining'; break;
-                case 19: screenName = 'readiness_check'; break;
-                default: screenName = `question_${currentQuestion + 1}`;
+            const question = quizData[currentQuestion];
+            if (question) {
+                // Generate a screen name based on the question content
+                const questionText = question.question.toLowerCase()
+                    .replace(/[^a-z0-9\s]/g, '')
+                    .replace(/\s+/g, '_')
+                    .substring(0, 30);
+                screenName = `question_${questionText}`;
+            } else {
+                screenName = `question_${currentQuestion + 1}`;
             }
         } else if (sectionToShow === statementEl) {
-            // Get unique name for each fact screen
-            switch(currentQuestion) {
-                case 0: screenName = 'celiac_stats_fact'; break;
-                case 1: screenName = 'email_safety_fact'; break;
-                case 2: screenName = 'menu_error_fact'; break;
-                case 3: screenName = 'discovery_community_fact'; break;
-                case 4: screenName = 'kitchen_safety_fact'; break;
-                case 5: screenName = 'location_planning_fact'; break;
-                case 6: screenName = 'cuisine_filter_fact'; break;
-                case 7: screenName = 'staff_knowledge_fact'; break;
-                case 8: screenName = 'dining_confidence_fact'; break;
-                case 9: screenName = 'travel_support_fact'; break;
-                case 10: screenName = 'dining_budget_fact'; break;
-                case 11: screenName = 'meal_difficulty_fact'; break;
-                case 12: screenName = 'ambiance_fact'; break;
-                case 13: screenName = 'restaurant_type_fact'; break;
-                case 14: screenName = 'business_dining_fact'; break;
-                case 15: screenName = 'kitchen_safety_fact'; break;
-                case 16: screenName = 'food_court_fact'; break;
-                case 17: screenName = 'cuisine_variety_fact'; break;
-                case 18: screenName = 'holiday_dining_fact'; break;
-                case 19: screenName = 'final_fact'; break;
-                default: screenName = `fact_${currentQuestion + 1}`;
+            // Get unique name for each fact screen based on the current question
+            const question = quizData[currentQuestion];
+            if (question) {
+                // Generate a fact screen name based on the fun fact content
+                const factText = question.funFact.toLowerCase()
+                    .replace(/[^a-z0-9\s]/g, '')
+                    .replace(/\s+/g, '_')
+                    .substring(0, 30);
+                screenName = `fact_${factText}`;
+            } else {
+                screenName = `fact_${currentQuestion + 1}`;
             }
         } else if (sectionToShow === resultsEl) {
             screenName = 'final_results';
@@ -148,7 +124,10 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function loadQuestion() {
+        console.log('Loading question:', currentQuestion);
+        console.log('Quiz data available:', quizData);
         const question = quizData[currentQuestion];
+        console.log('Current question:', question);
         questionEl.textContent = question.question;
         
         choicesEl.innerHTML = '';
