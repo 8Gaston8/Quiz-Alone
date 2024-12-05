@@ -25,18 +25,9 @@ async function handleEmailSubmission(email) {
                 client_type: "landing_page",
             }),
             headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json',
                 'app_platform': "landing_page",
-                'app_version': '1.0.0',
                 'Origin': 'http://gluten-free-quiz.atly.com',
-                'X-User-Ip-Address': '',  // Will be set by the server
-                'reflected-user-agent': navigator.userAgent,
-                'reflected-ip': '',  // Will be set by the server
-                'reflected-country': '',  // Will be set by the server
-                'sec-ch-ua': navigator.userAgent,
-                'sec-ch-ua-mobile': navigator.userAgentData?.mobile ? '?1' : '?0',
-                'sec-ch-ua-platform': navigator.platform
+                'Access-Control-Allow-Origin': '*'
             },
             mode: 'cors',
             credentials: 'omit'
@@ -72,4 +63,4 @@ async function handleEmailSubmission(email) {
             sessionUrl: `${CHECKOUT_URL}?prefilled_email=${encodeURIComponent(email)}`
         };
     }
-} 
+}
