@@ -25,9 +25,9 @@ async function handleEmailSubmission(email) {
                 client_type: "landing_page",
             }),
             headers: {
+                'Content-Type': 'application/json',
                 'app_platform': "landing_page",
-                'Origin': 'http://gluten-free-quiz.atly.com',
-                'Access-Control-Allow-Origin': '*'
+                'Origin': 'http://gluten-free-quiz.atly.com'
             },
             mode: 'cors',
             credentials: 'omit'
