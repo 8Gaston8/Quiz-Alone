@@ -212,17 +212,22 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // Reset button state
             submitBtn.innerHTML = 'Next 👉';
+            
+            // Skip statement screen for email submission and go directly to next question
+            currentQuestion++;
+            loadQuestion();
         } else {
             const selectedChoice = choicesEl.querySelector('.choice-button.selected');
             if (!selectedChoice) return;
             const answerIndex = Array.from(choicesEl.children).indexOf(selectedChoice);
             userAnswers.push(answerIndex);
-        }
-        
-        if (currentQuestion < quizData.length - 1) {
-            showStatement();
-        } else {
-            showResults();
+            
+            // For non-email questions, check if we've reached the end
+            if (currentQuestion === quizData.length - 1) {
+                showResults();
+            } else {
+                showStatement();
+            }
         }
     }
 
