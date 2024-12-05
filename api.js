@@ -29,7 +29,14 @@ async function handleEmailSubmission(email) {
                 'Content-Type': 'application/json',
                 'app_platform': "landing_page",
                 'app_version': '1.0.0',
-                'Origin': 'http://gluten-free-quiz.atly.com'
+                'Origin': 'http://gluten-free-quiz.atly.com',
+                'X-User-Ip-Address': '',  // Will be set by the server
+                'reflected-user-agent': navigator.userAgent,
+                'reflected-ip': '',  // Will be set by the server
+                'reflected-country': '',  // Will be set by the server
+                'sec-ch-ua': navigator.userAgent,
+                'sec-ch-ua-mobile': navigator.userAgentData?.mobile ? '?1' : '?0',
+                'sec-ch-ua-platform': navigator.platform
             },
             mode: 'cors',
             credentials: 'omit'
