@@ -28,7 +28,11 @@ async function handleEmailSubmission(email) {
                 'Accept': 'application/json',
                 'Content-Type': 'application/json',
                 'app_platform': "landing_page",
-            }
+                'app_version': '1.0.0',
+                'Origin': 'http://gluten-free-quiz.atly.com'
+            },
+            mode: 'cors',
+            credentials: 'omit'
         });
         
         console.log('📫 Signup response status:', signupResponse.status);
