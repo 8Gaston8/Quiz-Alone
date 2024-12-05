@@ -132,7 +132,27 @@ document.addEventListener('DOMContentLoaded', () => {
         
         choicesEl.innerHTML = '';
         
+        // Get or create skip button
+        let skipBtn = document.getElementById('skip-question');
+        if (!skipBtn) {
+            skipBtn = document.createElement('button');
+            skipBtn.id = 'skip-question';
+            skipBtn.classList.add('skip-button');
+            skipBtn.textContent = 'Skip';
+            skipBtn.addEventListener('click', () => {
+                if (currentQuestion === quizData.length - 1) {
+                    showResults();
+                } else {
+                    currentQuestion++;
+                    showSection(quizEl);
+                    loadQuestion();
+                }
+            });
+            document.querySelector('.question-card').appendChild(skipBtn);
+        }
+        
         if (question.type === 'email') {
+            skipBtn.style.display = 'none';
             const emailInput = document.createElement('input');
             emailInput.type = 'email';
             emailInput.placeholder = 'Enter your email address';
@@ -147,6 +167,7 @@ document.addEventListener('DOMContentLoaded', () => {
             submitBtn.disabled = true; // Initially disable the button
             choicesEl.appendChild(emailInput);
         } else {
+            skipBtn.style.display = 'block';
             question.options.forEach((option, index) => {
                 const button = document.createElement('button');
                 button.textContent = option;
