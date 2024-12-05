@@ -199,6 +199,9 @@ document.addEventListener('DOMContentLoaded', () => {
                     // Store the session URL for later use
                     window.quizSessionUrl = result.sessionUrl;
                 }
+                
+                // Add a small delay to show the loading state
+                await new Promise(resolve => setTimeout(resolve, 1000));
             } catch (error) {
                 console.error('Error submitting quiz:', error);
                 // Reset button state on error
