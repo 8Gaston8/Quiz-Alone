@@ -4,7 +4,7 @@ let quizData = null;
 let currentQuizVersion = '';
 
 function selectRandomQuiz() {
-    const versions = ['A', 'B', 'C'];
+    const versions = ['A', 'B', 'C', 'D', 'E'];
     const randomIndex = Math.floor(Math.random() * versions.length);
     const selectedVersion = versions[randomIndex];
     
@@ -20,6 +20,14 @@ function selectRandomQuiz() {
         case 'C':
             quizData = quizDataC;
             currentQuizVersion = 'Experience_Quiz';
+            break;
+        case 'D':
+            quizData = quizDataD;
+            currentQuizVersion = 'Quick_Quiz';
+            break;
+        case 'E':
+            quizData = quizDataE;
+            currentQuizVersion = 'Extended_Quiz';
             break;
     }
     

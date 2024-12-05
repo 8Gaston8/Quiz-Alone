@@ -90,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
             screenName = 'welcome_screen';
         } else if (sectionToShow === quizEl) {
             // Get unique name based on current question
-            const question = quizData[currentQuestion];
             switch(currentQuestion) {
                 case 0: screenName = 'dining_worry_frequency'; break;
                 case 1: screenName = 'email_collection'; break;
@@ -102,7 +101,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 case 7: screenName = 'staff_interaction_confidence'; break;
                 case 8: screenName = 'cooking_frequency'; break;
                 case 9: screenName = 'travel_difficulty'; break;
-                case 10: screenName = 'readiness_check'; break;
+                case 10: screenName = 'dining_budget'; break;
+                case 11: screenName = 'meal_difficulty'; break;
+                case 12: screenName = 'restaurant_ambiance'; break;
+                case 13: screenName = 'chain_vs_local'; break;
+                case 14: screenName = 'business_dining'; break;
+                case 15: screenName = 'shared_kitchens'; break;
+                case 16: screenName = 'food_courts'; break;
+                case 17: screenName = 'cuisine_types'; break;
+                case 18: screenName = 'holiday_dining'; break;
+                case 19: screenName = 'readiness_check'; break;
                 default: screenName = `question_${currentQuestion + 1}`;
             }
         } else if (sectionToShow === statementEl) {
@@ -118,7 +126,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 case 7: screenName = 'staff_knowledge_fact'; break;
                 case 8: screenName = 'dining_confidence_fact'; break;
                 case 9: screenName = 'travel_support_fact'; break;
-                case 10: screenName = 'time_saving_fact'; break;
+                case 10: screenName = 'dining_budget_fact'; break;
+                case 11: screenName = 'meal_difficulty_fact'; break;
+                case 12: screenName = 'ambiance_fact'; break;
+                case 13: screenName = 'restaurant_type_fact'; break;
+                case 14: screenName = 'business_dining_fact'; break;
+                case 15: screenName = 'kitchen_safety_fact'; break;
+                case 16: screenName = 'food_court_fact'; break;
+                case 17: screenName = 'cuisine_variety_fact'; break;
+                case 18: screenName = 'holiday_dining_fact'; break;
+                case 19: screenName = 'final_fact'; break;
                 default: screenName = `fact_${currentQuestion + 1}`;
             }
         } else if (sectionToShow === resultsEl) {
