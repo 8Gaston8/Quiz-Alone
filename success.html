@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Atly! | Download Now</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        body {
+            margin: 0;
+            font-family: 'Inter', sans-serif;
+            background-color: #F3F4F6;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 3rem 1rem;
+        }
+
+        .container {
+            width: 100%;
+            max-width: 28rem;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2rem;
+        }
+
+        .logo {
+            width: 72px;
+            height: 72px;
+        }
+
+        .welcome-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1rem;
+        }
+
+        .welcome-title {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #1E3A8A;
+            margin: 0;
+        }
+
+        .welcome-text {
+            font-size: 0.9375rem;
+            color: #1E3A8A;
+            max-width: 260px;
+            margin: 0;
+            line-height: 1.5;
+        }
+
+        .download-button {
+            background: linear-gradient(45deg, #F01E6F, #EF6F5E);
+            color: white;
+            border: none;
+            padding: 1rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: opacity 0.2s;
+            text-decoration: none;
+            display: inline-block;
+            margin-top: 1rem;
+        }
+
+        .download-button:hover {
+            opacity: 0.9;
+        }
+
+        .loading {
+            display: none;
+            color: #1E3A8A;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+
+        .error {
+            display: none;
+            color: #DC2626;
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="welcome-header">
+            <img src="/assets/welcome-header-svg-logo.svg" alt="Atly Logo" class="logo">
+            <h1 class="welcome-title">You're in!</h1>
+            <p class="welcome-text">
+                <strong>Let the gluten-free magic begin.</strong><br>
+                Download Atly to your phone and start exploring.
+            </p>
+        </div>
+        <div>
+            <a href="#" id="downloadButton" class="download-button">Download Atly Now 🚀</a>
+            <p id="loading" class="loading">Getting your personalized link...</p>
+            <p id="error" class="error">Something went wrong. Please try again.</p>
+        </div>
+    </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const urlParams = new URLSearchParams(window.location.search);
+            const email = urlParams.get('email');
+            const userId = urlParams.get('userId');
+            const branchLink = urlParams.get('branchLink');
+
+            const downloadButton = document.getElementById('downloadButton');
+            const loadingText = document.getElementById('loading');
+            const errorText = document.getElementById('error');
+
+            if (branchLink) {
+                downloadButton.href = decodeURIComponent(branchLink);
+            } else {
+                downloadButton.addEventListener('click', async function(e) {
+                    e.preventDefault();
+                    
+                    if (!userId) {
+                        errorText.style.display = 'block';
+                        return;
+                    }
+
+                    loadingText.style.display = 'block';
+                    errorText.style.display = 'none';
+
+                    try {
+                        // Use the existing handleEmailSubmission function to get a new branch link
+                        const result = await window.handleEmailSubmission(decodeURIComponent(email));
+                        if (result.branchLink) {
+                            window.location.href = result.branchLink;
+                        } else {
+                            throw new Error('No branch link available');
+                        }
+                    } catch (error) {
+                        console.error('Error getting branch link:', error);
+                        loadingText.style.display = 'none';
+                        errorText.style.display = 'block';
+                    }
+                });
+            }
+        });
+    </script>
+    <script src="api.js"></script>
+</body>
+</html> 

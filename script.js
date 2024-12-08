@@ -289,7 +289,13 @@ document.addEventListener('DOMContentLoaded', () => {
         downloadMapBtn.addEventListener('click', () => {
             if (window.quizSessionUrl) {
                 const checkoutInfo = selectCheckoutScreen();
-                const finalUrl = checkoutInfo.url + window.quizSessionUrl.substring(window.quizSessionUrl.indexOf('?'));
+                let finalUrl = checkoutInfo.url + window.quizSessionUrl.substring(window.quizSessionUrl.indexOf('?'));
+                
+                // Add user ID as client_reference_id if available
+                if (window.quizUserId) {
+                    finalUrl += `&client_reference_id=${window.quizUserId}`;
+                }
+                
                 trackQuizCheckout(checkoutInfo.variant, checkoutInfo.price);
                 window.location.href = finalUrl;
             } else {
