@@ -25,6 +25,13 @@ const CHECKOUT_SCREENS = {
         checkout_medium: 'app',
         trial_status: 'trial',
         active: false
+    },
+    TEST_CHECKOUT: {
+        url: 'https://pay.atly.com/b/test_4gw7sz7vO2tTerK6oq',
+        price: '59.99',
+        checkout_medium: 'web',
+        trial_status: 'no-trial',
+        active: false
     }
 };
 
@@ -68,6 +75,18 @@ function selectRandomQuiz() {
 
 // Function to randomly select a checkout screen
 function selectCheckoutScreen() {
+    // Check if we're in test mode via URL parameter
+    const urlParams = new URLSearchParams(window.location.search);
+    if (urlParams.get('mode') === 'test') {
+        return {
+            url: CHECKOUT_SCREENS.TEST_CHECKOUT.url,
+            price: CHECKOUT_SCREENS.TEST_CHECKOUT.price,
+            variant: 'TEST_CHECKOUT',
+            checkout_medium: CHECKOUT_SCREENS.TEST_CHECKOUT.checkout_medium,
+            trial_status: CHECKOUT_SCREENS.TEST_CHECKOUT.trial_status
+        };
+    }
+
     const activeVariants = Object.entries(CHECKOUT_SCREENS)
         .filter(([_, config]) => config.active)
         .map(([variant]) => variant);
