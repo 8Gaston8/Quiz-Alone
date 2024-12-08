@@ -11,7 +11,8 @@ function generatePassword(length = 12) {
     return password;
 }
 
-async function handleEmailSubmission(email) {
+// Make the function globally available
+window.handleEmailSubmission = async function(email) {
     try {
         console.log('📧 Starting email submission for:', email);
         
