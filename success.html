@@ -130,7 +130,7 @@
             <h2>Instructions</h2>
             <ol>
                 <li>Download and open the Atly app</li>
-                <li>Sign in using your email <span id="userEmail">[user@email.com]</span></li>
+                <li>Sign in using your email <span id="userEmail">user@email.com</span></li>
                 <li>Tap on the Gluten Free Eats map ⚡</li>
             </ol>
         </div>
@@ -145,7 +145,7 @@
             </div>
         </div>
 
-        <a href="#" class="download-button">
+        <a href="#" class="download-button" id="downloadButton">
             Get the app
             <!-- App Store and Play Store icons would go here -->
         </a>
@@ -154,8 +154,17 @@
         document.addEventListener('DOMContentLoaded', function() {
             const urlParams = new URLSearchParams(window.location.search);
             const email = urlParams.get('email');
-            if (email) {
-                document.getElementById('userEmail').textContent = email;
+            const branchUrl = urlParams.get('branchLink');
+            
+            const userEmailElement = document.getElementById('userEmail');
+            if (email && email.trim() !== '') {
+                userEmailElement.textContent = email;
+            } else {
+                userEmailElement.style.color = '#999';
+            }
+            
+            if (branchUrl) {
+                document.getElementById('downloadButton').href = decodeURIComponent(branchUrl);
             }
         });
     </script>
