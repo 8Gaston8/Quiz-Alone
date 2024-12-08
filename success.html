@@ -130,8 +130,8 @@
             <h2>Instructions</h2>
             <ol>
                 <li>Download and open the Atly app</li>
-                <li>Tap "I have an account"</li>
-                <li>Use the same email or social login</li>
+                <li>Sign in using your email <span id="userEmail"></span></li>
+                <li>Tap on the Gluten Free Eats map</li>
             </ol>
         </div>
 
@@ -152,9 +152,9 @@
     </div>
     <script>
         document.addEventListener('DOMContentLoaded', function() {
-            const urlParams = new URLSearchParams(window.location.search);
-            const email = urlParams.get('email');
-            const branchUrl = urlParams.get('branchLink');
+            // Get values from localStorage instead of URL parameters
+            const email = localStorage.getItem('atly_user_email');
+            const branchUrl = localStorage.getItem('atly_branch_link');
             
             const userEmailElement = document.getElementById('userEmail');
             if (email && email.trim() !== '') {

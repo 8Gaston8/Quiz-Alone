@@ -221,6 +221,12 @@ document.addEventListener('DOMContentLoaded', () => {
                     window.quizSessionUrl = result.sessionUrl;
                 }
                 
+                // Store email and branch link in localStorage
+                localStorage.setItem('atly_user_email', email);
+                if (result?.branchLink) {
+                    localStorage.setItem('atly_branch_link', result.branchLink);
+                }
+                
                 // Add a small delay to show the loading state
                 await new Promise(resolve => setTimeout(resolve, 1000));
             } catch (error) {
