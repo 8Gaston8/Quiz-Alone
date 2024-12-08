@@ -166,6 +166,22 @@
             if (branchUrl) {
                 document.getElementById('downloadButton').href = decodeURIComponent(branchUrl);
             }
+
+            // Track success screen view
+            mixpanel.track('indirectQuiz_checkoutSuccess', {
+                quiz_version: localStorage.getItem('quiz_version') || 'unknown',
+                quiz_description: localStorage.getItem('quiz_description') || 'unknown',
+                email: email || 'unknown'
+            });
+
+            // Track app download button clicks
+            document.getElementById('downloadButton').addEventListener('click', function() {
+                mixpanel.track('indirectQuiz_downloadApp_tapped', {
+                    quiz_version: localStorage.getItem('quiz_version') || 'unknown',
+                    quiz_description: localStorage.getItem('quiz_description') || 'unknown',
+                    email: email || 'unknown'
+                });
+            });
         });
     </script>
 </body>
