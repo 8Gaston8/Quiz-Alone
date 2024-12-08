@@ -23,7 +23,7 @@ async function handleEmailSubmission(email) {
                 email,
                 password: generatePassword(),
                 client_type: "landing_page",
-                app_version: 3.12.2.0P
+                app_version: "3.12.2.0P"
                 distinct_id: null
             }),
             headers: {
