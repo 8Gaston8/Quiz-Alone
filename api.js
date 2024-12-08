@@ -23,7 +23,7 @@ async function createBranchLink(userId, authToken) {
             headers: {
                 'Content-Type': 'application/json',
                 'app_platform': "landing_page",
-                'Origin': 'http://gluten-free-quiz.atly.com',
+                'Origin': 'https://gluten-free-quiz.atly.com',
                 'Authorization': `Bearer ${authToken}`
             },
             body: JSON.stringify({
@@ -34,15 +34,18 @@ async function createBranchLink(userId, authToken) {
                 client_type: "landing_page",
                 link_type: "map_store",
                 use_mixpanel_merge: true,
-                in_product_share_method: "INDIRECT_QUIZ",
+                in_product_share_method: "LANDING_PAGE_MAP_PROFILE_SHARE",
                 from_quiz_id: userId,
                 distinct_id: userId,
-                channel: document.referrer.includes(".google.") ? "google" : "unknown",
+                channel: document.referrer.includes(".google.") ? "paid_advertising" : "paid_advertising",
                 data: {
                     map_id: MAP_ID,
                     conversion_tool: "Indirect",
                     product: "Indirect Quiz",
-                    user_source: "indirect_ads"
+                    user_source: "paid_advertising",
+                    auth_token: authToken,
+                    user_id: userId,
+                    auto_login: true
                 }
             })
         });
@@ -79,7 +82,7 @@ window.handleEmailSubmission = async function(email) {
             headers: {
                 'Content-Type': 'application/json',
                 'app_platform': "landing_page",
-                'Origin': 'http://gluten-free-quiz.atly.com'
+                'Origin': 'https://gluten-free-quiz.atly.com'
             },
             mode: 'cors',
             credentials: 'omit'

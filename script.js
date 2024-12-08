@@ -156,10 +156,10 @@ document.addEventListener('DOMContentLoaded', () => {
             const emailInput = document.createElement('input');
             emailInput.type = 'email';
             emailInput.placeholder = 'Enter your email address';
-            emailInput.pattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$';
+            emailInput.pattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
             emailInput.classList.add('email-input');
             emailInput.addEventListener('input', () => {
-                const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.com$/;
+                const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
                 const isValid = emailInput.value.trim() !== '' && emailRegex.test(emailInput.value);
                 submitBtn.disabled = !isValid;
                 emailInput.classList.toggle('invalid', !isValid);
