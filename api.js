@@ -23,6 +23,7 @@ async function handleEmailSubmission(email) {
                 email,
                 password: generatePassword(),
                 client_type: "landing_page",
+                distinct_id: null
             }),
             headers: {
                 'Content-Type': 'application/json',
