@@ -39,13 +39,37 @@ function selectRandomIntroScreen() {
 function updateIntroScreen() {
     const selectedIntro = selectRandomIntroScreen();
     
-    // Select random quiz version
-    const versions = ['Classic_Quiz', 'Lifestyle_Quiz', 'Experience_Quiz', 'Quick_Quiz', 'Extended_Quiz', 'Focused_Quiz'];
-    const randomQuizIndex = Math.floor(Math.random() * versions.length);
-    const selectedQuizVersion = versions[randomQuizIndex];
+    // Select random quiz version using the same logic as quiz.js
+    const versions = ['A', 'B', 'C', 'D', 'E', 'F'];
+    const randomIndex = Math.floor(Math.random() * versions.length);
+    const selectedVersion = versions[randomIndex];
     
-    // Store the selected quiz version globally
+    // Map version letter to actual quiz version name
+    let selectedQuizVersion;
+    switch(selectedVersion) {
+        case 'A':
+            selectedQuizVersion = 'Classic_Quiz';
+            break;
+        case 'B':
+            selectedQuizVersion = 'Lifestyle_Quiz';
+            break;
+        case 'C':
+            selectedQuizVersion = 'Experience_Quiz';
+            break;
+        case 'D':
+            selectedQuizVersion = 'Quick_Quiz';
+            break;
+        case 'E':
+            selectedQuizVersion = 'Extended_Quiz';
+            break;
+        case 'F':
+            selectedQuizVersion = 'Joshua_e';
+            break;
+    }
+    
+    // Store the selected version globally
     window.currentQuizVersion = selectedQuizVersion;
+    window.selectedQuizLetter = selectedVersion; // Store the letter version for quiz.js to use
     
     // Update DOM elements
     document.getElementById('landing-emoji').textContent = selectedIntro.emoji;

@@ -36,10 +36,17 @@ const CHECKOUT_SCREENS = {
 };
 
 function selectRandomQuiz() {
-    const versions = ['A', 'B', 'C', 'D', 'E', 'F'];
-    const randomIndex = Math.floor(Math.random() * versions.length);
-    const selectedVersion = versions[randomIndex];
-    console.log('Selected version:', selectedVersion);
+    // Use the version selected by intro_screens.js if available, otherwise select randomly
+    let selectedVersion;
+    if (window.selectedQuizLetter) {
+        selectedVersion = window.selectedQuizLetter;
+        console.log('Using version selected by intro screen:', selectedVersion);
+    } else {
+        const versions = ['A', 'B', 'C', 'D', 'E', 'F'];
+        const randomIndex = Math.floor(Math.random() * versions.length);
+        selectedVersion = versions[randomIndex];
+        console.log('Selected random version:', selectedVersion);
+    }
     
     switch(selectedVersion) {
         case 'A':
