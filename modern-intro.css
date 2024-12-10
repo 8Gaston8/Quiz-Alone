@@ -1,0 +1,155 @@
+/* Modern Intro Screen Styles */
+.modern-intro {
+    background: linear-gradient(180deg, #002551 0%, #001A3D 100%);
+    color: white;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 24px;
+}
+
+.modern-intro .intro-container {
+    max-width: 520px;
+    margin: 0;
+    width: 100%;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+/* Logo */
+.modern-intro .logo {
+    width: 82px;
+    height: auto;
+    margin: 0 0 32px 0;
+}
+
+/* Main Title */
+.modern-intro #landing-title {
+    font-family: 'Mont-Bold', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 32px;
+    line-height: 1.1;
+    margin: 0;
+    font-weight: 700;
+    color: white;
+    text-align: left;
+    max-width: 400px;
+}
+
+@media (min-width: 375px) {
+    .modern-intro #landing-title {
+        font-size: 36px;
+    }
+}
+
+@media (min-width: 480px) {
+    .modern-intro #landing-title {
+        font-size: 42px;
+    }
+}
+
+/* Badges Section */
+.modern-intro .badges-container {
+    display: flex;
+    justify-content: flex-start;
+    gap: 12px;
+    margin: 16px 0;
+}
+
+.modern-intro .badge {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(255, 185, 90, 0.15);
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid rgba(255, 185, 90, 0.3);
+}
+
+.modern-intro .badge-text {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 600;
+    font-size: 11px;
+    line-height: 1.2;
+    text-align: center;
+    color: #FFB95A;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+/* Bottom Section */
+.modern-intro .bottom-section {
+    margin-top: auto;
+    width: 100%;
+    padding-top: 32px;
+}
+
+.modern-intro .users-joined {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 24px;
+    width: 100%;
+    text-align: center;
+}
+
+.modern-intro .users-joined-text {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-size: 16px;
+    font-weight: 600;
+    color: white;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    text-align: center;
+}
+
+/* Continue Button */
+.modern-intro #start-quiz {
+    background: linear-gradient(90deg, #F01E6F 0%, #EF6F5E 100%);
+    border-radius: 12px;
+    color: white;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+    font-weight: 600;
+    font-size: 16px;
+    padding: 16px;
+    width: 100%;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.modern-intro #start-quiz:hover {
+    transform: translateY(-1px);
+}
+
+/* Background Elements */
+.modern-intro .bg-gradient {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: radial-gradient(circle at top right, rgba(240, 30, 111, 0.1) 0%, rgba(239, 111, 94, 0) 70%);
+    pointer-events: none;
+    z-index: 0;
+}
+
+/* Make sure content is above background */
+.modern-intro .content {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    min-height: auto;
+}
+
+/* Ensure modern styling only applies to intro screen */
+.modern-intro ~ * {
+    background: none;
+    color: initial;
+} 

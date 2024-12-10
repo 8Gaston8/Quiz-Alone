@@ -16,11 +16,12 @@ function getQuizDescription(quizVersion) {
     }
 }
 
-function trackQuizScreenView(screenName) {
+function trackQuizScreenView(screenName, introVersion = null) {
     mixpanel.track('indirectQuiz_screen_viewed', {
         screen_name: screenName,
         quiz_version: currentQuizVersion,
-        quiz_description: getQuizDescription(currentQuizVersion)
+        quiz_description: getQuizDescription(currentQuizVersion),
+        intro_version: introVersion
     });
 }
 
@@ -37,6 +38,9 @@ function trackQuizCheckout(variant, checkoutPrice) {
 
 // Initialize tracking when the page loads
 document.addEventListener('DOMContentLoaded', () => {
-    // Track initial landing page view
-    trackQuizScreenView('welcome_screen');
+    // Wait a tiny bit to ensure intro screen is initialized
+    setTimeout(() => {
+        const selectedIntro = document.querySelector('.modern-intro') ? introScreens[5] : introScreens[2];
+        trackQuizScreenView('welcome_screen', selectedIntro.title);
+    }, 0);
 }); 

@@ -276,6 +276,8 @@ document.addEventListener('DOMContentLoaded', () => {
     function startQuiz() {
         currentQuestion = 0;
         userAnswers = [];
+        // Remove modern intro styling
+        document.body.classList.remove('modern-intro');
         showSection(quizEl);
         loadQuestion();
     }
