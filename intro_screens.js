@@ -32,8 +32,8 @@ const introScreens = [
 ];
 
 function selectRandomIntroScreen() {
-    const randomIndex = Math.floor(Math.random() * introScreens.length);
-    return introScreens[randomIndex];
+    // Always return the "Never Worry About Gluten Again" intro screen (index 2)
+    return introScreens[2];
 }
 
 function updateIntroScreen() {
