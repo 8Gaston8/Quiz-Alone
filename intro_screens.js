@@ -40,6 +40,54 @@ const introScreens = [
             "#1 DIETITIANS CHOICE",
             "MOST RELIABLE CELIAC MAP"
         ]
+    },
+    {
+        emoji: "",
+        title: "Find 100% safe gluten-free restaurants",
+        description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
+        buttonText: "CONTINUE",
+        isModern: true,
+        badges: [
+            "GLUTENED-FREE GUARANTEE",
+            "#1 DIETITIANS CHOICE",
+            "MOST RELIABLE CELIAC MAP"
+        ]
+    },
+    {
+        emoji: "",
+        title: "Your gluten-free dining map awaits",
+        description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
+        buttonText: "CONTINUE",
+        isModern: true,
+        badges: [
+            "GLUTENED-FREE GUARANTEE",
+            "#1 DIETITIANS CHOICE",
+            "MOST RELIABLE CELIAC MAP"
+        ]
+    },
+    {
+        emoji: "",
+        title: "Unlock your gluten-free food map",
+        description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
+        buttonText: "CONTINUE",
+        isModern: true,
+        badges: [
+            "GLUTENED-FREE GUARANTEE",
+            "#1 DIETITIANS CHOICE",
+            "MOST RELIABLE CELIAC MAP"
+        ]
+    },
+    {
+        emoji: "",
+        title: "Get your personalized gluten-free map",
+        description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
+        buttonText: "CONTINUE",
+        isModern: true,
+        badges: [
+            "GLUTENED-FREE GUARANTEE",
+            "#1 DIETITIANS CHOICE",
+            "MOST RELIABLE CELIAC MAP"
+        ]
     }
 ];
 
@@ -48,7 +96,9 @@ function selectRandomIntroScreen() {
     const useModernDesign = Math.random() < 0.5;
     
     if (useModernDesign) {
-        const modernScreen = {...introScreens[5]};
+        // Select a random modern screen from the available options (indices 5-9)
+        const modernScreenIndex = Math.floor(Math.random() * 5) + 5;
+        const modernScreen = {...introScreens[modernScreenIndex]};
         // Generate random number between 200 and 350
         const randomNumber = Math.floor(Math.random() * (350 - 200 + 1) + 200);
         modernScreen.description = `${randomNumber}+ people joined today 👇`;
