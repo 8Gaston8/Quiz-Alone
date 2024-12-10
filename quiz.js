@@ -42,7 +42,7 @@ function selectRandomQuiz() {
         selectedVersion = window.selectedQuizLetter;
         console.log('Using version selected by intro screen:', selectedVersion);
     } else {
-        const versions = ['A', 'B', 'C', 'D', 'E', 'F'];
+        const versions = ['A', 'B', 'C', 'D', 'F'];
         const randomIndex = Math.floor(Math.random() * versions.length);
         selectedVersion = versions[randomIndex];
         console.log('Selected random version:', selectedVersion);

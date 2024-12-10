@@ -40,7 +40,7 @@ function updateIntroScreen() {
     const selectedIntro = selectRandomIntroScreen();
     
     // Select random quiz version using the same logic as quiz.js
-    const versions = ['A', 'B', 'C', 'D', 'E', 'F'];
+    const versions = ['A', 'B', 'C', 'D', 'F'];
     const randomIndex = Math.floor(Math.random() * versions.length);
     const selectedVersion = versions[randomIndex];
     
@@ -58,9 +58,6 @@ function updateIntroScreen() {
             break;
         case 'D':
             selectedQuizVersion = 'Quick_Quiz';
-            break;
-        case 'E':
-            selectedQuizVersion = 'Extended_Quiz';
             break;
         case 'F':
             selectedQuizVersion = 'Joshua_e';
