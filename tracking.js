@@ -40,7 +40,7 @@ function trackQuizCheckout(variant, checkoutPrice) {
 document.addEventListener('DOMContentLoaded', () => {
     // Wait a tiny bit to ensure intro screen is initialized
     setTimeout(() => {
-        const selectedIntro = document.querySelector('.modern-intro') ? introScreens[5] : introScreens[2];
+        const selectedIntro = selectRandomIntroScreen();
         trackQuizScreenView('welcome_screen', selectedIntro.title);
     }, 0);
 }); 
