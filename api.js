@@ -100,12 +100,18 @@ window.handleEmailSubmission = async function(email) {
         if (!signupResponse.ok) {
             throw new Error(`Signup failed with status: ${signupResponse.status}`);
         }
-        
+
         const signupData = await signupResponse.json();
         console.log('✅ Signup successful:', signupData);
         
         // Store the user ID globally
         window.quizUserId = signupData.user?._id;
+
+        // Identify the user in Mixpanel - this automatically reconciles with the current distinct ID
+        if (window.quizUserId) {
+            console.log('🔄 Identifying user in Mixpanel:', window.quizUserId);
+            mixpanel.identify(window.quizUserId);
+        }
 
         // Create Branch.io link for the new user
         const branchLink = await createBranchLink(signupData.user?._id, signupData.token);
