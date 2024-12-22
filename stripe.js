@@ -19,7 +19,7 @@ let stripePromise = null;
 const getStripe = async () => {
     if (!stripePromise) {
         const Stripe = await loadStripe();
-        stripePromise = Stripe('pk_live_51HGsGEKSvbXPWQPGgFsRWB8fGHb4tX9W3Oy8YJJHfcHvxFqJQqrYWqpqQwueJ8uXyZXpNQiStCYGXdrAHVCEZ8Vy00QQkUL7bF');
+        stripePromise = Stripe(process.env.NEXT_PUBLIC_STRIPE_KEY);
     }
     return stripePromise;
 };
