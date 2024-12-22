@@ -41,6 +41,6 @@ document.addEventListener('DOMContentLoaded', () => {
     // Wait a tiny bit to ensure intro screen is initialized
     setTimeout(() => {
         const selectedIntro = selectRandomIntroScreen();
-        trackQuizScreenView('welcome_screen', selectedIntro.title);
+        trackQuizScreenView('welcome_screen', selectedIntro.intro_version);
     }, 0);
 }); 

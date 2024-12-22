@@ -13,7 +13,7 @@ const introScreens = [
     },
     {
         emoji: "Hi Friend! 👋",
-        title: "Never Worry About Gluten Again",
+        title: "Find 100% safe gluten-free restaurants",
         description: "Join thousands finding their perfect spots! ✨",
         buttonText: "Let's Begin"
     },
@@ -96,16 +96,18 @@ function selectRandomIntroScreen() {
     const useModernDesign = Math.random() < 0.5;
     
     if (useModernDesign) {
-        // Select a random modern screen from the available options (indices 5-9)
-        const modernScreenIndex = Math.floor(Math.random() * 5) + 5;
-        const modernScreen = {...introScreens[modernScreenIndex]};
+        // Return the modern version with "Find 100% safe gluten-free restaurants" (index 6)
+        const modernScreen = {...introScreens[6]};
         // Generate random number between 200 and 350
         const randomNumber = Math.floor(Math.random() * (350 - 200 + 1) + 200);
         modernScreen.description = `${randomNumber}+ people joined today 👇`;
+        modernScreen.intro_version = "modern_100_safe"; // Add intro version for tracking
         return modernScreen;
     } else {
-        // Return the "Never Worry About Gluten Again" intro screen (index 2) for classic design
-        return introScreens[2];
+        // Return the classic version with "Find 100% safe gluten-free restaurants" (index 2)
+        const classicScreen = {...introScreens[2]};
+        classicScreen.intro_version = "classic_100_safe"; // Add intro version for tracking
+        return classicScreen;
     }
 }
 
