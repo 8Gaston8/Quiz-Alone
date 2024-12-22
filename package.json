@@ -1,0 +1,8 @@
+{
+    "name": "quiz-alone-frontend",
+    "version": "1.0.0",
+    "description": "Frontend for the Atly Quiz application",
+    "engines": {
+        "node": ">=14.0.0"
+    }
+} 
