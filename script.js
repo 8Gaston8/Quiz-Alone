@@ -31,6 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
     const statementTitleEl = document.querySelector('.statement-title');
     const progressBar = document.querySelector('.progress-fill');
     const progressText = document.querySelector('.progress-text');
+    const recapEl = document.getElementById('recap');
+    const finishRecapBtn = document.getElementById('finish-recap');
 
     function createEmojiConfetti() {
         const emojis = ['🎉', '✨', '💫', '⭐️', '🌟', '🎊', '🎈'];
@@ -80,7 +82,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function showSection(sectionToShow) {
-        [landingEl, quizEl, statementEl, resultsEl].forEach(section => {
+        [landingEl, quizEl, statementEl, resultsEl, recapEl].forEach(section => {
             section.classList.toggle('active', section === sectionToShow);
         });
         
@@ -114,6 +116,8 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 screenName = `fact_${currentQuestion + 1}`;
             }
+        } else if (sectionToShow === recapEl) {
+            screenName = 'answer_recap';
         } else if (sectionToShow === resultsEl) {
             screenName = 'final_results';
         }
@@ -141,7 +145,11 @@ document.addEventListener('DOMContentLoaded', () => {
             skipBtn.textContent = 'Skip';
             skipBtn.addEventListener('click', () => {
                 if (currentQuestion === quizData.length - 1) {
-                    showResults();
+                    if (currentQuizVersion === 'Aha_Quiz') {
+                        showRecap(); // Show recap for version G even when last question is skipped
+                    } else {
+                        showResults(); // Show results directly for other versions
+                    }
                 } else {
                     currentQuestion++;
                     showSection(quizEl);
@@ -196,6 +204,118 @@ document.addEventListener('DOMContentLoaded', () => {
         showSection(statementEl);
     }
 
+    function showRecap() {
+        const recapAnswers = document.querySelector('.recap-answers');
+        recapAnswers.innerHTML = '';
+        
+        // Add scroll indicator
+        const scrollIndicator = document.createElement('div');
+        scrollIndicator.className = 'scroll-indicator';
+        scrollIndicator.innerHTML = '👇';
+        document.querySelector('.recap-content').appendChild(scrollIndicator);
+        
+        // Generate personalized title based on answers
+        let title = "Your Gluten-Free Story";
+        
+        // Count answers to determine user profile
+        let concerns = 0;
+        let adventurous = 0;
+        let cautious = 0;
+        
+        quizData.forEach((question, index) => {
+            if (question.type === 'email' || userAnswers[index] === undefined) return;
+            
+            const answer = question.options[userAnswers[index]];
+            
+            // Analyze answers to determine user profile
+            if (question.question.includes("worry about gluten")) {
+                if (answer === "All the time") concerns += 2;
+                if (answer === "Sometimes") concerns += 1;
+            }
+            if (question.question.includes("had a reaction")) {
+                if (answer === "Yes, multiple times") concerns += 2;
+                if (answer === "Yes, but rarely") concerns += 1;
+            }
+            if (question.question.includes("how far would you travel")) {
+                if (answer === "Over 30 minutes") adventurous += 2;
+                if (answer === "20-30 minutes") adventurous += 1;
+            }
+            if (question.question.includes("discover new")) {
+                if (answer === "Trial and error") adventurous += 2;
+                if (answer === "Friend recommendations") adventurous += 1;
+            }
+            if (question.question.includes("confident asking staff")) {
+                if (answer === "Very confident") adventurous += 2;
+                if (answer === "Sometimes") adventurous += 1;
+            }
+            if (answer === "Safety" || answer === "Cross-contamination") cautious += 1;
+        });
+        
+        // Determine title based on profile scores
+        if (concerns > adventurous && concerns > cautious) {
+            title = "Your Safe Dining Journey";
+        } else if (adventurous > concerns && adventurous > cautious) {
+            title = "Your Food Adventure Story";
+        } else if (cautious > concerns && cautious > adventurous) {
+            title = "Your Mindful Dining Path";
+        } else if (concerns > 0 && adventurous > 0) {
+            title = "Your Smart Dining Journey";
+        }
+        
+        // Update the title in the DOM
+        const titleEl = document.querySelector('.recap-title');
+        titleEl.innerHTML = `<span class="gradient-text">${title}</span> 🌟`;
+        
+        // Create recap items for each question-answer pair
+        quizData.forEach((question, index) => {
+            // Skip email question and skipped questions
+            if (question.type === 'email' || userAnswers[index] === undefined) return;
+            
+            const recapItem = document.createElement('div');
+            recapItem.className = 'recap-item';
+            
+            const questionText = document.createElement('div');
+            questionText.className = 'recap-question';
+            questionText.textContent = question.question;
+            
+            const answerText = document.createElement('div');
+            answerText.className = 'recap-answer';
+            answerText.textContent = question.options[userAnswers[index]];
+            
+            recapItem.appendChild(questionText);
+            recapItem.appendChild(answerText);
+            recapAnswers.appendChild(recapItem);
+        });
+        
+        showSection(recapEl);
+        
+        // Animate items sequentially
+        const items = recapAnswers.querySelectorAll('.recap-item');
+        items.forEach((item, index) => {
+            setTimeout(() => {
+                item.classList.add('visible');
+            }, index * 200); // 200ms delay between each item
+        });
+        
+        // Show/hide scroll indicator based on content overflow and button visibility
+        const checkScroll = () => {
+            const content = document.querySelector('.recap-content');
+            const finishButton = document.getElementById('finish-recap');
+            const buttonRect = finishButton.getBoundingClientRect();
+            const hasOverflow = content.scrollHeight > content.clientHeight;
+            const isButtonVisible = buttonRect.top <= window.innerHeight;
+            
+            scrollIndicator.style.opacity = hasOverflow && !isButtonVisible ? "1" : "0";
+        };
+        
+        // Check initially and on window resize
+        setTimeout(checkScroll, 500); // Wait for animations
+        window.addEventListener('resize', checkScroll);
+        
+        // Hide indicator when user scrolls and update on scroll
+        document.querySelector('.recap-content').addEventListener('scroll', checkScroll);
+    }
+
     async function submitAnswer() {
         if (quizData[currentQuestion].type === 'email') {
             const emailInput = choicesEl.querySelector('.email-input');
@@ -248,7 +368,11 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // For non-email questions, check if we've reached the end
             if (currentQuestion === quizData.length - 1) {
-                showResults();
+                if (currentQuizVersion === 'Aha_Quiz') {
+                    showRecap(); // Show recap for version G
+                } else {
+                    showResults(); // Show results directly for other versions
+                }
             } else {
                 showStatement();
             }
@@ -275,6 +399,8 @@ document.addEventListener('DOMContentLoaded', () => {
         userAnswers = [];
         // Remove modern intro styling
         document.body.classList.remove('modern-intro');
+        // Set quiz version as data attribute
+        document.body.setAttribute('data-quiz-version', currentQuizVersion);
         showSection(quizEl);
         loadQuestion();
     }
@@ -287,6 +413,7 @@ document.addEventListener('DOMContentLoaded', () => {
         showSection(quizEl);
         loadQuestion();
     });
+    finishRecapBtn.addEventListener('click', showResults);
 
     // Download button
     const downloadMapBtn = document.getElementById('download-map');

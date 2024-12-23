@@ -35,6 +35,18 @@ mixpanel.init('077ff37ea1f556ace8f37a5754faca1c');</script>
             position: relative;
             // ... existing styles ...
         }
+        
+        .map-container {
+            display: none;
+        }
+        
+        body[data-quiz-version="Aha_Quiz"] .map-container {
+            display: block;
+        }
+
+        .section {
+            // ... existing code ...
+        }
     </style>
 </head>
 <body>
@@ -75,6 +87,14 @@ mixpanel.init('077ff37ea1f556ace8f37a5754faca1c');</script>
             </div>
         </div>
         
+        <div id="recap" class="section">
+            <div class="recap-content">
+                <h2 class="recap-title"><span class="gradient-text">Your Gluten-Free Journey</span> 🌟</h2>
+                <div class="recap-answers"></div>
+                <button id="finish-recap" class="cta-button">Show My Map! 🗺️</button>
+            </div>
+        </div>
+        
         <div id="results" class="section">
             <div class="results-content">
                 <div class="loading-state" style="display: none;">
@@ -87,6 +107,7 @@ mixpanel.init('077ff37ea1f556ace8f37a5754faca1c');</script>
                     </div>
                     <h2>Your Map is Ready!</h2>
                     <p>Discover amazing gluten-free spots near you! ⭐️</p>
+                    <div id="map-container" class="map-container" style="width: 100%; height: 300px; margin: 20px 0; border-radius: 12px; overflow: hidden;"></div>
                     <div class="action-buttons">
                         <button id="download-map" class="cta-button">Get Atly Now 🚀</button>
                     </div>
@@ -100,11 +121,14 @@ mixpanel.init('077ff37ea1f556ace8f37a5754faca1c');</script>
     <script src="quiz_version_d.js"></script>
     <script src="quiz_version_e.js"></script>
     <script src="quiz_version_f.js"></script>
+    <script src="quiz_version_g.js"></script>
     <script src="quiz-manager.js"></script>
     <script src="api.js"></script>
     <script src="tracking.js"></script>
     <script src="intro_screens.js"></script>
     <script src="stripe.js"></script>
     <script src="script.js"></script>
+    <script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js"></script>
+    <script src="map-manager.js"></script>
 </body>
 </html> 

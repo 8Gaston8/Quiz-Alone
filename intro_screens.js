@@ -119,7 +119,7 @@ function updateIntroScreen() {
     let modernCssLink = document.getElementById(modernCssId);
     
     // Select random quiz version using the same logic as quiz.js
-    const versions = ['A', 'B', 'C', 'D', 'F'];
+    const versions = ['A', 'B', 'C', 'D', 'F', 'G', 'G'];
     const randomIndex = Math.floor(Math.random() * versions.length);
     const selectedVersion = versions[randomIndex];
     
@@ -140,6 +140,9 @@ function updateIntroScreen() {
             break;
         case 'F':
             selectedQuizVersion = 'Joshua_e';
+            break;
+        case 'G':
+            selectedQuizVersion = 'Aha_Quiz';
             break;
     }
     
@@ -233,6 +236,9 @@ function updateIntroScreen() {
             break;
         case 'Focused_Quiz':
             window.quizData = quizDataF;
+            break;
+        case 'Aha_Quiz':
+            window.quizData = quizDataG;
             break;
     }
 }
