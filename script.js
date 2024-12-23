@@ -5,16 +5,16 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Fun fact titles with different colors
     const funFactStyles = [
-        { title: "Mind-Blowing Fact! 🤯", gradient: "45deg, #F01E6F, #EF6F5E" },
-        { title: "You Won't Believe This! 😱", gradient: "45deg, #EF6F5E, #F01E6F" },
-        { title: "What You Should Know 👇", gradient: "-45deg, #F01E6F, #EF6F5E" },
-        { title: "Check This Out! ✨", gradient: "45deg, #EF6F5E, #F01E6F" },
-        { title: "Fun Fact Alert! 🎯", gradient: "-45deg, #F01E6F, #EF6F5E" },
-        { title: "Did You Know? 🤔", gradient: "45deg, #EF6F5E, #F01E6F" },
-        { title: "Wow Factor! 🌟", gradient: "-45deg, #F01E6F, #EF6F5E" },
-        { title: "Here's the Scoop! 🍨", gradient: "45deg, #EF6F5E, #F01E6F" },
-        { title: "Quick Fact! ⚡️", gradient: "-45deg, #F01E6F, #EF6F5E" },
-        { title: "Last But Not Least! 🎉", gradient: "45deg, #EF6F5E, #F01E6F" }
+        { title: "<span class='gradient-text'>Mind-Blowing Fact!</span> 🤯", gradient: "45deg, #F01E6F, #EF6F5E" },
+        { title: "<span class='gradient-text'>You Won't Believe This!</span> 😱", gradient: "45deg, #EF6F5E, #F01E6F" },
+        { title: "<span class='gradient-text'>What You Should Know</span> 👇", gradient: "-45deg, #F01E6F, #EF6F5E" },
+        { title: "<span class='gradient-text'>Check This Out!</span> ✨", gradient: "45deg, #EF6F5E, #F01E6F" },
+        { title: "<span class='gradient-text'>Fun Fact Alert!</span> 🎯", gradient: "-45deg, #F01E6F, #EF6F5E" },
+        { title: "<span class='gradient-text'>Did You Know?</span> 🤔", gradient: "45deg, #EF6F5E, #F01E6F" },
+        { title: "<span class='gradient-text'>Wow Factor!</span> 🌟", gradient: "-45deg, #F01E6F, #EF6F5E" },
+        { title: "<span class='gradient-text'>Here's the Scoop!</span> 🍨", gradient: "45deg, #EF6F5E, #F01E6F" },
+        { title: "<span class='gradient-text'>Quick Fact!</span> ⚡️", gradient: "-45deg, #F01E6F, #EF6F5E" },
+        { title: "<span class='gradient-text'>Last But Not Least!</span> 🎉", gradient: "45deg, #EF6F5E, #F01E6F" }
     ];
 
     // DOM Elements
@@ -190,10 +190,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function showStatement() {
         const style = funFactStyles[currentQuestion];
-        statementTitleEl.textContent = style.title;
-        statementTitleEl.style.background = `linear-gradient(${style.gradient})`;
-        statementTitleEl.style.webkitBackgroundClip = 'text';
-        statementTitleEl.style.webkitTextFillColor = 'transparent';
+        statementTitleEl.innerHTML = style.title;
         
         statementTextEl.textContent = quizData[currentQuestion].funFact;
         showSection(statementEl);

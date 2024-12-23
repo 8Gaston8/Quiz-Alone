@@ -152,10 +152,14 @@ body {
 .statement-title {
     font-size: 28px;
     margin-bottom: 24px;
+}
+
+.gradient-text {
     background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: float 2s ease-in-out infinite;
+    display: inline-block;
 }
 
 .emoji-animation {
