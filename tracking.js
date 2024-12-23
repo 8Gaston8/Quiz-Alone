@@ -17,11 +17,15 @@ function getQuizDescription(quizVersion) {
 }
 
 function trackQuizScreenView(screenName, introVersion = null) {
+    const urlParams = new URLSearchParams(window.location.search);
+    const isTrialFlow = urlParams.get('mode') === 'trial';
+    
     mixpanel.track('indirectQuiz_screen_viewed', {
         screen_name: screenName,
         quiz_version: currentQuizVersion,
         quiz_description: getQuizDescription(currentQuizVersion),
-        intro_version: introVersion
+        intro_version: introVersion,
+        is_trial_flow: isTrialFlow
     });
 }
 
@@ -32,7 +36,8 @@ function trackQuizCheckout(variant, checkoutPrice) {
         quiz_description: getQuizDescription(currentQuizVersion),
         checkout_price: checkoutPrice,
         trial_status: screen.trial_status,
-        checkout_medium: screen.checkout_medium
+        checkout_medium: screen.checkout_medium,
+        is_trial_flow: variant === 'TRIAL_CHECKOUT'
     });
 }
 

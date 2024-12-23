@@ -35,7 +35,7 @@ const CHECKOUT_SCREENS = {
     },
     TRIAL_CHECKOUT: {
         url: 'https://pay.atly.com/b/fZebMB4i93C2dMs4gg',
-        price: '99.99',
+        price: '0.00',
         checkout_medium: 'web',
         trial_status: 'trial',
         active: false
