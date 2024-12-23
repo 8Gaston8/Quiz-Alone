@@ -162,8 +162,8 @@ function initializeMap() {
     // Initialize MapKit JS
     mapkit.init({
         authorizationCallback: function(done) {
-            // You would typically make an API call to your server to get a token
-            const mapKitToken = 'YOUR_MAPKIT_TOKEN';
+            // Using the provided MapKit token
+            const mapKitToken = 'eyJraWQiOiI4WEJRSzJLVTI5IiwidHlwIjoiSldUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiI5N0FWNzZEVUQ0IiwiaWF0IjoxNzM0OTY5OTk1LCJvcmlnaW4iOiJhdGx5LmNvbSJ9.EtDAN9JSocMUDWVmAXdXD7dlLgxL95x2i8MRe4oXA160Z7xHhbvwQQZRYCICzCml1SMYAMAT7XI5mQ02Q_Erjw';
             done(mapKitToken);
         }
     });
