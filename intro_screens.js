@@ -150,6 +150,9 @@ function updateIntroScreen() {
     window.currentQuizVersion = selectedQuizVersion;
     window.selectedQuizLetter = selectedVersion; // Store the letter version for quiz.js to use
     
+    // Set the quiz version attribute on the body element
+    document.body.setAttribute('data-quiz-version', selectedQuizVersion);
+    
     if (selectedIntro.isModern) {
         if (!modernCssLink) {
             modernCssLink = document.createElement('link');
