@@ -202,7 +202,7 @@ function initializeMap() {
                     window.location.hostname.includes('192.168.');
                 const mapKitToken = isLocalhost
                     ? 'eyJraWQiOiIyODZNWFQ1NzNLIiwidHlwIjoiSldUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiI5N0FWNzZEVUQ0IiwiaWF0IjoxNzM1MDMzMDgxLCJleHAiOjE3MzU3MTgzOTl9.KWRgrrH0Y2pyaa6Jeqngq4h9tKi26vmzUnEmVQkkrwHBWVEBJMM8a0LK6o7N6ZOs-DrEo3monBtQMH0re8Sj5A'
-                    : 'eyJraWQiOiI4WEJRSzJLVTI5IiwidHlwIjoiSldUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiI5N0FWNzZEVUQ0IiwiaWF0IjoxNzM0OTY5OTk1LCJvcmlnaW4iOiJhdGx5LmNvbSJ9.EtDAN9JSocMUDWVmAXdXD7dlLgxL95x2i8MRe4oXA160Z7xHhbvwQQZRYCICzCml1SMYAMAT7XI5mQ02Q_Erjw';
+                    : 'eyJraWQiOiJHUEtMQzdVV0NRIiwidHlwIjoiSldUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiI5N0FWNzZEVUQ0IiwiaWF0IjoxNzM1MDU0MDEzLCJvcmlnaW4iOiJnbHV0ZW4tZnJlZS1xdWl6LmF0bHkuY29tIn0.bfwG1VUJ-JzDBhP_WGPyUBreFHkjKKflcKn02Z7Oizb1FMkJTCNnKyrn740H_2rYes-iFiZeXPw5Dn1H2q3F_w';
                 done(mapKitToken);
             },
             language: "en"
