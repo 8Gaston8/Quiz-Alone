@@ -5,6 +5,20 @@ let currentQuizVersion = '';
 
 // Checkout screen configuration
 const CHECKOUT_SCREENS = {
+    STRIPE_39: {
+        url: 'https://pay.atly.com/b/eVabMB01Tc8ydMsfZ8',
+        price: '39.99',
+        checkout_medium: 'web',
+        trial_status: 'no-trial',
+        active: true
+    },
+    STRIPE_49: {
+        url: 'https://pay.atly.com/b/cN22c1g0R3C2fUA009',
+        price: '49.99',
+        checkout_medium: 'web',
+        trial_status: 'no-trial',
+        active: true
+    },
     STRIPE_59: {
         url: 'https://pay.atly.com/b/8wMeYN15Xb4ubEkfZ2',
         price: '59.99',
