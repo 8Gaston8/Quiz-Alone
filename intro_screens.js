@@ -1,39 +1,9 @@
 const introScreens = [
     {
-        emoji: "Hey there! 🥳",
-        title: "Find amazing gluten-free spots",
-        description: "Let's make dining out fun and stress-free! ✨",
-        buttonText: "I'm Ready"
-    },
-    {
-        emoji: "Welcome! 🌟",
-        title: "Your Gluten-Free Adventure Starts Here",
-        description: "Discover a world of safe and delicious dining! ✨",
-        buttonText: "Start Exploring"
-    },
-    {
-        emoji: "Hi Friend! 👋",
-        title: "Find 100% safe gluten-free restaurants",
-        description: "Join thousands finding their perfect spots! ✨",
-        buttonText: "Let's Begin"
-    },
-    {
-        emoji: "Greetings! 🌟",
-        title: "Your Gluten-Free Guide Awaits",
-        description: "Find trusted restaurants that understand you! ✨",
-        buttonText: "Show Me Where"
-    },
-    {
-        emoji: "Hello! ⭐️",
-        title: "Discover Your New Favorite Places",
-        description: "Safe and delicious dining, curated for you! ✨",
-        buttonText: "Let's Go"
-    },
-    {
         emoji: "",
-        title: "Quickly find safe gluten-free places",
+        title: "Find 100% safe gluten-free restaurants",
         description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
-        buttonText: "CONTINUE",
+        buttonText: "GET STARTED",
         isModern: true,
         badges: [
             "GLUTENED-FREE GUARANTEE",
@@ -45,7 +15,7 @@ const introScreens = [
         emoji: "",
         title: "Find 100% safe gluten-free restaurants",
         description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
-        buttonText: "CONTINUE",
+        buttonText: "TAKE THE QUIZ",
         isModern: true,
         badges: [
             "GLUTENED-FREE GUARANTEE",
@@ -55,9 +25,9 @@ const introScreens = [
     },
     {
         emoji: "",
-        title: "Your gluten-free dining map awaits",
+        title: "Find 100% safe gluten-free restaurants",
         description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
-        buttonText: "CONTINUE",
+        buttonText: "SUBSCRIBE",
         isModern: true,
         badges: [
             "GLUTENED-FREE GUARANTEE",
@@ -67,9 +37,9 @@ const introScreens = [
     },
     {
         emoji: "",
-        title: "Unlock your gluten-free food map",
+        title: "Find 100% safe gluten-free restaurants",
         description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
-        buttonText: "CONTINUE",
+        buttonText: "FIND MY SPOTS",
         isModern: true,
         badges: [
             "GLUTENED-FREE GUARANTEE",
@@ -79,7 +49,79 @@ const introScreens = [
     },
     {
         emoji: "",
-        title: "Get your personalized gluten-free map",
+        title: "Find 100% safe gluten-free restaurants",
+        description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
+        buttonText: "CREATE MY MAP",
+        isModern: true,
+        badges: [
+            "GLUTENED-FREE GUARANTEE",
+            "#1 DIETITIANS CHOICE",
+            "MOST RELIABLE CELIAC MAP"
+        ]
+    },
+    {
+        emoji: "",
+        title: "Find 100% safe gluten-free restaurants",
+        description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
+        buttonText: "UNLOCK MY MAP",
+        isModern: true,
+        badges: [
+            "GLUTENED-FREE GUARANTEE",
+            "#1 DIETITIANS CHOICE",
+            "MOST RELIABLE CELIAC MAP"
+        ]
+    },
+    {
+        emoji: "",
+        title: "Find 100% safe gluten-free restaurants",
+        description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
+        buttonText: "DISCOVER SPOTS",
+        isModern: true,
+        badges: [
+            "GLUTENED-FREE GUARANTEE",
+            "#1 DIETITIANS CHOICE",
+            "MOST RELIABLE CELIAC MAP"
+        ]
+    },
+    {
+        emoji: "",
+        title: "Find 100% safe gluten-free restaurants",
+        description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
+        buttonText: "START NOW",
+        isModern: true,
+        badges: [
+            "GLUTENED-FREE GUARANTEE",
+            "#1 DIETITIANS CHOICE",
+            "MOST RELIABLE CELIAC MAP"
+        ]
+    },
+    {
+        emoji: "",
+        title: "Find 100% safe gluten-free restaurants",
+        description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
+        buttonText: "BUILD MY MAP",
+        isModern: true,
+        badges: [
+            "GLUTENED-FREE GUARANTEE",
+            "#1 DIETITIANS CHOICE",
+            "MOST RELIABLE CELIAC MAP"
+        ]
+    },
+    {
+        emoji: "",
+        title: "Find 100% safe gluten-free restaurants",
+        description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
+        buttonText: "JOIN NOW",
+        isModern: true,
+        badges: [
+            "GLUTENED-FREE GUARANTEE",
+            "#1 DIETITIANS CHOICE",
+            "MOST RELIABLE CELIAC MAP"
+        ]
+    },
+    {
+        emoji: "",
+        title: "Find 100% safe gluten-free restaurants",
         description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
         buttonText: "CONTINUE",
         isModern: true,
@@ -92,23 +134,15 @@ const introScreens = [
 ];
 
 function selectRandomIntroScreen() {
-    // 50% chance to show modern design
-    const useModernDesign = Math.random() < 0.5;
+    // Randomly select one of the modern intro screens
+    const randomIndex = Math.floor(Math.random() * introScreens.length);
+    const modernScreen = {...introScreens[randomIndex]};
     
-    if (useModernDesign) {
-        // Return the modern version with "Find 100% safe gluten-free restaurants" (index 6)
-        const modernScreen = {...introScreens[6]};
-        // Generate random number between 200 and 350
-        const randomNumber = Math.floor(Math.random() * (350 - 200 + 1) + 200);
-        modernScreen.description = `${randomNumber}+ people joined today 👇`;
-        modernScreen.intro_version = "modern_100_safe"; // Add intro version for tracking
-        return modernScreen;
-    } else {
-        // Return the classic version with "Find 100% safe gluten-free restaurants" (index 2)
-        const classicScreen = {...introScreens[2]};
-        classicScreen.intro_version = "classic_100_safe"; // Add intro version for tracking
-        return classicScreen;
-    }
+    // Generate random number between 200 and 350
+    const randomNumber = Math.floor(Math.random() * (350 - 200 + 1) + 200);
+    modernScreen.description = `${randomNumber}+ people joined today 👇`;
+    modernScreen.intro_version = `modern_${modernScreen.buttonText.toLowerCase().replace(/\s+/g, '_')}`; // Use button text for tracking
+    return modernScreen;
 }
 
 function updateIntroScreen() {
