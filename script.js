@@ -145,8 +145,8 @@ document.addEventListener('DOMContentLoaded', () => {
             skipBtn.textContent = 'Skip';
             skipBtn.addEventListener('click', () => {
                 if (currentQuestion === quizData.length - 1) {
-                    if (currentQuizVersion === 'Aha_Quiz') {
-                        showRecap(); // Show recap for version G even when last question is skipped
+                    if (currentQuizVersion === 'Aha_Quiz' || currentQuizVersion === 'Value_Quiz') {
+                        showRecap(); // Show recap for version G and H even when last question is skipped
                     } else {
                         showResults(); // Show results directly for other versions
                     }
@@ -368,8 +368,8 @@ document.addEventListener('DOMContentLoaded', () => {
             
             // For non-email questions, check if we've reached the end
             if (currentQuestion === quizData.length - 1) {
-                if (currentQuizVersion === 'Aha_Quiz') {
-                    showRecap(); // Show recap for version G
+                if (currentQuizVersion === 'Aha_Quiz' || currentQuizVersion === 'Value_Quiz') {
+                    showRecap(); // Show recap for version G and H
                 } else {
                     showResults(); // Show results directly for other versions
                 }
@@ -416,23 +416,31 @@ document.addEventListener('DOMContentLoaded', () => {
     finishRecapBtn.addEventListener('click', showResults);
 
     // Download button
-    const downloadMapBtn = document.getElementById('download-map');
-    if (downloadMapBtn) {
-        downloadMapBtn.addEventListener('click', () => {
-            if (window.quizSessionUrl) {
-                const checkoutInfo = selectCheckoutScreen();
-                let finalUrl = checkoutInfo.url + window.quizSessionUrl.substring(window.quizSessionUrl.indexOf('?'));
-                
-                // Add user ID as client_reference_id if available
-                if (window.quizUserId) {
-                    finalUrl += `&client_reference_id=${window.quizUserId}`;
-                }
-                
-                trackQuizCheckout(checkoutInfo.variant, checkoutInfo.price);
-                window.location.href = finalUrl;
-            } else {
-                console.error('No session URL available');
+    const downloadMapBtn = document.querySelector('#download-map');
+    const midCtaBtn = document.querySelector('.mid-cta-button');
+
+    const handleCheckout = () => {
+        if (window.quizSessionUrl) {
+            const checkoutInfo = selectCheckoutScreen();
+            let finalUrl = checkoutInfo.url + window.quizSessionUrl.substring(window.quizSessionUrl.indexOf('?'));
+            
+            // Add user ID as client_reference_id if available
+            if (window.quizUserId) {
+                finalUrl += `&client_reference_id=${window.quizUserId}`;
             }
-        });
+            
+            trackQuizCheckout(checkoutInfo.variant, checkoutInfo.price);
+            window.location.href = finalUrl;
+        } else {
+            console.error('No session URL available');
+        }
+    };
+
+    if (downloadMapBtn) {
+        downloadMapBtn.addEventListener('click', handleCheckout);
+    }
+
+    if (midCtaBtn) {
+        midCtaBtn.addEventListener('click', handleCheckout);
     }
 }); 

@@ -63,7 +63,7 @@ function selectRandomQuiz() {
         selectedVersion = window.selectedQuizLetter;
         console.log('Using version selected by intro screen:', selectedVersion);
     } else {
-        const versions = ['A', 'B', 'C', 'D', 'F', 'G', 'G'];
+        const versions = ['A', 'B', 'C', 'D', 'F', 'G', 'H', 'H'];
         const randomIndex = Math.floor(Math.random() * versions.length);
         selectedVersion = versions[randomIndex];
         console.log('Selected random version:', selectedVersion);
@@ -97,6 +97,10 @@ function selectRandomQuiz() {
         case 'G':
             quizData = quizDataG;
             currentQuizVersion = 'Aha_Quiz';
+            break;
+        case 'H':
+            quizData = quizDataH;
+            currentQuizVersion = 'Value_Quiz';
             break;
     }
     

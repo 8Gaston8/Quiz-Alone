@@ -41,12 +41,211 @@ mixpanel.init('077ff37ea1f556ace8f37a5754faca1c');</script>
             display: none;
         }
         
-        body[data-quiz-version="Aha_Quiz"] .map-container {
+        body[data-quiz-version="Aha_Quiz"] .map-container,
+        body[data-quiz-version="Value_Quiz"] .map-container {
             display: block;
         }
 
+        .value-propositions {
+            display: none;
+            padding: 0;
+            max-width: 100%;
+            margin: 0 auto;
+            overflow: hidden;
+        }
+
+        body[data-quiz-version="Value_Quiz"] .value-propositions {
+            display: block;
+        }
+
+        .carousel-container {
+            position: relative;
+            margin: 40px -20px;
+            overflow: hidden;
+        }
+
+        .features-carousel-1, .features-carousel-2 {
+            display: flex;
+            gap: 20px;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+            -webkit-overflow-scrolling: touch;
+            margin: 0;
+            padding: 20px;
+            background: linear-gradient(45deg, rgba(45, 166, 157, 0.15), rgba(45, 166, 157, 0.1));
+            position: relative;
+        }
+
+        .features-carousel-1 .feature-card {
+            animation: scroll-left 25s linear infinite;
+        }
+
+        .features-carousel-2 .feature-card {
+            animation: scroll-right 25s linear infinite;
+        }
+
+        .feature-card {
+            flex: 0 0 250px;
+            background: #fff;
+            border-radius: 12px;
+            padding: 15px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        .feature-card img {
+            width: 100%;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 8px;
+            filter: drop-shadow(0 0 8px rgba(45, 166, 157, 0.5));
+            transition: filter 0.3s ease;
+        }
+
+        .feature-card:hover img {
+            filter: drop-shadow(0 0 12px rgba(45, 166, 157, 0.7));
+        }
+
+        @keyframes scroll-left {
+            0% {
+                transform: translateX(0);
+            }
+            100% {
+                transform: translateX(calc(-250px * 4 - 80px));
+            }
+        }
+
+        @keyframes scroll-right {
+            0% {
+                transform: translateX(calc(-250px * 4 - 80px));
+            }
+            100% {
+                transform: translateX(0);
+            }
+        }
+
+        /* Create a gradient mask for smooth fade in/out at edges */
+        .features-carousel-1::before,
+        .features-carousel-1::after,
+        .features-carousel-2::before,
+        .features-carousel-2::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 50px;
+            z-index: 2;
+            pointer-events: none;
+        }
+
+        .features-carousel-1::before,
+        .features-carousel-2::before {
+            left: 0;
+            background: linear-gradient(to right, 
+                rgba(255,255,255,0.8) 0%,
+                rgba(255,255,255,0) 100%
+            );
+        }
+
+        .features-carousel-1::after,
+        .features-carousel-2::after {
+            right: 0;
+            background: linear-gradient(to left, 
+                rgba(255,255,255,0.8) 0%,
+                rgba(255,255,255,0) 100%
+            );
+        }
+
+        .testimonials-carousel {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            overflow: visible;
+            padding: 20px;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .testimonials-carousel .testimonial-card {
+            flex: none;
+            background: linear-gradient(45deg, rgba(240, 30, 111, 0.05), rgba(239, 111, 94, 0.05));
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+            transition: transform 0.3s ease;
+            border-left: 4px solid;
+            border-image: linear-gradient(to bottom, #F01E6F, #EF6F5E) 1;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        .testimonials-carousel .testimonial-card:hover {
+            transform: translateX(10px);
+        }
+
+        .testimonials-carousel .testimonial-card:nth-child(2) {
+            transform: none;
+            margin-left: auto;
+        }
+
+        .testimonials-carousel .testimonial-card:nth-child(3) {
+            margin-left: auto;
+        }
+
+        .testimonial-card blockquote {
+            font-style: italic;
+            margin: 0 0 15px 0;
+            color: #333;
+            font-size: 16px;
+            line-height: 1.6;
+        }
+
+        .testimonial-card .author {
+            font-weight: 600;
+            color: #F01E6F;
+            font-size: 16px;
+            margin-bottom: 4px;
+        }
+
+        .testimonial-card .status {
+            color: #666;
+            font-size: 14px;
+        }
+
+        .value-propositions h2 {
+            margin: 30px 0 15px;
+            font-size: 24px;
+        }
+
         .section {
-            // ... existing code ...
+            /* existing section styles */
+        }
+
+        .scroll-indicator {
+            display: none;
+        }
+
+        .mid-cta-button {
+            display: block;
+            margin: 40px auto;
+            padding: 15px 30px;
+            background: linear-gradient(45deg, #F01E6F, #EF6F5E);
+            color: white;
+            border: none;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+            box-shadow: 0 4px 15px rgba(240, 30, 111, 0.2);
+            text-decoration: none;
+        }
+
+        .mid-cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(240, 30, 111, 0.3);
         }
     </style>
 </head>
@@ -109,6 +308,89 @@ mixpanel.init('077ff37ea1f556ace8f37a5754faca1c');</script>
                     <h2>Your Map is Ready!</h2>
                     <p>Discover amazing gluten-free spots near you! ⭐️</p>
                     <div id="map-container" class="map-container" style="width: 100%; height: 300px; margin: 20px 0; border-radius: 12px; overflow: hidden;"></div>
+                    <div class="scroll-indicator">👇</div>
+                    <div class="value-propositions">
+                        <h2>Scroll down to get it 👇</h2>
+                        <div class="carousel-container">
+                            <div class="features-carousel-1">
+                                <div class="feature-card">
+                                    <img src="assets/Safety levels.png" alt="Filter by safety levels">
+                                    <h3>Filter by safety levels</h3>
+                                    <p>Restaurants, bakeries and cafe's are organized by their level of celiac awareness and gluten-free options.</p>
+                                </div>
+                                <div class="feature-card">
+                                    <img src="assets/Reduce research.png" alt="Reduce your gluten-free research">
+                                    <h3>Reduce your gluten-free research</h3>
+                                    <p>Vetted information about every place's celiac accommodations and methods to avoid cross-contamination.</p>
+                                </div>
+                                <div class="feature-card">
+                                    <img src="assets/Location-based search.png" alt="Location-based search">
+                                    <h3>Location-based search</h3>
+                                    <p>Find gluten-free spots by location, so you can quickly see what options are around you.</p>
+                                </div>
+                                <div class="feature-card">
+                                    <img src="assets/Built with dieticians.png" alt="Built with dieticians">
+                                    <h3>Built with dieticians</h3>
+                                    <p>We equip you with important information about each place to reduce the possibilities of getting sick.</p>
+                                </div>
+                                <!-- Duplicate for seamless loop -->
+                                <div class="feature-card">
+                                    <img src="assets/Safety levels.png" alt="Filter by safety levels">
+                                    <h3>Filter by safety levels</h3>
+                                    <p>Restaurants, bakeries and cafe's are organized by their level of celiac awareness and gluten-free options.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button class="mid-cta-button">Find Safe Places 🌟</button>
+                        
+                        <div class="carousel-container">
+                            <div class="features-carousel-2">
+                                <div class="feature-card">
+                                    <img src="assets/320K+ reviews.png" alt="320K+ reviews">
+                                    <h3>320K+ reviews by the community</h3>
+                                    <p>See what people like you say about where they ate. Reviews you can trust from the celiac community.</p>
+                                </div>
+                                <div class="feature-card">
+                                    <img src="assets/Save for later.png" alt="Save for later">
+                                    <h3>Save for later</h3>
+                                    <p>Bookmark and save specific restaurants you want to try. Perfect for planning your trips!</p>
+                                </div>
+                                <div class="feature-card">
+                                    <img src="assets/Food Filters.png" alt="Advanced food filters">
+                                    <h3>Advanced food filters</h3>
+                                    <p>Search by cuisine, dining preferences, food type, and other dietary restrictions.</p>
+                                </div>
+                                <!-- Duplicate for seamless loop -->
+                                <div class="feature-card">
+                                    <img src="assets/320K+ reviews.png" alt="320K+ reviews">
+                                    <h3>320K+ reviews by the community</h3>
+                                    <p>See what people like you say about where they ate. Reviews you can trust from the celiac community.</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <h2>What our community has to say</h2>
+                        <div class="carousel-container">
+                            <div class="testimonials-carousel">
+                                <div class="testimonial-card">
+                                    <blockquote>I have been using it now for 3 months and it saves me so much research. Reduces the need to call and double check every time.</blockquote>
+                                    <div class="author">Kenneth Meisel</div>
+                                    <div class="status">Gluten Intolerant</div>
+                                </div>
+                                <div class="testimonial-card">
+                                    <blockquote>Finding places to eat used to be such a drag. Atly made it so much easier. Love it!</blockquote>
+                                    <div class="author">Jane Grinberg</div>
+                                    <div class="status">Highly symptomatic celiac</div>
+                                </div>
+                                <div class="testimonial-card">
+                                    <blockquote>I've discovered great options in my city I was not aware of. Highly recommend it if you are Celiac.</blockquote>
+                                    <div class="author">Ann Stanley</div>
+                                    <div class="status">Asymptomatic Celiac</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="action-buttons">
                         <button id="download-map" class="cta-button">Get Atly Now 🚀</button>
                     </div>
@@ -123,6 +405,7 @@ mixpanel.init('077ff37ea1f556ace8f37a5754faca1c');</script>
     <script src="quiz_version_e.js"></script>
     <script src="quiz_version_f.js"></script>
     <script src="quiz_version_g.js"></script>
+    <script src="quiz_version_h.js"></script>
     <script src="quiz-manager.js"></script>
     <script src="api.js"></script>
     <script src="tracking.js"></script>
@@ -130,5 +413,24 @@ mixpanel.init('077ff37ea1f556ace8f37a5754faca1c');</script>
     <script src="stripe.js"></script>
     <script src="script.js"></script>
     <script src="map-manager.js"></script>
+    <script>
+        // Handle scroll indicator visibility
+        const scrollIndicator = document.querySelector('.scroll-indicator');
+        const downloadButton = document.querySelector('#download-map');
+
+        function checkScrollIndicator() {
+            if (downloadButton) {
+                const buttonRect = downloadButton.getBoundingClientRect();
+                if (buttonRect.top <= window.innerHeight) {
+                    scrollIndicator.classList.add('hidden');
+                } else {
+                    scrollIndicator.classList.remove('hidden');
+                }
+            }
+        }
+
+        window.addEventListener('scroll', checkScrollIndicator);
+        checkScrollIndicator(); // Initial check
+    </script>
 </body>
 </html> 
