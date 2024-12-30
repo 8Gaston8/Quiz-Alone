@@ -3,67 +3,7 @@ const introScreens = [
         emoji: "",
         title: "Find 100% safe gluten-free restaurants",
         description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
-        buttonText: "GET STARTED",
-        isModern: true,
-        badges: [
-            "GLUTENED-FREE GUARANTEE",
-            "#1 DIETITIANS CHOICE",
-            "MOST RELIABLE CELIAC MAP"
-        ]
-    },
-    {
-        emoji: "",
-        title: "Find 100% safe gluten-free restaurants",
-        description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
-        buttonText: "TAKE THE QUIZ",
-        isModern: true,
-        badges: [
-            "GLUTENED-FREE GUARANTEE",
-            "#1 DIETITIANS CHOICE",
-            "MOST RELIABLE CELIAC MAP"
-        ]
-    },
-    {
-        emoji: "",
-        title: "Find 100% safe gluten-free restaurants",
-        description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
-        buttonText: "SUBSCRIBE",
-        isModern: true,
-        badges: [
-            "GLUTENED-FREE GUARANTEE",
-            "#1 DIETITIANS CHOICE",
-            "MOST RELIABLE CELIAC MAP"
-        ]
-    },
-    {
-        emoji: "",
-        title: "Find 100% safe gluten-free restaurants",
-        description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
-        buttonText: "FIND MY SPOTS",
-        isModern: true,
-        badges: [
-            "GLUTENED-FREE GUARANTEE",
-            "#1 DIETITIANS CHOICE",
-            "MOST RELIABLE CELIAC MAP"
-        ]
-    },
-    {
-        emoji: "",
-        title: "Find 100% safe gluten-free restaurants",
-        description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
         buttonText: "CREATE MY MAP",
-        isModern: true,
-        badges: [
-            "GLUTENED-FREE GUARANTEE",
-            "#1 DIETITIANS CHOICE",
-            "MOST RELIABLE CELIAC MAP"
-        ]
-    },
-    {
-        emoji: "",
-        title: "Find 100% safe gluten-free restaurants",
-        description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
-        buttonText: "UNLOCK MY MAP",
         isModern: true,
         badges: [
             "GLUTENED-FREE GUARANTEE",
@@ -87,43 +27,7 @@ const introScreens = [
         emoji: "",
         title: "Find 100% safe gluten-free restaurants",
         description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
-        buttonText: "START NOW",
-        isModern: true,
-        badges: [
-            "GLUTENED-FREE GUARANTEE",
-            "#1 DIETITIANS CHOICE",
-            "MOST RELIABLE CELIAC MAP"
-        ]
-    },
-    {
-        emoji: "",
-        title: "Find 100% safe gluten-free restaurants",
-        description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
-        buttonText: "BUILD MY MAP",
-        isModern: true,
-        badges: [
-            "GLUTENED-FREE GUARANTEE",
-            "#1 DIETITIANS CHOICE",
-            "MOST RELIABLE CELIAC MAP"
-        ]
-    },
-    {
-        emoji: "",
-        title: "Find 100% safe gluten-free restaurants",
-        description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
         buttonText: "JOIN NOW",
-        isModern: true,
-        badges: [
-            "GLUTENED-FREE GUARANTEE",
-            "#1 DIETITIANS CHOICE",
-            "MOST RELIABLE CELIAC MAP"
-        ]
-    },
-    {
-        emoji: "",
-        title: "Find 100% safe gluten-free restaurants",
-        description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
-        buttonText: "CONTINUE",
         isModern: true,
         badges: [
             "GLUTENED-FREE GUARANTEE",
