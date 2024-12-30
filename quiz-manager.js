@@ -63,7 +63,7 @@ function selectRandomQuiz() {
         selectedVersion = window.selectedQuizLetter;
         console.log('Using version selected by intro screen:', selectedVersion);
     } else {
-        const versions = ['A', 'B', 'C', 'D', 'F', 'G', 'H', 'H'];
+        const versions = ['A', 'C', 'D', 'G', 'H'];  // Only keeping classic, experience, quick, aha, and value quizzes
         const randomIndex = Math.floor(Math.random() * versions.length);
         selectedVersion = versions[randomIndex];
         console.log('Selected random version:', selectedVersion);
@@ -74,10 +74,6 @@ function selectRandomQuiz() {
             quizData = quizDataA;
             currentQuizVersion = 'Classic_Quiz';
             break;
-        case 'B':
-            quizData = quizDataB;
-            currentQuizVersion = 'Lifestyle_Quiz';
-            break;
         case 'C':
             quizData = quizDataC;
             currentQuizVersion = 'Experience_Quiz';
@@ -85,14 +81,6 @@ function selectRandomQuiz() {
         case 'D':
             quizData = quizDataD;
             currentQuizVersion = 'Quick_Quiz';
-            break;
-        case 'E':
-            quizData = quizDataE;
-            currentQuizVersion = 'Extended_Quiz';
-            break;
-        case 'F':
-            quizData = quizDataF;
-            currentQuizVersion = 'Joshua_e';
             break;
         case 'G':
             quizData = quizDataG;

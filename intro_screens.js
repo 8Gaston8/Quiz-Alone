@@ -57,7 +57,7 @@ function updateIntroScreen() {
     let modernCssLink = document.getElementById(modernCssId);
     
     // Select random quiz version using the same logic as quiz.js
-    const versions = ['A', 'B', 'C', 'D', 'F', 'G', 'G'];
+    const versions = ['A', 'C', 'D', 'G', 'H'];  // Only keeping classic, experience, quick, aha, and value quizzes
     const randomIndex = Math.floor(Math.random() * versions.length);
     const selectedVersion = versions[randomIndex];
     
@@ -67,20 +67,17 @@ function updateIntroScreen() {
         case 'A':
             selectedQuizVersion = 'Classic_Quiz';
             break;
-        case 'B':
-            selectedQuizVersion = 'Lifestyle_Quiz';
-            break;
         case 'C':
             selectedQuizVersion = 'Experience_Quiz';
             break;
         case 'D':
             selectedQuizVersion = 'Quick_Quiz';
             break;
-        case 'F':
-            selectedQuizVersion = 'Joshua_e';
-            break;
         case 'G':
             selectedQuizVersion = 'Aha_Quiz';
+            break;
+        case 'H':
+            selectedQuizVersion = 'Value_Quiz';
             break;
     }
     
