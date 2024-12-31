@@ -1,10 +1,14 @@
 @import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
 
 :root {
-    --gradient-start: #F01E6F;
-    --gradient-end: #EF6F5E;
-    --text-color: #001C3D;
-    --background-color: #FFFFFF;
+    --gradient-start: #FFD700;
+    --gradient-end: #FFA500;
+    --progress-gradient-start: #F01E6F;
+    --progress-gradient-end: #EF6F5E;
+    --text-color: #FFFFFF;
+    --background-color: #002551;
+    --secondary-text: rgba(255, 255, 255, 0.8);
+    --progress-bg: rgba(255, 255, 255, 0.15);
 }
 
 * {
@@ -15,7 +19,7 @@
 }
 
 body {
-    background: var(--background-color);
+    background: linear-gradient(180deg, #002551 0%, #001A3D 100%);
     color: var(--text-color);
     min-height: 100vh;
     display: flex;
@@ -48,14 +52,14 @@ body {
 
 .progress-bar {
     height: 6px;
-    background: rgba(0, 28, 61, 0.1);
+    background: var(--progress-bg);
     border-radius: 3px;
     overflow: hidden;
 }
 
 .progress-fill {
     height: 100%;
-    background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+    background: linear-gradient(90deg, var(--progress-gradient-start), var(--progress-gradient-end));
     width: 0;
     transition: width 0.3s ease;
 }
@@ -65,8 +69,7 @@ body {
     font-weight: 500;
     margin-top: 8px;
     text-align: right;
-    color: var(--text-color);
-    opacity: 0.7;
+    color: var(--secondary-text);
 }
 
 /* Landing Page */
@@ -93,8 +96,7 @@ body {
     font-size: 18px;
     line-height: 1.4;
     margin-bottom: 30px;
-    color: var(--text-color);
-    opacity: 0.8;
+    color: var(--secondary-text);
 }
 
 /* Question Styles */
@@ -120,8 +122,9 @@ body {
 }
 
 .choice-button {
-    background: transparent;
-    border: 2px solid rgba(0, 28, 61, 0.1);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    color: var(--text-color);
     padding: 16px 24px;
     border-radius: 12px;
     font-size: 16px;
@@ -129,18 +132,18 @@ body {
     cursor: pointer;
     transition: all 0.2s ease;
     text-align: left;
-    color: var(--text-color);
+    width: 100%;
 }
 
 .choice-button:hover {
-    border-color: var(--gradient-start);
-    background: rgba(240, 30, 111, 0.05);
+    background: rgba(255, 255, 255, 0.2);
+    border-color: rgba(255, 255, 255, 0.3);
 }
 
 .choice-button.selected {
-    background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
-    color: white;
+    background: linear-gradient(45deg, #F01E6F, #EF6F5E);
     border: none;
+    color: white;
 }
 
 /* Fun Facts */
@@ -155,7 +158,7 @@ body {
 }
 
 .gradient-text {
-    background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+    background: linear-gradient(45deg, #F01E6F, #EF6F5E);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     animation: float 2s ease-in-out infinite;
@@ -196,24 +199,29 @@ body {
 }
 
 #map-container {
-    width: 100%;
-    height: 300px;
-    margin: 10px 0;
-    border-radius: 12px;
-    overflow: hidden;
+    position: relative !important;
+    width: 100% !important;
+    height: 300px !important;
+    margin: 10px 0 !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
 }
 
 /* Buttons */
 .cta-button {
-    background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
+    background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
     color: white;
     border: none;
     padding: 16px 32px;
-    border-radius: 12px;
-    font-size: 16px;
+    border-radius: 8px;
     font-weight: 600;
     cursor: pointer;
     transition: all 0.3s ease;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .cta-button:hover {
@@ -263,7 +271,9 @@ body {
 }
 
 .action-buttons {
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 12px;
     margin-top: 15px;
 }
@@ -380,14 +390,7 @@ body {
 .recap-title {
     font-size: 24px;
     margin-bottom: 16px;
-}
-
-.recap-title .gradient-text {
-    background: linear-gradient(45deg, var(--gradient-start), var(--gradient-end));
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    animation: float 2s ease-in-out infinite;
-    display: inline-block;
+    color: var(--text-color);
 }
 
 .recap-answers {
@@ -401,10 +404,11 @@ body {
 .recap-item {
     opacity: 0;
     transform: translateY(20px);
-    background: white;
-    border-radius: 8px;
-    padding: 12px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
     text-align: left;
     font-size: 14px;
 }
@@ -416,14 +420,16 @@ body {
 .recap-question {
     font-weight: 600;
     color: var(--text-color);
-    margin-bottom: 4px;
+    margin-bottom: 8px;
     line-height: 1.3;
+    font-size: 16px;
 }
 
 .recap-answer {
-    color: var(--gradient-start);
+    color: var(--secondary-text);
     font-weight: 500;
     line-height: 1.3;
+    font-size: 15px;
 }
 
 @keyframes slideIn {
@@ -462,4 +468,337 @@ body {
     60% {
         transform: translateX(-50%) translateY(-5px);
     }
+}
+
+.testimonial-section, .community-section {
+    display: none;
+}
+
+.testimonial-card, .community-card {
+    display: none;
+}
+
+.testimonial-text, .community-quote, .testimonial p {
+    display: none;
+}
+
+.testimonial-author, .community-member, .testimonial h3 {
+    display: none;
+}
+
+.testimonial-title, .member-type, .testimonial span {
+    display: none;
+}
+
+/* Keep only these clean testimonial styles */
+.testimonials-carousel {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 24px !important;
+    padding: 20px !important;
+    max-width: 600px !important;
+    margin: 0 auto !important;
+    width: 100% !important;
+}
+
+.testimonials-carousel .testimonial-card {
+    display: block !important;
+    background: rgba(0, 13, 31, 0.3) !important;
+    border-radius: 16px !important;
+    padding: 32px !important;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2) !important;
+    margin: 0 !important;
+    width: 100% !important;
+    position: relative !important;
+    border: double 2px transparent !important;
+    background-image: linear-gradient(rgba(0, 13, 31, 0.3), rgba(0, 13, 31, 0.3)), 
+                     linear-gradient(to right, #FFD700, #FFA500) !important;
+    background-origin: border-box !important;
+    background-clip: padding-box, border-box !important;
+    text-align: center !important;
+}
+
+.testimonials-carousel .testimonial-card blockquote {
+    display: block !important;
+    color: white !important;
+    font-size: 20px !important;
+    line-height: 1.6 !important;
+    margin: 0 0 20px 0 !important;
+    font-style: italic !important;
+    font-weight: 500 !important;
+    text-align: center !important;
+}
+
+/* Remove any transforms that might affect positioning */
+.testimonials-carousel .testimonial-card:nth-child(2),
+.testimonials-carousel .testimonial-card:nth-child(3) {
+    margin: 0 !important;
+    transform: none !important;
+}
+
+.testimonials-carousel .testimonial-card:hover {
+    transform: translateY(-2px) !important;
+}
+
+.testimonials-carousel .testimonial-card .author {
+    display: block !important;
+    color: #FFD700 !important;
+    font-weight: 600 !important;
+    font-size: 18px !important;
+    margin-bottom: 6px !important;
+}
+
+.testimonials-carousel .testimonial-card .status {
+    display: block !important;
+    color: rgba(255, 255, 255, 0.7) !important;
+    font-size: 14px !important;
+}
+
+/* Restaurant cards in carousel */
+.restaurant-card {
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+.restaurant-info {
+    padding: 16px;
+    background: white;
+}
+
+.restaurant-name {
+    color: #001C3D !important;
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.restaurant-description, .value-prop {
+    color: #001C3D !important;
+    font-size: 14px;
+    line-height: 1.5;
+    opacity: 0.8;
+}
+
+/* Carousel container */
+.carousel-container, .carousel-section, [class*="carousel"] {
+    background: linear-gradient(180deg, #002551 0%, #001A3D 100%) !important;
+    margin: 0 -20px;
+    padding: 20px;
+    width: calc(100% + 40px);
+    border: none !important;
+}
+
+.features-carousel-1, .features-carousel-2 {
+    display: flex;
+    gap: 20px;
+    overflow-x: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    margin: 0;
+    padding: 20px;
+    background: transparent !important;
+    position: relative;
+}
+
+.feature-card {
+    flex: 0 0 250px;
+    background: white;
+    border-radius: 12px;
+    padding: 15px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.carousel-container {
+    position: relative;
+    margin: 40px -20px;
+    overflow: hidden;
+    background: transparent !important;
+    padding: 0;
+}
+
+/* Remove any gradient masks */
+.features-carousel-1::before,
+.features-carousel-1::after,
+.features-carousel-2::before,
+.features-carousel-2::after {
+    display: none;
+}
+
+.feature-card h3 {
+    color: #001C3D;
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.feature-card p {
+    color: #001C3D;
+    font-size: 14px;
+    line-height: 1.5;
+    opacity: 0.8;
+}
+
+.feature-card img {
+    width: 100%;
+    height: 120px;
+    object-fit: cover;
+    border-radius: 8px;
+    filter: drop-shadow(0 0 8px rgba(0, 37, 81, 0.3));
+    transition: filter 0.3s ease;
+}
+
+.feature-card:hover img {
+    filter: drop-shadow(0 0 12px rgba(0, 37, 81, 0.5));
+}
+
+#download-map {
+    background: linear-gradient(45deg, #F01E6F, #EF6F5E) !important;
+    width: auto;
+    display: inline-block;
+    padding: 16px 32px;
+    align-self: center;
+}
+
+#download-map:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+/* Keep the general CTA button styles using the new gold gradient */
+.cta-button {
+    background: linear-gradient(90deg, var(--gradient-start), var(--gradient-end));
+    color: white;
+    border: none;
+    padding: 16px 32px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.mid-cta-button {
+    display: inline-block;
+    padding: 15px 32px;
+    border-radius: 8px;
+    background: linear-gradient(45deg, #F01E6F, #EF6F5E);
+    color: white;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    border: none;
+    font-size: 16px;
+    cursor: pointer;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.mid-cta-button:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+#submit {
+    background: linear-gradient(45deg, #F01E6F, #EF6F5E) !important;
+}
+
+#submit:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+/* Keep the Next button after fun facts pink too */
+#next-question {
+    background: linear-gradient(45deg, #F01E6F, #EF6F5E) !important;
+}
+
+#finish-recap {
+    background: linear-gradient(45deg, #F01E6F, #EF6F5E) !important;
+}
+
+#finish-recap:hover {
+    transform: translateY(-2px);
+    filter: brightness(1.1);
+}
+
+#map-legend {
+    position: absolute !important;
+    top: 10px !important;
+    right: 10px !important;
+    left: auto !important;
+    background: rgba(0, 13, 31, 0.9) !important;
+    padding: 12px !important;
+    border-radius: 8px !important;
+    z-index: 1000 !important;
+    min-width: auto !important;
+    font-family: 'Space Grotesk', sans-serif !important;
+    pointer-events: none !important;
+}
+
+#map-legend .title {
+    font-weight: 600 !important;
+    margin-bottom: 8px !important;
+    color: white !important;
+    font-size: 12px !important;
+}
+
+#map-legend .legend-items {
+    display: flex !important;
+    flex-direction: column !important;
+    gap: 6px !important;
+}
+
+#map-legend .legend-item {
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+    color: rgba(255, 255, 255, 0.9) !important;
+    font-size: 12px !important;
+    white-space: nowrap !important;
+}
+
+#map-legend .legend-dot {
+    width: 8px !important;
+    height: 8px !important;
+    border-radius: 50% !important;
+    flex-shrink: 0 !important;
+}
+
+#map-legend .legend-dot.level-1 {
+    background: #00B5B5 !important;
+}
+
+#map-legend .legend-dot.level-2 {
+    background: #00A3A3 !important;
+}
+
+#map-legend .legend-dot.level-3 {
+    background: #009191 !important;
+}
+
+#map-legend .legend-dot.level-4 {
+    background: #007F7F !important;
+}
+
+/* Remove duplicate legend styles */
+.legend-container, .legend-item, .legend-dot {
+    display: none;
+}
+
+/* Ensure map container has proper positioning */
+#map-container {
+    position: relative !important;
+    width: 100% !important;
+    height: 300px !important;
+    margin: 10px 0 !important;
+    border-radius: 12px !important;
+    overflow: hidden !important;
 } 
