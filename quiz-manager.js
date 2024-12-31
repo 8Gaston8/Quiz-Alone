@@ -7,49 +7,49 @@ let currentQuizVersion = '';
 const CHECKOUT_SCREENS = {
     STRIPE_39: {
         url: 'https://pay.atly.com/b/eVabMB01Tc8ydMsfZ8',
-        price: '39.99',
+        price: '39.99 noTrial',
         checkout_medium: 'web',
         trial_status: 'no-trial',
         active: true
     },
     STRIPE_49: {
         url: 'https://pay.atly.com/b/cN22c1g0R3C2fUA009',
-        price: '49.99',
+        price: '49.99 noTrial',
         checkout_medium: 'web',
         trial_status: 'no-trial',
         active: true
     },
     STRIPE_59: {
         url: 'https://pay.atly.com/b/8wMeYN15Xb4ubEkfZ2',
-        price: '59.99',
+        price: '59.99 noTrial',
         checkout_medium: 'web',
         trial_status: 'no-trial',
         active: true
     },
     STRIPE_69: {
         url: 'https://pay.atly.com/b/6oEaIxdSJa0qgYE9AD',
-        price: '79.99',
+        price: '79.99 noTrial',
         checkout_medium: 'web',
         trial_status: 'no-trial',
         active: true
     },
     APP_CHECKOUT: {
         url: 'https://web.steps.me/m/CwX3l0tJjXE',
-        price: '',
+        price: 'in-app price',
         checkout_medium: 'app',
         trial_status: 'trial',
         active: false
     },
     TEST_CHECKOUT: {
         url: 'https://pay.atly.com/b/test_4gw7sz7vO2tTerK6oq',
-        price: '59.99',
+        price: '59.99 noTrial',
         checkout_medium: 'web',
         trial_status: 'no-trial',
         active: false
     },
     TRIAL_CHECKOUT: {
         url: 'https://pay.atly.com/b/fZebMB4i93C2dMs4gg',
-        price: '0.00',
+        price: '99.99 trial',
         checkout_medium: 'web',
         trial_status: 'trial',
         active: false
