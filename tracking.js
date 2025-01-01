@@ -27,7 +27,8 @@ function trackQuizScreenView(screenName, introVersion = null) {
         quiz_version: currentQuizVersion,
         quiz_description: getQuizDescription(currentQuizVersion),
         intro_version: introVersion,
-        is_trial_flow: isTrialFlow
+        is_trial_flow: isTrialFlow,
+        style_version: window.selectedStyleVersion || 'dark'
     });
 }
 
@@ -39,7 +40,8 @@ function trackQuizCheckout(variant, checkoutPrice) {
         checkout_price: checkoutPrice,
         trial_status: screen.trial_status,
         checkout_medium: screen.checkout_medium,
-        is_trial_flow: variant === 'TRIAL_CHECKOUT'
+        is_trial_flow: variant === 'TRIAL_CHECKOUT',
+        style_version: window.selectedStyleVersion || 'dark'
     });
 }
 

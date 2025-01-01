@@ -60,6 +60,28 @@ function updateIntroScreen() {
     const versions = ['A', 'C', 'D', 'G', 'H'];  // Only keeping classic, experience, quick, aha, and value quizzes
     const randomIndex = Math.floor(Math.random() * versions.length);
     const selectedVersion = versions[randomIndex];
+
+    // Select style version if not already selected
+    if (!window.selectedStyleVersion) {
+        window.selectedStyleVersion = Math.random() < 0.5 ? 'light' : 'dark';
+        // Store the style version in localStorage
+        localStorage.setItem('style_version', window.selectedStyleVersion);
+    }
+    
+    // Remove any existing main stylesheets first
+    const existingStylesheets = document.querySelectorAll('link[rel="stylesheet"]');
+    existingStylesheets.forEach(sheet => {
+        if (sheet.href.includes('light_styles.css') || sheet.href.includes('styles.css')) {
+            sheet.remove();
+        }
+    });
+    
+    // Apply the selected style
+    const styleLink = document.createElement('link');
+    styleLink.id = 'main-stylesheet';
+    styleLink.rel = 'stylesheet';
+    styleLink.href = window.selectedStyleVersion === 'light' ? '/light_styles.css' : '/styles.css';
+    document.head.appendChild(styleLink);
     
     // Map version letter to actual quiz version name
     let selectedQuizVersion;

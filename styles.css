@@ -801,4 +801,10 @@ body {
     margin: 10px 0 !important;
     border-radius: 12px !important;
     overflow: hidden !important;
+}
+
+/* Hide progress bar on intro screen */
+#landing.active ~ .progress-tracker,
+#landing.active + .progress-tracker {
+    display: none;
 } 

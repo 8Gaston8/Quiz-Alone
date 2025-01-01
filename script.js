@@ -3,6 +3,12 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentQuestion = 0;
     let userAnswers = [];
 
+    // Hide progress tracker initially
+    const progressTracker = document.querySelector('.progress-tracker');
+    if (progressTracker) {
+        progressTracker.style.display = 'none';
+    }
+
     // Fun fact titles with different colors
     const funFactStyles = [
         { title: "<span class='gradient-text'>Mind-Blowing Fact!</span> 🤯", gradient: "45deg, #F01E6F, #EF6F5E" },
@@ -401,6 +407,10 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.remove('modern-intro');
         // Set quiz version as data attribute
         document.body.setAttribute('data-quiz-version', currentQuizVersion);
+        // Show progress tracker when quiz starts
+        if (progressTracker) {
+            progressTracker.style.display = 'block';
+        }
         showSection(quizEl);
         loadQuestion();
     }
