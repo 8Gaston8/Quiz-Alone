@@ -214,10 +214,37 @@ document.addEventListener('DOMContentLoaded', () => {
         const recapAnswers = document.querySelector('.recap-answers');
         recapAnswers.innerHTML = '';
         
+        // Create a container for the recap content and scroll indicator
+        const recapContainer = document.createElement('div');
+        recapContainer.className = 'recap-container';
+        recapContainer.style.position = 'relative';
+        recapContainer.style.width = '100%';
+        recapContainer.style.height = '100%';
+        recapContainer.style.overflow = 'hidden';
+        
         // Add scroll indicator
         const scrollIndicator = document.createElement('div');
         scrollIndicator.className = 'scroll-indicator';
         scrollIndicator.innerHTML = '👇';
+        scrollIndicator.style.position = 'fixed';
+        scrollIndicator.style.bottom = '80px';
+        scrollIndicator.style.left = '50%';
+        scrollIndicator.style.transform = 'translateX(-50%)';
+        scrollIndicator.style.zIndex = '1000';
+        scrollIndicator.style.fontSize = '24px';
+        scrollIndicator.style.opacity = '1';
+        scrollIndicator.style.animation = 'bounce 1s infinite';
+        
+        // Add animation style
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes bounce {
+                0%, 100% { transform: translateX(-50%) translateY(0); }
+                50% { transform: translateX(-50%) translateY(-10px); }
+            }
+        `;
+        document.head.appendChild(style);
+        
         document.querySelector('.recap-content').appendChild(scrollIndicator);
         
         // Generate personalized title based on answers
@@ -303,22 +330,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }, index * 200); // 200ms delay between each item
         });
         
-        // Show/hide scroll indicator based on content overflow and button visibility
+        // Show/hide scroll indicator based on scroll position only
         const checkScroll = () => {
             const content = document.querySelector('.recap-content');
-            const finishButton = document.getElementById('finish-recap');
-            const buttonRect = finishButton.getBoundingClientRect();
-            const hasOverflow = content.scrollHeight > content.clientHeight;
-            const isButtonVisible = buttonRect.top <= window.innerHeight;
-            
-            scrollIndicator.style.opacity = hasOverflow && !isButtonVisible ? "1" : "0";
+            const isAtBottom = content.scrollHeight - content.scrollTop <= content.clientHeight + 50;
+            scrollIndicator.style.display = isAtBottom ? 'none' : 'block';
         };
         
         // Check initially and on window resize
-        setTimeout(checkScroll, 500); // Wait for animations
+        setTimeout(checkScroll, 500);
         window.addEventListener('resize', checkScroll);
         
-        // Hide indicator when user scrolls and update on scroll
+        // Update on scroll
         document.querySelector('.recap-content').addEventListener('scroll', checkScroll);
     }
 
