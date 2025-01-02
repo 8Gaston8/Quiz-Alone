@@ -3,31 +3,7 @@ const introScreens = [
         emoji: "",
         title: "Find 100% safe gluten-free restaurants",
         description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
-        buttonText: "CREATE MY MAP",
-        isModern: true,
-        badges: [
-            "GLUTENED-FREE GUARANTEE",
-            "#1 DIETITIANS CHOICE",
-            "MOST RELIABLE CELIAC MAP"
-        ]
-    },
-    {
-        emoji: "",
-        title: "Find 100% safe gluten-free restaurants",
-        description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
         buttonText: "DISCOVER SPOTS",
-        isModern: true,
-        badges: [
-            "GLUTENED-FREE GUARANTEE",
-            "#1 DIETITIANS CHOICE",
-            "MOST RELIABLE CELIAC MAP"
-        ]
-    },
-    {
-        emoji: "",
-        title: "Find 100% safe gluten-free restaurants",
-        description: "A streamlined quiz experience with modern design, focused on quick and reliable gluten-free dining solutions",
-        buttonText: "JOIN NOW",
         isModern: true,
         badges: [
             "GLUTENED-FREE GUARANTEE",
