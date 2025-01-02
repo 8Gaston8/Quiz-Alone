@@ -807,4 +807,19 @@ body {
 #landing.active ~ .progress-tracker,
 #landing.active + .progress-tracker {
     display: none;
-} 
+}
+
+/* Discount banner styling */
+.discount-banner {
+    background: linear-gradient(45deg, rgba(240, 30, 111, 0.1), rgba(239, 111, 94, 0.1));
+    padding: 25px;
+    margin: 20px auto;
+    border-radius: 15px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+    animation: glow 2s infinite;
+    max-width: 400px;
+    border: 1px solid rgba(240, 30, 111, 0.2);
+}
+ 

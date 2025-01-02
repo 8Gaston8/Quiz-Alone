@@ -58,6 +58,14 @@ mixpanel.init('077ff37ea1f556ace8f37a5754faca1c');</script>
             display: block;
         }
 
+        .version-i-content {
+            display: none;
+        }
+
+        body[data-quiz-version="Discount_Quiz"] .version-i-content {
+            display: block;
+        }
+
         .carousel-container {
             position: relative;
             margin: 40px -20px;
@@ -408,24 +416,60 @@ mixpanel.init('077ff37ea1f556ace8f37a5754faca1c');</script>
                         
                         <div class="carousel-container">
                             <div class="features-carousel-2">
-                                <!-- ... existing carousel content ... -->
+                                <div class="feature-card">
+                                    <img src="assets/320K+ reviews.png" alt="320K+ reviews">
+                                    <h3>320K+ reviews by the community</h3>
+                                    <p>See what people like you say about where they ate. Reviews you can trust from the celiac community.</p>
+                                </div>
+                                <div class="feature-card">
+                                    <img src="assets/Save for later.png" alt="Save for later">
+                                    <h3>Save for later</h3>
+                                    <p>Bookmark and save specific restaurants you want to try. Perfect for planning your trips!</p>
+                                </div>
+                                <div class="feature-card">
+                                    <img src="assets/Food Filters.png" alt="Advanced food filters">
+                                    <h3>Advanced food filters</h3>
+                                    <p>Search by cuisine, dining preferences, food type, and other dietary restrictions.</p>
+                                </div>
+                                <!-- Duplicate for seamless loop -->
+                                <div class="feature-card">
+                                    <img src="assets/320K+ reviews.png" alt="320K+ reviews">
+                                    <h3>320K+ reviews by the community</h3>
+                                    <p>See what people like you say about where they ate. Reviews you can trust from the celiac community.</p>
+                                </div>
                             </div>
                         </div>
                         
                         <h2>What our community has to say</h2>
                         <div class="carousel-container">
                             <div class="testimonials-carousel">
-                                <!-- ... existing testimonials ... -->
+                                <div class="testimonial-card">
+                                    <blockquote>I have been using it now for 3 months and it saves me so much research. Reduces the need to call and double check every time.</blockquote>
+                                    <div class="author">Kenneth Meisel</div>
+                                    <div class="status">Gluten Intolerant</div>
+                                </div>
+                                <div class="testimonial-card">
+                                    <blockquote>Finding places to eat used to be such a drag. Atly made it so much easier. Love it!</blockquote>
+                                    <div class="author">Jane Grinberg</div>
+                                    <div class="status">Highly symptomatic celiac</div>
+                                </div>
+                                <div class="testimonial-card">
+                                    <blockquote>I've discovered great options in my city I was not aware of. Highly recommend it if you are Celiac.</blockquote>
+                                    <div class="author">Ann Stanley</div>
+                                    <div class="status">Asymptomatic Celiac</div>
+                                </div>
                             </div>
                         </div>
                     </div>
-                    <div class="discount-banner">
-                        <h2>🎉 Special Offer Unlocked! 🎉</h2>
-                        <p class="discount-text">30% OFF</p>
-                        <p class="limited-time">Limited Time Only</p>
+                    <div class="version-i-content">
+                        <div class="discount-banner">
+                            <h2>🎉 Special Offer Unlocked! 🎉</h2>
+                            <p class="discount-text">30% OFF</p>
+                            <p class="limited-time">Limited Time Only</p>
+                        </div>
                     </div>
                     <div class="action-buttons">
-                        <button id="download-map" class="cta-button">Get it now</button>
+                        <button id="download-map" class="cta-button">Get Atly Now 🚀</button>
                     </div>
                 </div>
             </div>
