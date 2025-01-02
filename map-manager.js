@@ -199,25 +199,40 @@ function initializeMap() {
                 console.log('MapKit authorization callback triggered');
                 const isLocalhost = window.location.hostname === 'localhost' || 
                     window.location.hostname.includes('127.0.0.1') || 
-                    window.location.hostname.includes('192.168.');
+                    window.location.hostname.includes('192.168.') ||
+                    window.location.hostname.includes('::1');
+                console.log('Hostname check:', {
+                    hostname: window.location.hostname,
+                    isLocalhost: isLocalhost
+                });
                 const mapKitToken = isLocalhost
-                    ? 'eyJraWQiOiIyODZNWFQ1NzNLIiwidHlwIjoiSldUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiI5N0FWNzZEVUQ0IiwiaWF0IjoxNzM1MDMzMDgxLCJleHAiOjE3MzU3MTgzOTl9.KWRgrrH0Y2pyaa6Jeqngq4h9tKi26vmzUnEmVQkkrwHBWVEBJMM8a0LK6o7N6ZOs-DrEo3monBtQMH0re8Sj5A'
+                    ? 'eyJraWQiOiIzNFAyOFY1NTNIIiwidHlwIjoiSldUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiI5N0FWNzZEVUQ0IiwiaWF0IjoxNzM1ODIwOTgxLCJleHAiOjE3MzY0OTU5OTl9.i5AXHawcIs1Db-S_l_iazyWGjwhZbJfA6dwX4iSMPiIL9LbPOFaZV8Qc85dv9555gswewDDkyjZgHny5LMr9xg'
                     : 'eyJraWQiOiJHUEtMQzdVV0NRIiwidHlwIjoiSldUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiI5N0FWNzZEVUQ0IiwiaWF0IjoxNzM1MDU0MDEzLCJvcmlnaW4iOiJnbHV0ZW4tZnJlZS1xdWl6LmF0bHkuY29tIn0.bfwG1VUJ-JzDBhP_WGPyUBreFHkjKKflcKn02Z7Oizb1FMkJTCNnKyrn740H_2rYes-iFiZeXPw5Dn1H2q3F_w';
+                console.log('Using token for:', isLocalhost ? 'localhost' : 'production');
                 done(mapKitToken);
             },
             language: "en"
         });
+        console.log('MapKit initialized');
 
         const mapContainer = document.getElementById('map-container');
         if (!mapContainer) {
             console.error('Map container not found');
             return;
         }
+        console.log('Map container found:', {
+            display: window.getComputedStyle(mapContainer).display,
+            width: mapContainer.offsetWidth,
+            height: mapContainer.offsetHeight,
+            visibility: window.getComputedStyle(mapContainer).visibility
+        });
 
         // Set position relative on map container
         mapContainer.style.position = 'relative';
+        console.log('Set position relative on map container');
 
         // Create a new map instance
+        console.log('Creating map instance...');
         map = new mapkit.Map('map-container', {
             center: new mapkit.Coordinate(REGIONS.northAmerica.center.latitude, REGIONS.northAmerica.center.longitude),
             showsCompass: mapkit.FeatureVisibility.Hidden,
@@ -229,11 +244,12 @@ function initializeMap() {
             isZoomEnabled: false,
             tintColor: "#00B5B5",
             showsMapTypeControl: false,
-            annotationForCluster: null, // Disable clustering
-            animationDuration: 1.5 // Set default animation duration
+            annotationForCluster: null // Disable clustering
         });
+        console.log('Map instance created');
 
         // Add legend overlay
+        console.log('Adding legend overlay...');
         const legendHTML = `
             <div id="map-legend" style="
                 position: absolute;
@@ -274,21 +290,45 @@ function initializeMap() {
         const legendContainer = document.createElement('div');
         legendContainer.innerHTML = legendHTML;
         mapContainer.appendChild(legendContainer.firstElementChild);
+        console.log('Legend overlay added');
 
         // Set initial region to show North America
+        console.log('Setting initial region...');
         const initialRegion = new mapkit.CoordinateRegion(
             new mapkit.Coordinate(REGIONS.northAmerica.center.latitude, REGIONS.northAmerica.center.longitude),
             new mapkit.CoordinateSpan(REGIONS.northAmerica.span.latitudeDelta, REGIONS.northAmerica.span.longitudeDelta)
         );
         map.region = initialRegion;
+        console.log('Initial region set');
 
         // Start the map rotation and marker loading
         console.log('Starting map initialization...');
         preloadAllMarkers();
         startRotation();
+        console.log('Map initialization complete');
 
     } catch (error) {
         console.error('Error initializing map:', error);
+        console.error('Error details:', {
+            mapkit: typeof mapkit !== 'undefined' ? {
+                initialized: mapkit.initialized,
+                version: mapkit.version,
+                build: mapkit.build
+            } : 'undefined',
+            map: typeof map !== 'undefined' ? {
+                exists: map !== null,
+                hasElement: map && map.element !== null,
+                childCount: map && map.element ? map.element.children.length : 0
+            } : 'undefined',
+            container: document.getElementById('map-container') ? {
+                display: window.getComputedStyle(document.getElementById('map-container')).display,
+                visibility: window.getComputedStyle(document.getElementById('map-container')).visibility,
+                dimensions: {
+                    width: document.getElementById('map-container').offsetWidth,
+                    height: document.getElementById('map-container').offsetHeight
+                }
+            } : 'no container'
+        });
     }
 }
 
@@ -683,12 +723,13 @@ document.addEventListener('DOMContentLoaded', () => {
                 // Wait for the final state to be displayed
                 setTimeout(() => {
                     const finalState = document.querySelector('.final-state');
-                    console.log('Final state display:', finalState.style.display);
-                    if (finalState.style.display === 'block') {
+                    const finalStateStyle = window.getComputedStyle(finalState);
+                    console.log('Final state display:', finalStateStyle.display);
+                    if (finalStateStyle.display !== 'none') {
                         console.log('Initializing map after final state display');
                         initializeMap();
                     }
-                }, 3000);
+                }, 3500); // Increased from 3000 to ensure it runs after the final state is displayed
             }
         });
     });

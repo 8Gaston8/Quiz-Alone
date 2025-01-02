@@ -4,5 +4,8 @@
     "description": "Frontend for the Atly Quiz application",
     "engines": {
         "node": ">=14.0.0"
+    },
+    "devDependencies": {
+        "puppeteer": "^23.11.1"
     }
-} 
+}
