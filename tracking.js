@@ -32,7 +32,8 @@ function trackQuizScreenView(screenName, introVersion = null) {
         quiz_description: getQuizDescription(currentQuizVersion),
         intro_version: introVersion,
         is_trial_flow: isTrialFlow,
-        style_version: window.selectedStyleVersion || 'dark'
+        style_version: window.selectedStyleVersion || 'dark',
+        hide_page_numbers: hidePageNumbers
     });
 }
 
@@ -45,7 +46,8 @@ function trackQuizCheckout(variant, checkoutPrice) {
         trial_status: screen.trial_status,
         checkout_medium: screen.checkout_medium,
         is_trial_flow: variant === 'TRIAL_CHECKOUT',
-        style_version: window.selectedStyleVersion || 'dark'
+        style_version: window.selectedStyleVersion || 'dark',
+        hide_page_numbers: hidePageNumbers
     });
 }
 

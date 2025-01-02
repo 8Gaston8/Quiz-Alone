@@ -86,7 +86,11 @@ document.addEventListener('DOMContentLoaded', () => {
     function updateProgress() {
         const progress = ((currentQuestion + 1) / quizData.length) * 100;
         progressBar.style.width = `${progress}%`;
-        progressText.textContent = `${currentQuestion + 1} of ${quizData.length}`;
+        if (!hidePageNumbers) {  // Only show page numbers if not hidden
+            progressText.textContent = `${currentQuestion + 1} of ${quizData.length}`;
+        } else {
+            progressText.textContent = '';  // Hide the page numbers
+        }
     }
 
     function showSection(sectionToShow) {
