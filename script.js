@@ -453,20 +453,24 @@ document.addEventListener('DOMContentLoaded', () => {
     const midCtaBtn = document.querySelector('.mid-cta-button');
 
     const handleCheckout = () => {
+        const checkoutInfo = selectCheckoutScreen();
+        let finalUrl;
+
         if (window.quizSessionUrl) {
-            const checkoutInfo = selectCheckoutScreen();
-            let finalUrl = checkoutInfo.url + window.quizSessionUrl.substring(window.quizSessionUrl.indexOf('?'));
-            
-            // Add user ID as client_reference_id if available
-            if (window.quizUserId) {
-                finalUrl += `&client_reference_id=${window.quizUserId}`;
-            }
-            
-            trackQuizCheckout(checkoutInfo.variant, checkoutInfo.price);
-            window.location.href = finalUrl;
+            finalUrl = checkoutInfo.url + window.quizSessionUrl.substring(window.quizSessionUrl.indexOf('?'));
         } else {
-            console.error('No session URL available');
+            console.warn('No session URL available, using fallback URL');
+            const email = localStorage.getItem('atly_user_email');
+            finalUrl = `${checkoutInfo.url}${email ? `?prefilled_email=${encodeURIComponent(email)}` : ''}`;
         }
+        
+        // Add user ID as client_reference_id if available
+        if (window.quizUserId) {
+            finalUrl += `${finalUrl.includes('?') ? '&' : '?'}client_reference_id=${window.quizUserId}`;
+        }
+        
+        trackQuizCheckout(checkoutInfo.variant, checkoutInfo.price);
+        window.location.href = finalUrl;
     };
 
     if (downloadMapBtn) {
