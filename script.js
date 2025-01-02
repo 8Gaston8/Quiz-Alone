@@ -20,7 +20,9 @@ document.addEventListener('DOMContentLoaded', () => {
         { title: "<span class='gradient-text'>Wow Factor!</span> 🌟", gradient: "-45deg, #F01E6F, #EF6F5E" },
         { title: "<span class='gradient-text'>Here's the Scoop!</span> 🍨", gradient: "45deg, #EF6F5E, #F01E6F" },
         { title: "<span class='gradient-text'>Quick Fact!</span> ⚡️", gradient: "-45deg, #F01E6F, #EF6F5E" },
-        { title: "<span class='gradient-text'>Last But Not Least!</span> 🎉", gradient: "45deg, #EF6F5E, #F01E6F" }
+        { title: "<span class='gradient-text'>Last But Not Least!</span> 🎉", gradient: "45deg, #EF6F5E, #F01E6F" },
+        { title: "<span class='gradient-text'>Almost There!</span> 🎯", gradient: "-45deg, #F01E6F, #EF6F5E" },
+        { title: "<span class='gradient-text'>Special Offer!</span> 🎁", gradient: "45deg, #EF6F5E, #F01E6F" }
     ];
 
     // DOM Elements

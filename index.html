@@ -247,6 +247,68 @@ mixpanel.init('077ff37ea1f556ace8f37a5754faca1c');</script>
             transform: translateY(-2px);
             box-shadow: 0 6px 20px rgba(240, 30, 111, 0.3);
         }
+
+        @keyframes glow {
+            0% {
+                box-shadow: 0 0 20px rgba(240, 30, 111, 0.3);
+                transform: scale(1);
+            }
+            50% {
+                box-shadow: 0 0 40px rgba(240, 30, 111, 0.6), inset 0 0 20px rgba(240, 30, 111, 0.3);
+                transform: scale(1.02);
+            }
+            100% {
+                box-shadow: 0 0 20px rgba(240, 30, 111, 0.3);
+                transform: scale(1);
+            }
+        }
+
+        .discount-banner {
+            background: linear-gradient(45deg, rgba(240, 30, 111, 0.1), rgba(239, 111, 94, 0.1));
+            padding: 25px;
+            margin: 20px auto;
+            border-radius: 15px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+            animation: glow 2s infinite;
+            max-width: 400px;
+            border: 1px solid rgba(240, 30, 111, 0.2);
+        }
+        
+        .discount-banner h2 {
+            font-size: 24px;
+            color: #F01E6F;
+            margin: 0;
+            text-shadow: 0 0 10px rgba(240, 30, 111, 0.3);
+        }
+        
+        .discount-banner .discount-text {
+            font-size: 38px;
+            font-weight: bold;
+            margin: 12px 0;
+            background: linear-gradient(45deg, #F01E6F, #EF6F5E);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 0 0 20px rgba(240, 30, 111, 0.5);
+        }
+        
+        .discount-banner .limited-time {
+            font-size: 18px;
+            color: #F01E6F;
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .action-buttons {
+            text-align: center;
+        }
+
+        .action-buttons .cta-button {
+            width: 200px;
+            padding: 15px 30px;
+            margin: 0 auto;
+        }
     </style>
 </head>
 <body>
@@ -346,53 +408,24 @@ mixpanel.init('077ff37ea1f556ace8f37a5754faca1c');</script>
                         
                         <div class="carousel-container">
                             <div class="features-carousel-2">
-                                <div class="feature-card">
-                                    <img src="assets/320K+ reviews.png" alt="320K+ reviews">
-                                    <h3>320K+ reviews by the community</h3>
-                                    <p>See what people like you say about where they ate. Reviews you can trust from the celiac community.</p>
-                                </div>
-                                <div class="feature-card">
-                                    <img src="assets/Save for later.png" alt="Save for later">
-                                    <h3>Save for later</h3>
-                                    <p>Bookmark and save specific restaurants you want to try. Perfect for planning your trips!</p>
-                                </div>
-                                <div class="feature-card">
-                                    <img src="assets/Food Filters.png" alt="Advanced food filters">
-                                    <h3>Advanced food filters</h3>
-                                    <p>Search by cuisine, dining preferences, food type, and other dietary restrictions.</p>
-                                </div>
-                                <!-- Duplicate for seamless loop -->
-                                <div class="feature-card">
-                                    <img src="assets/320K+ reviews.png" alt="320K+ reviews">
-                                    <h3>320K+ reviews by the community</h3>
-                                    <p>See what people like you say about where they ate. Reviews you can trust from the celiac community.</p>
-                                </div>
+                                <!-- ... existing carousel content ... -->
                             </div>
                         </div>
                         
                         <h2>What our community has to say</h2>
                         <div class="carousel-container">
                             <div class="testimonials-carousel">
-                                <div class="testimonial-card">
-                                    <blockquote>I have been using it now for 3 months and it saves me so much research. Reduces the need to call and double check every time.</blockquote>
-                                    <div class="author">Kenneth Meisel</div>
-                                    <div class="status">Gluten Intolerant</div>
-                                </div>
-                                <div class="testimonial-card">
-                                    <blockquote>Finding places to eat used to be such a drag. Atly made it so much easier. Love it!</blockquote>
-                                    <div class="author">Jane Grinberg</div>
-                                    <div class="status">Highly symptomatic celiac</div>
-                                </div>
-                                <div class="testimonial-card">
-                                    <blockquote>I've discovered great options in my city I was not aware of. Highly recommend it if you are Celiac.</blockquote>
-                                    <div class="author">Ann Stanley</div>
-                                    <div class="status">Asymptomatic Celiac</div>
-                                </div>
+                                <!-- ... existing testimonials ... -->
                             </div>
                         </div>
                     </div>
+                    <div class="discount-banner">
+                        <h2>🎉 Special Offer Unlocked! 🎉</h2>
+                        <p class="discount-text">30% OFF</p>
+                        <p class="limited-time">Limited Time Only</p>
+                    </div>
                     <div class="action-buttons">
-                        <button id="download-map" class="cta-button">Get Atly Now 🚀</button>
+                        <button id="download-map" class="cta-button">Get it now</button>
                     </div>
                 </div>
             </div>
@@ -406,6 +439,7 @@ mixpanel.init('077ff37ea1f556ace8f37a5754faca1c');</script>
     <script src="quiz_version_f.js"></script>
     <script src="quiz_version_g.js"></script>
     <script src="quiz_version_h.js"></script>
+    <script src="quiz_version_i.js"></script>
     <script src="quiz-manager.js"></script>
     <script src="api.js"></script>
     <script src="tracking.js"></script>

@@ -13,6 +13,10 @@ function getQuizDescription(quizVersion) {
             return "A comprehensive exploration of gluten-free dining habits, social situations, and detailed safety considerations";
         case 'Aha_Quiz':
             return "An optimized quiz focused on understanding gluten sensitivity impacts and discovering personalized safe dining solutions";
+        case 'Value_Quiz':
+            return "A value-focused quiz highlighting the benefits and features of safe gluten-free dining solutions";
+        case 'Discount_Quiz':
+            return "A special offer quiz with exclusive limited-time discount for personalized gluten-free dining solutions";
         default:
             return "General gluten-free dining quiz";
     }
