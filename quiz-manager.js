@@ -2,7 +2,7 @@ console.log('Loading quiz system...');
 
 let quizData = null;
 let currentQuizVersion = '';
-let hidePageNumbers = false;  // New variable for A/B testing page numbers
+let hidePageNumbers = true;  // Always hide page numbers
 
 // Checkout screen configuration
 const CHECKOUT_SCREENS = {
@@ -58,10 +58,6 @@ const CHECKOUT_SCREENS = {
 };
 
 function selectRandomQuiz() {
-    // Randomly decide whether to hide page numbers (50/50 chance)
-    hidePageNumbers = Math.random() < 0.5;
-    console.log('Page numbers will be hidden:', hidePageNumbers);
-    
     // Use the version selected by intro_screens.js if available, otherwise select randomly
     let selectedVersion;
     if (window.selectedQuizLetter) {
