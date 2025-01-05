@@ -54,6 +54,13 @@ const CHECKOUT_SCREENS = {
         checkout_medium: 'web',
         trial_status: 'trial',
         active: false
+    },
+    TRIAL_CHECKOUT_B: {
+        url: 'https://pay.atly.com/b/bIY03T4i9a0q8s86oB',
+        price: '99.99 trial (1 day)',
+        checkout_medium: 'web',
+        trial_status: 'trial',
+        active: false
     }
 };
 
@@ -118,12 +125,14 @@ function selectCheckoutScreen() {
 
     // Check if we're in trial mode via URL parameter
     if (urlParams.get('mode') === 'trial') {
+        // Randomly select between the two trial checkout options
+        const trialCheckout = Math.random() < 0.5 ? CHECKOUT_SCREENS.TRIAL_CHECKOUT : CHECKOUT_SCREENS.TRIAL_CHECKOUT_B;
         return {
-            url: CHECKOUT_SCREENS.TRIAL_CHECKOUT.url,
-            price: CHECKOUT_SCREENS.TRIAL_CHECKOUT.price,
-            variant: 'TRIAL_CHECKOUT',
-            checkout_medium: CHECKOUT_SCREENS.TRIAL_CHECKOUT.checkout_medium,
-            trial_status: CHECKOUT_SCREENS.TRIAL_CHECKOUT.trial_status
+            url: trialCheckout.url,
+            price: trialCheckout.price,
+            variant: trialCheckout === CHECKOUT_SCREENS.TRIAL_CHECKOUT ? 'TRIAL_CHECKOUT' : 'TRIAL_CHECKOUT_B',
+            checkout_medium: trialCheckout.checkout_medium,
+            trial_status: trialCheckout.trial_status
         };
     }
 
