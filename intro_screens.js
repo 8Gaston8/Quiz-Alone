@@ -39,9 +39,9 @@ function updateIntroScreen() {
 
     // Select style version if not already selected
     if (!window.selectedStyleVersion) {
-        window.selectedStyleVersion = Math.random() < 0.5 ? 'light' : 'dark';
+        window.selectedStyleVersion = 'light';
         // Store the style version in localStorage
-        localStorage.setItem('style_version', window.selectedStyleVersion);
+        localStorage.setItem('style_version', 'light');
     }
     
     // Remove any existing main stylesheets first
@@ -52,11 +52,11 @@ function updateIntroScreen() {
         }
     });
     
-    // Apply the selected style
+    // Apply the light style
     const styleLink = document.createElement('link');
     styleLink.id = 'main-stylesheet';
     styleLink.rel = 'stylesheet';
-    styleLink.href = window.selectedStyleVersion === 'light' ? '/light_styles.css' : '/styles.css';
+    styleLink.href = '/light_styles.css';
     document.head.appendChild(styleLink);
     
     // Map version letter to actual quiz version name

@@ -178,7 +178,7 @@ mixpanel.init('077ff37ea1f556ace8f37a5754faca1c');</script>
                 quiz_version: localStorage.getItem('quiz_version') || 'unknown',
                 quiz_description: localStorage.getItem('quiz_description') || 'unknown',
                 email: email || 'unknown',
-                style_version: localStorage.getItem('style_version') || 'dark'
+                style_version: 'light'
             });
 
             // Track app download button clicks
@@ -191,7 +191,7 @@ mixpanel.init('077ff37ea1f556ace8f37a5754faca1c');</script>
                     quiz_version: localStorage.getItem('quiz_version') || 'unknown',
                     quiz_description: localStorage.getItem('quiz_description') || 'unknown',
                     email: email || 'unknown',
-                    style_version: localStorage.getItem('style_version') || 'dark'
+                    style_version: 'light'
                 }, function() {
                     // After tracking is complete, navigate to the download URL
                     window.location.href = href;
