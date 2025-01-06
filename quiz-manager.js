@@ -61,6 +61,27 @@ const CHECKOUT_SCREENS = {
         checkout_medium: 'web',
         trial_status: 'trial',
         active: false
+    },
+    TRIAL_3_DAYS: {
+        url: 'https://pay.atly.com/b/cN25odeWNb4u5fWdR4',
+        price: '99.99 trial (3 days)',
+        checkout_medium: 'web',
+        trial_status: 'trial',
+        active: false
+    },
+    TRIAL_14_DAYS: {
+        url: 'https://pay.atly.com/b/cN29EtbKBdcCeQwdR5',
+        price: '99.99 trial (14 days)',
+        checkout_medium: 'web',
+        trial_status: 'trial',
+        active: false
+    },
+    TRIAL_30_DAYS: {
+        url: 'https://pay.atly.com/b/7sI4k94i9goO4bS28o',
+        price: '99.99 trial (30 days)',
+        checkout_medium: 'web',
+        trial_status: 'trial',
+        active: false
     }
 };
 
@@ -125,14 +146,23 @@ function selectCheckoutScreen() {
 
     // Check if we're in trial mode via URL parameter
     if (urlParams.get('mode') === 'trial') {
-        // Randomly select between the two trial checkout options
-        const trialCheckout = Math.random() < 0.5 ? CHECKOUT_SCREENS.TRIAL_CHECKOUT : CHECKOUT_SCREENS.TRIAL_CHECKOUT_B;
+        // Get all available trial checkout options
+        const trialOptions = [
+            CHECKOUT_SCREENS.TRIAL_CHECKOUT,
+            CHECKOUT_SCREENS.TRIAL_CHECKOUT_B,
+            CHECKOUT_SCREENS.TRIAL_3_DAYS,
+            CHECKOUT_SCREENS.TRIAL_14_DAYS,
+            CHECKOUT_SCREENS.TRIAL_30_DAYS
+        ];
+        
+        // Randomly select one of the trial options
+        const selectedTrial = trialOptions[Math.floor(Math.random() * trialOptions.length)];
         return {
-            url: trialCheckout.url,
-            price: trialCheckout.price,
-            variant: trialCheckout === CHECKOUT_SCREENS.TRIAL_CHECKOUT ? 'TRIAL_CHECKOUT' : 'TRIAL_CHECKOUT_B',
-            checkout_medium: trialCheckout.checkout_medium,
-            trial_status: trialCheckout.trial_status
+            url: selectedTrial.url,
+            price: selectedTrial.price,
+            variant: Object.keys(CHECKOUT_SCREENS).find(key => CHECKOUT_SCREENS[key] === selectedTrial),
+            checkout_medium: selectedTrial.checkout_medium,
+            trial_status: selectedTrial.trial_status
         };
     }
 
