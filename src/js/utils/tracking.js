@@ -22,7 +22,7 @@ function getQuizDescription(quizVersion) {
     }
 }
 
-function trackQuizScreenView(screenName, introVersion = null) {
+function trackQuizScreenView(screenName, additionalProps = {}) {
     const urlParams = new URLSearchParams(window.location.search);
     const isTrialFlow = urlParams.get('mode') === 'trial';
     
@@ -30,15 +30,20 @@ function trackQuizScreenView(screenName, introVersion = null) {
         screen_name: screenName,
         quiz_version: currentQuizVersion,
         quiz_description: getQuizDescription(currentQuizVersion),
-        intro_version: introVersion,
+        intro_version: additionalProps.intro_version || additionalProps,
         is_trial_flow: isTrialFlow,
         style_version: 'light',
-        hide_page_numbers: hidePageNumbers
+        hide_page_numbers: hidePageNumbers,
+        ...additionalProps
     });
 }
 
 function trackQuizCheckout(variant, checkoutPrice) {
     const screen = CHECKOUT_SCREENS[variant];
+    // Get progress bar visibility state directly from the DOM
+    const progressTracker = document.querySelector('.progress-tracker');
+    const progressBarVisible = progressTracker ? progressTracker.style.display === 'block' : false;
+    
     mixpanel.track('indirectQuiz_Checkout', {
         quiz_version: currentQuizVersion,
         quiz_description: getQuizDescription(currentQuizVersion),
@@ -47,7 +52,8 @@ function trackQuizCheckout(variant, checkoutPrice) {
         checkout_medium: screen.checkout_medium,
         is_trial_flow: variant === 'TRIAL_CHECKOUT',
         style_version: 'light',
-        hide_page_numbers: hidePageNumbers
+        hide_page_numbers: hidePageNumbers,
+        progress_bar_visible: progressBarVisible
     });
 }
 
@@ -56,6 +62,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // Wait a tiny bit to ensure intro screen is initialized
     setTimeout(() => {
         const selectedIntro = selectRandomIntroScreen();
-        trackQuizScreenView('welcome_screen', selectedIntro.intro_version);
+        const progressTracker = document.querySelector('.progress-tracker');
+        trackQuizScreenView('welcome_screen', { 
+            intro_version: selectedIntro.intro_version,
+            progress_bar_visible: progressTracker ? progressTracker.style.display === 'block' : false
+        });
     }, 0);
 }); 

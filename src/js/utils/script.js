@@ -42,6 +42,13 @@ document.addEventListener('DOMContentLoaded', () => {
     const recapEl = document.getElementById('recap');
     const finishRecapBtn = document.getElementById('finish-recap');
 
+    function shouldShowProgressBar() {
+        // Do a fresh random assignment each time
+        const progressBarVisible = Math.random() < 0.5;
+        console.log('New A/B test assignment:', progressBarVisible ? 'showing progress bar' : 'hiding progress bar');
+        return progressBarVisible;
+    }
+
     function createEmojiConfetti() {
         const emojis = ['🎉', '✨', '💫', '⭐️', '🌟', '🎊', '🎈'];
         const container = document.querySelector('.quiz-container');
@@ -84,12 +91,15 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function updateProgress() {
-        const progress = ((currentQuestion + 1) / quizData.length) * 100;
-        progressBar.style.width = `${progress}%`;
-        if (!hidePageNumbers) {  // Only show page numbers if not hidden
-            progressText.textContent = `${currentQuestion + 1} of ${quizData.length}`;
-        } else {
-            progressText.textContent = '';  // Hide the page numbers
+        // Only update progress if the progress bar is visible
+        if (progressTracker.style.display === 'block') {
+            const progress = ((currentQuestion + 1) / quizData.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            if (!hidePageNumbers) {  // Only show page numbers if not hidden
+                progressText.textContent = `${currentQuestion + 1} of ${quizData.length}`;
+            } else {
+                progressText.textContent = '';  // Hide the page numbers
+            }
         }
     }
 
@@ -135,7 +145,10 @@ document.addEventListener('DOMContentLoaded', () => {
         }
         
         if (screenName) {
-            trackQuizScreenView(screenName);
+            // Get progress bar visibility state directly from the DOM
+            const progressBarVisible = progressTracker.style.display === 'block';
+            // Add progress bar visibility to tracking event
+            trackQuizScreenView(screenName, { progress_bar_visible: progressBarVisible });
         }
     }
 
@@ -448,9 +461,9 @@ document.addEventListener('DOMContentLoaded', () => {
         document.body.classList.remove('modern-intro');
         // Set quiz version as data attribute
         document.body.setAttribute('data-quiz-version', currentQuizVersion);
-        // Show progress tracker when quiz starts
+        // Show progress tracker only for the test group that should see it
         if (progressTracker) {
-            progressTracker.style.display = 'block';
+            progressTracker.style.display = shouldShowProgressBar() ? 'block' : 'none';
         }
         showSection(quizEl);
         loadQuestion();
