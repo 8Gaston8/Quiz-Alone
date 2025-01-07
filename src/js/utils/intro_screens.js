@@ -155,7 +155,7 @@ function updateIntroScreen() {
     let modernCssLink = document.getElementById(modernCssId);
     
     // Select random quiz version using the same logic as quiz.js
-    const versions = ['A', 'C', 'D', 'G', 'H', 'I'];
+    const versions = ['A', 'C', 'D', 'G', 'H', 'I', 'K'];
     const randomIndex = Math.floor(Math.random() * versions.length);
     const selectedVersion = versions[randomIndex];
 
@@ -182,6 +182,9 @@ function updateIntroScreen() {
             break;
         case 'I':
             selectedQuizVersion = 'Discount_Quiz';
+            break;
+        case 'K':
+            selectedQuizVersion = 'Direct_Access';
             break;
     }
     
@@ -244,8 +247,12 @@ function updateIntroScreen() {
         const startButton = landingContent.querySelector('#start-quiz');
         if (startButton) {
             startButton.addEventListener('click', () => {
-                showSection(document.getElementById('quiz'));
-                loadQuestion();
+                if (selectedVersion === 'K') {
+                    window.location.href = 'https://pay.atly.com/b/00gdUJ8yp3C2cIofZf';
+                } else {
+                    showSection(document.getElementById('quiz'));
+                    loadQuestion();
+                }
             });
         }
         

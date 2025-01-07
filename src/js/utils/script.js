@@ -3,6 +3,13 @@ document.addEventListener('DOMContentLoaded', () => {
     let currentQuestion = 0;
     let userAnswers = [];
 
+    // Set quiz version for version K
+    if (window.selectedQuizLetter === 'K') {
+        currentQuizVersion = 'Direct_Access';
+        window.currentQuizVersion = 'Direct_Access';
+        document.body.setAttribute('data-quiz-version', 'Direct_Access');
+    }
+
     // Hide progress tracker initially
     const progressTracker = document.querySelector('.progress-tracker');
     if (progressTracker) {
@@ -112,8 +119,8 @@ document.addEventListener('DOMContentLoaded', () => {
         let screenName;
         if (sectionToShow === landingEl) {
             screenName = 'welcome_screen';
-        } else if (sectionToShow === quizEl) {
-            // Get unique name based on current question
+        } else if (sectionToShow === quizEl && window.selectedQuizLetter !== 'K') {
+            // Only get question-based screen name if not version K
             const question = quizData[currentQuestion];
             if (question) {
                 // Generate a screen name based on the question content
@@ -125,8 +132,8 @@ document.addEventListener('DOMContentLoaded', () => {
             } else {
                 screenName = `question_${currentQuestion + 1}`;
             }
-        } else if (sectionToShow === statementEl) {
-            // Get unique name for each fact screen based on the current question
+        } else if (sectionToShow === statementEl && window.selectedQuizLetter !== 'K') {
+            // Only get fact-based screen name if not version K
             const question = quizData[currentQuestion];
             if (question) {
                 // Generate a fact screen name based on the fun fact content
@@ -148,7 +155,15 @@ document.addEventListener('DOMContentLoaded', () => {
             // Get progress bar visibility state directly from the DOM
             const progressBarVisible = progressTracker.style.display === 'block';
             // Add progress bar visibility to tracking event
-            trackQuizScreenView(screenName, { progress_bar_visible: progressBarVisible });
+            const additionalProps = { progress_bar_visible: progressBarVisible };
+            
+            // For version K, override the quiz_version property
+            if (window.selectedQuizLetter === 'K') {
+                additionalProps.quiz_version = 'Direct_Access';
+                additionalProps.quiz_description = 'Direct Access Quiz';
+            }
+            
+            trackQuizScreenView(screenName, additionalProps);
         }
     }
 
@@ -455,6 +470,20 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function startQuiz() {
+        // For version K, redirect directly to Atly payment page
+        if (window.selectedQuizLetter === 'K') {
+            mixpanel.track('indirectQuiz_Checkout', {
+                price: '99.99 trial (30 days)',
+                quiz_version: 'Direct_Access',
+                quiz_description: 'Direct Access Quiz',
+                style_version: 'light'
+            }, function() {
+                // Only redirect after tracking is complete
+                window.location.href = 'https://pay.atly.com/b/00gdUJ8yp3C2cIofZf';
+            });
+            return;
+        }
+
         currentQuestion = 0;
         userAnswers = [];
         // Remove modern intro styling
@@ -469,15 +498,41 @@ document.addEventListener('DOMContentLoaded', () => {
         loadQuestion();
     }
 
-    // Event Listeners
-    startQuizBtn.addEventListener('click', startQuiz);
-    submitBtn.addEventListener('click', submitAnswer);
-    nextQuestionBtn.addEventListener('click', () => {
-        currentQuestion++;
-        showSection(quizEl);
-        loadQuestion();
-    });
-    finishRecapBtn.addEventListener('click', showResults);
+    // Make startQuiz globally available
+    window.startQuiz = startQuiz;
+
+    // Event Listeners - only add if elements exist
+    if (startQuizBtn) {
+        startQuizBtn.addEventListener('click', (e) => {
+            if (window.selectedQuizLetter === 'K') {
+                e.preventDefault();
+                // Track event and wait for it to complete before redirecting
+                mixpanel.track('indirectQuiz_Checkout', {
+                    price: '99.99 trial (30 days)',
+                    quiz_version: 'Direct_Access',
+                    quiz_description: 'Direct Access Quiz',
+                    style_version: 'light'
+                }, function() {
+                    window.location.href = 'https://pay.atly.com/b/00gdUJ8yp3C2cIofZf';
+                });
+            } else {
+                startQuiz();
+            }
+        });
+    }
+    if (submitBtn) {
+        submitBtn.addEventListener('click', submitAnswer);
+    }
+    if (nextQuestionBtn) {
+        nextQuestionBtn.addEventListener('click', () => {
+            currentQuestion++;
+            showSection(quizEl);
+            loadQuestion();
+        });
+    }
+    if (finishRecapBtn) {
+        finishRecapBtn.addEventListener('click', showResults);
+    }
 
     // Download button
     const downloadMapBtn = document.querySelector('#download-map');
