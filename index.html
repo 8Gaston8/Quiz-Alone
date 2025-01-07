@@ -3,11 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://cdn.apple-mapkit.com https://cdn.mxpnl.com http://cdn.mxpnl.com https://*.cloudflareinsights.com https://cloudflareinsights.com https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https:; worker-src 'self' blob:;">
     <title>Atly - Gluten Free</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="src/css/styles.css">
+    <link rel="stylesheet" href="src/css/modern-intro.css">
     <script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js" onload="console.log('MapKit JS loaded')" onerror="console.error('Failed to load MapKit JS')"></script>
     <!-- Mixpanel -->
     <script>(function(f,b){if(!b.__SV){var e,g,i,h;window.mixpanel=b;b._i=[];b.init=function(e,f,c){function g(a,d){var b=d.split(".");2==b.length&&(a=a[b[0]],d=b[1]);a[d]=function(){a.push([d].concat(Array.prototype.slice.call(arguments,0)))}}var a=b;"undefined"!==typeof c?a=b[c]=[]:c="mixpanel";a.people=a.people||[];a.toString=function(a){var d="mixpanel";"mixpanel"!==c&&(d+="."+c);a||(d+=" (stub)");return d};a.people.toString=function(){return a.toString(1)+".people (stub)"};i="disable time_event track track_pageview track_links track_forms track_with_groups add_group set_group remove_group register register_once alias unregister identify name_tag set_config reset opt_in_tracking opt_out_tracking has_opted_in_tracking has_opted_out_tracking clear_opt_in_out_tracking start_batch_senders people.set people.set_once people.unset people.increment people.append people.union people.track_charge people.clear_charges people.delete_user people.remove".split(" ");
@@ -335,7 +337,15 @@ mixpanel.init('077ff37ea1f556ace8f37a5754faca1c');</script>
                     <div class="text-content">
                         <h1 id="landing-title"></h1>
                         <p class="intro-text" id="landing-description"></p>
-                        <button id="start-quiz" class="cta-button" id="landing-button"></button>
+                        <div class="bottom-section">
+                            <div class="city-input-container">
+                                <input type="text" id="city-input" placeholder="Enter your city" class="city-autocomplete">
+                            </div>
+                            <div class="users-joined">
+                                <span class="users-joined-text">${selectedIntro.description}</span>
+                            </div>
+                            <button id="start-quiz" class="cta-button" disabled>${selectedIntro.buttonText}</button>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -475,22 +485,24 @@ mixpanel.init('077ff37ea1f556ace8f37a5754faca1c');</script>
             </div>
         </div>
     </div>
-    <script src="quiz_version_a.js"></script>
-    <script src="quiz_version_b.js"></script>
-    <script src="quiz_version_c.js"></script>
-    <script src="quiz_version_d.js"></script>
-    <script src="quiz_version_e.js"></script>
-    <script src="quiz_version_f.js"></script>
-    <script src="quiz_version_g.js"></script>
-    <script src="quiz_version_h.js"></script>
-    <script src="quiz_version_i.js"></script>
-    <script src="quiz-manager.js"></script>
-    <script src="api.js"></script>
-    <script src="tracking.js"></script>
-    <script src="intro_screens.js"></script>
-    <script src="stripe.js"></script>
-    <script src="script.js"></script>
-    <script src="map-manager.js"></script>
+    <script src="src/js/utils/api.js"></script>
+    <script src="src/js/utils/tracking.js"></script>
+    <script src="src/js/utils/intro_screens.js"></script>
+    <script src="src/js/map/map-manager.js"></script>
+    <script src="src/js/map/city-selection.js"></script>
+    <script src="src/js/utils/quiz-manager.js"></script>
+    <script src="src/js/utils/script.js"></script>
+    <script src="src/js/utils/stripe.js"></script>
+    <script src="src/js/quiz/quiz_version_a.js"></script>
+    <script src="src/js/quiz/quiz_version_b.js"></script>
+    <script src="src/js/quiz/quiz_version_c.js"></script>
+    <script src="src/js/quiz/quiz_version_d.js"></script>
+    <script src="src/js/quiz/quiz_version_e.js"></script>
+    <script src="src/js/quiz/quiz_version_f.js"></script>
+    <script src="src/js/quiz/quiz_version_g.js"></script>
+    <script src="src/js/quiz/quiz_version_h.js"></script>
+    <script src="src/js/quiz/quiz_version_i.js"></script>
+    <script src="src/js/quiz/quiz_version_j.js"></script>
     <script>
         // Handle scroll indicator visibility
         const scrollIndicator = document.querySelector('.scroll-indicator');

@@ -139,13 +139,22 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
+    // Make showSection globally available
+    window.showSection = showSection;
+
     function loadQuestion() {
         console.log('Loading question:', currentQuestion);
         console.log('Quiz data available:', quizData);
         const question = quizData[currentQuestion];
         console.log('Current question:', question);
-        questionEl.textContent = question.question;
         
+        // Handle custom render function
+        if (question.render && typeof question.render === 'function') {
+            question.render(document.querySelector('.question-card'));
+            return;
+        }
+        
+        questionEl.textContent = question.question;
         choicesEl.innerHTML = '';
         
         // Get or create skip button
@@ -158,9 +167,9 @@ document.addEventListener('DOMContentLoaded', () => {
             skipBtn.addEventListener('click', () => {
                 if (currentQuestion === quizData.length - 1) {
                     if (currentQuizVersion === 'Aha_Quiz' || currentQuizVersion === 'Value_Quiz') {
-                        showRecap(); // Show recap for version G and H even when last question is skipped
+                        showRecap();
                     } else {
-                        showResults(); // Show results directly for other versions
+                        showResults();
                     }
                 } else {
                     currentQuestion++;
@@ -184,9 +193,9 @@ document.addEventListener('DOMContentLoaded', () => {
                 submitBtn.disabled = !isValid;
                 emailInput.classList.toggle('invalid', !isValid);
             });
-            submitBtn.disabled = true; // Initially disable the button
+            submitBtn.disabled = true;
             choicesEl.appendChild(emailInput);
-        } else {
+        } else if (!question.render) { // Only show regular choices if not using custom render
             skipBtn.style.display = 'block';
             question.options.forEach((option, index) => {
                 const button = document.createElement('button');
@@ -200,6 +209,9 @@ document.addEventListener('DOMContentLoaded', () => {
         
         updateProgress();
     }
+
+    // Make loadQuestion globally available
+    window.loadQuestion = loadQuestion;
 
     function selectChoice(index) {
         const choices = choicesEl.getElementsByClassName('choice-button');

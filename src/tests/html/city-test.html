@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>City Selection Test</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../../css/styles.css">
+    <script src="https://cdn.apple-mapkit.com/mk/5.x.x/mapkit.js" defer></script>
+    <style>
+        body {
+            padding: 20px;
+            background: var(--background-color);
+            min-height: 100vh;
+            margin: 0;
+        }
+
+        #test-container {
+            max-width: 600px;
+            margin: 0 auto;
+            width: 100%;
+        }
+
+        /* Override any container styles that might interfere */
+        .container {
+            width: 100%;
+            max-width: none;
+            padding: 0;
+            background: transparent;
+            box-shadow: none;
+            border-radius: 0;
+        }
+
+        /* Ensure restaurant cards have proper spacing */
+        .restaurant-card {
+            margin: 20px 0;
+        }
+
+        @media (max-width: 480px) {
+            body {
+                padding: 12px;
+            }
+
+            .restaurant-card {
+                margin: 12px 0;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div id="test-container"></div>
+
+    <script src="../../js/quiz/quiz_version_j.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            // Get the city selection question from the quiz data
+            const cityQuestion = window.quizDataJ.find(q => q.type === 'city_selection');
+            if (cityQuestion) {
+                cityQuestion.render(document.getElementById('test-container'));
+            }
+        });
+    </script>
+</body>
+</html> 

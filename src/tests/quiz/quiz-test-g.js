@@ -1,6 +1,6 @@
 const puppeteer = require('puppeteer');
 
-// Test configuration
+// Test configuration for Quiz Version G
 const TEST_CONFIG = {
     QUIZ_VERSIONS: ['G'],
     CHECKOUT_SCREENS: {

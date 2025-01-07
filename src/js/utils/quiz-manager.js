@@ -92,10 +92,16 @@ function selectRandomQuiz() {
         selectedVersion = window.selectedQuizLetter;
         console.log('Using version selected by intro screen:', selectedVersion);
     } else {
-        const versions = ['A', 'C', 'D', 'G', 'H', 'I'];  // Added version I
+        const versions = ['A', 'C', 'D', 'G', 'H', 'I'];  // Removed version J from random selection
         const randomIndex = Math.floor(Math.random() * versions.length);
         selectedVersion = versions[randomIndex];
         console.log('Selected random version:', selectedVersion);
+    }
+    
+    // Ensure quiz data is loaded
+    if (selectedVersion === 'J' && typeof quizDataJ === 'undefined') {
+        console.error('Quiz data J not loaded');
+        return null;
     }
     
     switch(selectedVersion) {
@@ -123,7 +129,16 @@ function selectRandomQuiz() {
             quizData = quizDataI;
             currentQuizVersion = 'Discount_Quiz';
             break;
+        case 'J':
+            quizData = quizDataJ;
+            currentQuizVersion = 'City_Quiz';
+            document.body.setAttribute('data-quiz-version', 'City_Quiz');
+            break;
     }
+    
+    // Store the selected version globally
+    window.selectedQuizLetter = selectedVersion;
+    window.currentQuizVersion = currentQuizVersion;
     
     console.log(`Selected quiz version: ${currentQuizVersion}`);
     console.log('Quiz data loaded:', quizData && quizData.length ? 'yes' : 'no');
@@ -190,5 +205,43 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 console.log('Quiz data loaded successfully');
+
+function displayQuestion(questionIndex) {
+    const question = quizData[questionIndex];
+    const questionElement = document.getElementById('question');
+    const choicesElement = document.getElementById('choices');
+    
+    // If the question has a custom render function, use it
+    if (question.render && typeof question.render === 'function') {
+        questionElement.textContent = ''; // Clear default question display
+        question.render(document.querySelector('.question-card'));
+        return;
+    }
+    
+    // Regular question display logic
+    questionElement.textContent = question.question;
+    
+    if (question.type === 'email') {
+        choicesElement.innerHTML = `
+            <input type="email" id="email-input" class="email-input" 
+                   placeholder="Enter your email address">
+        `;
+        const emailInput = document.getElementById('email-input');
+        emailInput.addEventListener('input', validateEmail);
+    } else {
+        // Regular multiple choice question
+        choicesElement.innerHTML = question.options
+            .map((option, index) => `
+                <button class="choice-button" data-index="${index}">
+                    ${option}
+                </button>
+            `).join('');
+            
+        const buttons = choicesElement.querySelectorAll('.choice-button');
+        buttons.forEach(button => {
+            button.addEventListener('click', () => selectChoice(button));
+        });
+    }
+}
 
 // Rest of the quiz logic remains the same... 

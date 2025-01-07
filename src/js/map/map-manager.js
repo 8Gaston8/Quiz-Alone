@@ -140,20 +140,15 @@ function generateMarkersInBatches(regionKey, coords, startIndex, onComplete) {
                 (Math.floor(Math.random() * 300) + 50).toString() : 
                 getEmojiForRestaurant(restaurantName);
             
-            const size = showNumber ? 
-                { width: 32, height: 32 } : 
-                { width: 24, height: 24 };
-            
             marker.coordinate = new mapkit.Coordinate(coord.latitude, coord.longitude);
             marker.title = restaurantName;
             marker.subtitle = subtitle;
             marker.color = SUBTITLE_COLORS[subtitle];
             marker.glyphText = glyphText;
-            marker.displayPriority = showNumber ? 200 : coord.weight * 100;
+            marker.displayPriority = Math.min(Math.max(showNumber ? 200 : coord.weight * 100, 0), 1000);
             marker.visible = false;
             marker.animates = true;
             marker.enabled = false;
-            marker.size = size;
             
             // Add bounce animation styles
             if (marker.element) {
@@ -251,35 +246,23 @@ function initializeMap() {
         // Add legend overlay
         console.log('Adding legend overlay...');
         const legendHTML = `
-            <div id="map-legend" style="
-                position: absolute;
-                top: 10px;
-                right: 10px;
-                background: rgba(255, 255, 255, 0.95);
-                padding: 8px;
-                border-radius: 6px;
-                box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
-                font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-                z-index: 9999;
-                font-size: 11px;
-                pointer-events: none;
-            ">
-                <div style="font-weight: 600; margin-bottom: 4px;">Celiac Safety Level</div>
-                <div style="display: flex; flex-direction: column; gap: 3px;">
-                    <div style="display: flex; align-items: center; gap: 4px;">
-                        <div style="width: 8px; height: 8px; border-radius: 50%; background: #00B5B5;"></div>
+            <div id="map-legend">
+                <div class="title">Celiac Safety Level</div>
+                <div class="legend-items">
+                    <div class="legend-item">
+                        <div class="legend-dot level-1"></div>
                         <span>100% Gluten-free</span>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 4px;">
-                        <div style="width: 8px; height: 8px; border-radius: 50%; background: #00A3A3;"></div>
+                    <div class="legend-item">
+                        <div class="legend-dot level-2"></div>
                         <span>Celiac Friendly</span>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 4px;">
-                        <div style="width: 8px; height: 8px; border-radius: 50%; background: #009191;"></div>
+                    <div class="legend-item">
+                        <div class="legend-dot level-3"></div>
                         <span>Accommodating</span>
                     </div>
-                    <div style="display: flex; align-items: center; gap: 4px;">
-                        <div style="width: 8px; height: 8px; border-radius: 50%; background: #007F7F;"></div>
+                    <div class="legend-item">
+                        <div class="legend-dot level-4"></div>
                         <span>Gluten-free options</span>
                     </div>
                 </div>

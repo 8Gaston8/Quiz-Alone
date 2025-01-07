@@ -25,6 +25,128 @@ function selectRandomIntroScreen() {
     return modernScreen;
 }
 
+function initializeCityAutocomplete() {
+    const input = document.getElementById('city-input');
+    const startButton = document.getElementById('start-quiz');
+    
+    if (!input || !startButton) return;
+
+    // Initialize MapKit JS with the appropriate token
+    mapkit.init({
+        authorizationCallback: function(done) {
+            const isLocalhost = window.location.hostname === 'localhost' || 
+                window.location.hostname.includes('127.0.0.1') || 
+                window.location.hostname.includes('192.168.') ||
+                window.location.hostname.includes('::1');
+            const mapKitToken = isLocalhost
+                ? 'eyJraWQiOiIzNFAyOFY1NTNIIiwidHlwIjoiSldUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiI5N0FWNzZEVUQ0IiwiaWF0IjoxNzM1ODIwOTgxLCJleHAiOjE3MzY0OTU5OTl9.i5AXHawcIs1Db-S_l_iazyWGjwhZbJfA6dwX4iSMPiIL9LbPOFaZV8Qc85dv9555gswewDDkyjZgHny5LMr9xg'
+                : 'eyJraWQiOiJHUEtMQzdVV0NRIiwidHlwIjoiSldUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiI5N0FWNzZEVUQ0IiwiaWF0IjoxNzM1MDU0MDEzLCJvcmlnaW4iOiJnbHV0ZW4tZnJlZS1xdWl6LmF0bHkuY29tIn0.bfwG1VUJ-JzDBhP_WGPyUBreFHkjKKflcKn02Z7Oizb1FMkJTCNnKyrn740H_2rYes-iFiZeXPw5Dn1H2q3F_w';
+            done(mapKitToken);
+        }
+    });
+
+    // Create a search delegate for MapKit
+    const searchDelegate = new mapkit.SearchDelegate({
+        searchResultsDidUpdate: function(searchResults) {
+            // Clear any existing results
+            const existingResults = document.querySelector('.mapkit-results');
+            if (existingResults) existingResults.remove();
+
+            if (!searchResults.places.length) {
+                startButton.disabled = true;
+                window.selectedCity = null;
+                return;
+            }
+
+            // Create results container
+            const resultsContainer = document.createElement('div');
+            resultsContainer.className = 'mapkit-results';
+            resultsContainer.style.cssText = `
+                position: absolute;
+                top: 100%;
+                left: 0;
+                right: 0;
+                background: white;
+                border-radius: 12px;
+                box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+                margin-top: 8px;
+                z-index: 1000;
+            `;
+
+            searchResults.places.forEach(place => {
+                const resultItem = document.createElement('div');
+                resultItem.className = 'mapkit-result-item';
+                resultItem.style.cssText = `
+                    padding: 12px 16px;
+                    cursor: pointer;
+                    transition: background-color 0.2s ease;
+                `;
+                resultItem.textContent = place.name;
+
+                resultItem.addEventListener('mouseover', () => {
+                    resultItem.style.backgroundColor = 'rgba(240, 30, 111, 0.1)';
+                });
+                resultItem.addEventListener('mouseout', () => {
+                    resultItem.style.backgroundColor = 'transparent';
+                });
+
+                resultItem.addEventListener('click', () => {
+                    input.value = place.name;
+                    window.selectedCity = {
+                        name: place.name,
+                        latitude: place.coordinate.latitude,
+                        longitude: place.coordinate.longitude,
+                        formatted_address: place.name
+                    };
+                    startButton.disabled = false;
+                    resultsContainer.remove();
+                });
+
+                resultsContainer.appendChild(resultItem);
+            });
+
+            input.parentElement.appendChild(resultsContainer);
+        }
+    });
+
+    // Create a search instance
+    const search = new mapkit.Search({
+        delegate: searchDelegate,
+        language: "en"
+    });
+
+    // Handle input changes
+    let searchTimeout;
+    input.addEventListener('input', () => {
+        startButton.disabled = true;
+        window.selectedCity = null;
+
+        // Clear existing timeout
+        if (searchTimeout) clearTimeout(searchTimeout);
+
+        // Clear existing results
+        const existingResults = document.querySelector('.mapkit-results');
+        if (existingResults) existingResults.remove();
+
+        if (!input.value) return;
+
+        // Add debounce to search
+        searchTimeout = setTimeout(() => {
+            search.search(input.value, {
+                searchTypes: mapkit.Search.SearchTypes.Cities
+            });
+        }, 300);
+    });
+
+    // Handle click outside to close results
+    document.addEventListener('click', (e) => {
+        if (!e.target.closest('.city-input-container')) {
+            const results = document.querySelector('.mapkit-results');
+            if (results) results.remove();
+        }
+    });
+}
+
 function updateIntroScreen() {
     const selectedIntro = selectRandomIntroScreen();
     
@@ -33,31 +155,12 @@ function updateIntroScreen() {
     let modernCssLink = document.getElementById(modernCssId);
     
     // Select random quiz version using the same logic as quiz.js
-    const versions = ['A', 'C', 'D', 'G', 'H'];  // Only keeping classic, experience, quick, aha, and value quizzes
+    const versions = ['A', 'C', 'D', 'G', 'H', 'I'];
     const randomIndex = Math.floor(Math.random() * versions.length);
     const selectedVersion = versions[randomIndex];
 
-    // Select style version if not already selected
-    if (!window.selectedStyleVersion) {
-        window.selectedStyleVersion = 'light';
-        // Store the style version in localStorage
-        localStorage.setItem('style_version', 'light');
-    }
-    
-    // Remove any existing main stylesheets first
-    const existingStylesheets = document.querySelectorAll('link[rel="stylesheet"]');
-    existingStylesheets.forEach(sheet => {
-        if (sheet.href.includes('light_styles.css') || sheet.href.includes('styles.css')) {
-            sheet.remove();
-        }
-    });
-    
-    // Apply the light style
-    const styleLink = document.createElement('link');
-    styleLink.id = 'main-stylesheet';
-    styleLink.rel = 'stylesheet';
-    styleLink.href = '/light_styles.css';
-    document.head.appendChild(styleLink);
+    // We're always using light theme now
+    document.body.classList.remove('dark-theme');
     
     // Map version letter to actual quiz version name
     let selectedQuizVersion;
@@ -77,6 +180,9 @@ function updateIntroScreen() {
         case 'H':
             selectedQuizVersion = 'Value_Quiz';
             break;
+        case 'I':
+            selectedQuizVersion = 'Discount_Quiz';
+            break;
     }
     
     // Store the selected version globally
@@ -91,7 +197,7 @@ function updateIntroScreen() {
             modernCssLink = document.createElement('link');
             modernCssLink.id = modernCssId;
             modernCssLink.rel = 'stylesheet';
-            modernCssLink.href = '/modern-intro.css';
+            modernCssLink.href = '/src/css/modern-intro.css';
             document.head.appendChild(modernCssLink);
         }
         document.body.classList.add('modern-intro');
@@ -134,12 +240,17 @@ function updateIntroScreen() {
             <div class="bg-gradient"></div>
         `;
         
-        // Add click handler using the existing startQuiz function
+        // Add click handler to transition to quiz
         const startButton = landingContent.querySelector('#start-quiz');
         if (startButton) {
-            startButton.addEventListener('click', startQuiz);
+            startButton.addEventListener('click', () => {
+                showSection(document.getElementById('quiz'));
+                loadQuestion();
+            });
         }
         
+        // Initialize city autocomplete after DOM is updated
+        setTimeout(initializeCityAutocomplete, 0);
     } else {
         if (modernCssLink) {
             modernCssLink.remove();
@@ -175,6 +286,12 @@ function updateIntroScreen() {
             break;
         case 'Aha_Quiz':
             window.quizData = quizDataG;
+            break;
+        case 'Value_Quiz':
+            window.quizData = quizDataH;
+            break;
+        case 'Discount_Quiz':
+            window.quizData = quizDataI;
             break;
     }
 }

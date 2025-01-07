@@ -53,20 +53,25 @@
 /* Badges Section */
 .modern-intro .badges-container {
     display: flex;
-    justify-content: flex-start;
-    gap: 12px;
+    flex-wrap: wrap;
+    gap: 6px;
     margin: 16px 0;
+    width: 100%;
+    justify-content: space-between;
 }
 
 .modern-intro .badge {
     position: relative;
-    display: flex;
+    display: inline-flex;
     align-items: center;
     justify-content: center;
     background: rgba(255, 185, 90, 0.15);
-    padding: 8px 12px;
+    padding: 6px 8px;
     border-radius: 4px;
     border: 1px solid rgba(255, 185, 90, 0.3);
+    width: calc((100% - 12px) / 3);
+    flex: 0 0 calc((100% - 12px) / 3);
+    text-align: center;
 }
 
 .modern-intro .badge-text {
@@ -78,6 +83,9 @@
     color: #FFB95A;
     text-transform: uppercase;
     letter-spacing: 0.5px;
+    white-space: normal;
+    word-break: break-word;
+    overflow-wrap: break-word;
 }
 
 /* Bottom Section */
