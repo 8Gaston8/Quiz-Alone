@@ -248,10 +248,18 @@ function updateIntroScreen() {
         if (startButton) {
             startButton.addEventListener('click', () => {
                 if (selectedVersion === 'K') {
-                    window.location.href = 'https://pay.atly.com/b/00gdUJ8yp3C2cIofZf';
+                    // Track event and wait for it to complete before redirecting
+                    mixpanel.track('indirectQuiz_Checkout', {
+                        price: '99.99 trial (30 days)',
+                        quiz_version: 'Direct_Access',
+                        quiz_description: 'Direct_Access Quiz',
+                        style_version: 'light'
+                    }, function() {
+                        // Only redirect after tracking is complete
+                        window.location.href = 'https://pay.atly.com/b/00gdUJ8yp3C2cIofZf';
+                    });
                 } else {
-                    showSection(document.getElementById('quiz'));
-                    loadQuestion();
+                    startQuiz();
                 }
             });
         }

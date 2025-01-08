@@ -1,5 +1,31 @@
-document.addEventListener('DOMContentLoaded', () => {
-    // Quiz state
+// Define handleCheckout at the global scope
+function handleCheckout() {
+    const checkoutInfo = selectCheckoutScreen();
+    let finalUrl;
+
+    if (window.quizSessionUrl) {
+        finalUrl = checkoutInfo.url + window.quizSessionUrl.substring(window.quizSessionUrl.indexOf('?'));
+    } else {
+        console.warn('No session URL available, using fallback URL');
+        const email = localStorage.getItem('atly_user_email');
+        finalUrl = `${checkoutInfo.url}${email ? `?prefilled_email=${encodeURIComponent(email)}` : ''}`;
+    }
+    
+    // Add user ID as client_reference_id if available
+    if (window.quizUserId) {
+        finalUrl += `${finalUrl.includes('?') ? '&' : '?'}client_reference_id=${window.quizUserId}`;
+    }
+    
+    trackQuizCheckout(checkoutInfo.variant, checkoutInfo.price);
+    window.location.href = finalUrl;
+}
+
+// Make handleCheckout globally available
+window.handleCheckout = handleCheckout;
+
+// Wait for quiz manager to initialize before setting up the quiz
+window.addEventListener('quizManagerReady', () => {
+    // Initialize quiz state
     let currentQuestion = 0;
     let userAnswers = [];
 
@@ -49,10 +75,18 @@ document.addEventListener('DOMContentLoaded', () => {
     const recapEl = document.getElementById('recap');
     const finishRecapBtn = document.getElementById('finish-recap');
 
+    // Add validateEmail function at the top level
+    function validateEmail(emailInput) {
+        const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
+        const isValid = emailInput.value.trim() !== '' && emailRegex.test(emailInput.value);
+        submitBtn.disabled = !isValid;
+        emailInput.classList.toggle('invalid', !isValid);
+        return isValid;
+    }
+
     function shouldShowProgressBar() {
         // Do a fresh random assignment each time
         const progressBarVisible = Math.random() < 0.5;
-        console.log('New A/B test assignment:', progressBarVisible ? 'showing progress bar' : 'hiding progress bar');
         return progressBarVisible;
     }
 
@@ -160,7 +194,7 @@ document.addEventListener('DOMContentLoaded', () => {
             // For version K, override the quiz_version property
             if (window.selectedQuizLetter === 'K') {
                 additionalProps.quiz_version = 'Direct_Access';
-                additionalProps.quiz_description = 'Direct Access Quiz';
+                additionalProps.quiz_description = 'Direct_Access Quiz';
             }
             
             trackQuizScreenView(screenName, additionalProps);
@@ -215,12 +249,7 @@ document.addEventListener('DOMContentLoaded', () => {
             emailInput.placeholder = 'Enter your email address';
             emailInput.pattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
             emailInput.classList.add('email-input');
-            emailInput.addEventListener('input', () => {
-                const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/;
-                const isValid = emailInput.value.trim() !== '' && emailRegex.test(emailInput.value);
-                submitBtn.disabled = !isValid;
-                emailInput.classList.toggle('invalid', !isValid);
-            });
+            emailInput.addEventListener('input', () => validateEmail(emailInput));
             submitBtn.disabled = true;
             choicesEl.appendChild(emailInput);
         } else if (!question.render) { // Only show regular choices if not using custom render
@@ -475,7 +504,7 @@ document.addEventListener('DOMContentLoaded', () => {
             mixpanel.track('indirectQuiz_Checkout', {
                 price: '99.99 trial (30 days)',
                 quiz_version: 'Direct_Access',
-                quiz_description: 'Direct Access Quiz',
+                quiz_description: 'Direct_Access Quiz',
                 style_version: 'light'
             }, function() {
                 // Only redirect after tracking is complete
@@ -484,42 +513,67 @@ document.addEventListener('DOMContentLoaded', () => {
             return;
         }
 
+        // Initialize quiz state
         currentQuestion = 0;
         userAnswers = [];
+        
         // Remove modern intro styling
         document.body.classList.remove('modern-intro');
+        
         // Set quiz version as data attribute
         document.body.setAttribute('data-quiz-version', currentQuizVersion);
-        // Show progress tracker only for the test group that should see it
+        
+        // Set progress tracker visibility
         if (progressTracker) {
-            progressTracker.style.display = shouldShowProgressBar() ? 'block' : 'none';
+            const shouldShow = shouldShowProgressBar();
+            progressTracker.style.display = shouldShow ? 'block' : 'none';
         }
+        
+        // Load question content first (without triggering screen view)
+        questionEl.textContent = quizData[currentQuestion].question;
+        choicesEl.innerHTML = '';
+        
+        // Setup choices
+        const question = quizData[currentQuestion];
+        if (question.type === 'email') {
+            const emailInput = document.createElement('input');
+            emailInput.type = 'email';
+            emailInput.placeholder = 'Enter your email address';
+            emailInput.pattern = '^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$';
+            emailInput.classList.add('email-input');
+            emailInput.addEventListener('input', () => validateEmail(emailInput));
+            submitBtn.disabled = true;
+            choicesEl.appendChild(emailInput);
+        } else {
+            question.options.forEach((option, index) => {
+                const button = document.createElement('button');
+                button.textContent = option;
+                button.classList.add('choice-button');
+                button.addEventListener('click', () => selectChoice(index));
+                choicesEl.appendChild(button);
+            });
+            submitBtn.disabled = true;
+        }
+        
+        // Now show the quiz section which will trigger the screen view once
         showSection(quizEl);
-        loadQuestion();
+        
+        // Update progress bar without triggering another screen view
+        if (progressTracker.style.display === 'block') {
+            const progress = ((currentQuestion + 1) / quizData.length) * 100;
+            progressBar.style.width = `${progress}%`;
+            if (!hidePageNumbers) {
+                progressText.textContent = `${currentQuestion + 1} of ${quizData.length}`;
+            } else {
+                progressText.textContent = '';
+            }
+        }
     }
 
     // Make startQuiz globally available
     window.startQuiz = startQuiz;
 
     // Event Listeners - only add if elements exist
-    if (startQuizBtn) {
-        startQuizBtn.addEventListener('click', (e) => {
-            if (window.selectedQuizLetter === 'K') {
-                e.preventDefault();
-                // Track event and wait for it to complete before redirecting
-                mixpanel.track('indirectQuiz_Checkout', {
-                    price: '99.99 trial (30 days)',
-                    quiz_version: 'Direct_Access',
-                    quiz_description: 'Direct Access Quiz',
-                    style_version: 'light'
-                }, function() {
-                    window.location.href = 'https://pay.atly.com/b/00gdUJ8yp3C2cIofZf';
-                });
-            } else {
-                startQuiz();
-            }
-        });
-    }
     if (submitBtn) {
         submitBtn.addEventListener('click', submitAnswer);
     }
@@ -538,32 +592,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const downloadMapBtn = document.querySelector('#download-map');
     const midCtaBtn = document.querySelector('.mid-cta-button');
 
-    const handleCheckout = () => {
-        const checkoutInfo = selectCheckoutScreen();
-        let finalUrl;
-
-        if (window.quizSessionUrl) {
-            finalUrl = checkoutInfo.url + window.quizSessionUrl.substring(window.quizSessionUrl.indexOf('?'));
-        } else {
-            console.warn('No session URL available, using fallback URL');
-            const email = localStorage.getItem('atly_user_email');
-            finalUrl = `${checkoutInfo.url}${email ? `?prefilled_email=${encodeURIComponent(email)}` : ''}`;
-        }
-        
-        // Add user ID as client_reference_id if available
-        if (window.quizUserId) {
-            finalUrl += `${finalUrl.includes('?') ? '&' : '?'}client_reference_id=${window.quizUserId}`;
-        }
-        
-        trackQuizCheckout(checkoutInfo.variant, checkoutInfo.price);
-        window.location.href = finalUrl;
-    };
-
+    // Add click handlers for CTA buttons
     if (downloadMapBtn) {
         downloadMapBtn.addEventListener('click', handleCheckout);
     }
-
     if (midCtaBtn) {
         midCtaBtn.addEventListener('click', handleCheckout);
     }
-}); 
+});

@@ -1257,12 +1257,15 @@ window.submitPlaces = async () => {
     }
 };
 
-window.handleCheckout = function() {
-    const checkoutInfo = selectCheckoutScreen();
-    const email = localStorage.getItem('atly_user_email');
-    const finalUrl = `${checkoutInfo.url}${email ? `?prefilled_email=${encodeURIComponent(email)}` : ''}`;
-    trackQuizCheckout(checkoutInfo.variant, checkoutInfo.price);
-    window.location.href = finalUrl;
-};
+// Ensure handleCheckout is available for inline onclick handlers
+if (!window.handleCheckout) {
+    window.handleCheckout = function() {
+        const checkoutInfo = selectCheckoutScreen();
+        const email = localStorage.getItem('atly_user_email');
+        const finalUrl = `${checkoutInfo.url}${email ? `?prefilled_email=${encodeURIComponent(email)}` : ''}`;
+        trackQuizCheckout(checkoutInfo.variant, checkoutInfo.price);
+        window.location.href = finalUrl;
+    };
+}
 
 console.log('Quiz version J data loaded successfully'); 

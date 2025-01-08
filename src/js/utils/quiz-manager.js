@@ -200,48 +200,14 @@ function selectCheckoutScreen() {
 
 // Initialize quiz data when the page loads
 document.addEventListener('DOMContentLoaded', () => {
-    console.log('DOM loaded, selecting quiz...');
+    console.log('DOM loaded, selecting quiz version...');
+    // Only select the quiz version, don't load the question yet
     selectRandomQuiz();
+    console.log('Quiz version selected');
+    // Dispatch event when quiz manager is done initializing
+    window.dispatchEvent(new Event('quizManagerReady'));
 });
 
-console.log('Quiz data loaded successfully');
+console.log('Quiz manager loaded successfully');
 
-function displayQuestion(questionIndex) {
-    const question = quizData[questionIndex];
-    const questionElement = document.getElementById('question');
-    const choicesElement = document.getElementById('choices');
-    
-    // If the question has a custom render function, use it
-    if (question.render && typeof question.render === 'function') {
-        questionElement.textContent = ''; // Clear default question display
-        question.render(document.querySelector('.question-card'));
-        return;
-    }
-    
-    // Regular question display logic
-    questionElement.textContent = question.question;
-    
-    if (question.type === 'email') {
-        choicesElement.innerHTML = `
-            <input type="email" id="email-input" class="email-input" 
-                   placeholder="Enter your email address">
-        `;
-        const emailInput = document.getElementById('email-input');
-        emailInput.addEventListener('input', validateEmail);
-    } else {
-        // Regular multiple choice question
-        choicesElement.innerHTML = question.options
-            .map((option, index) => `
-                <button class="choice-button" data-index="${index}">
-                    ${option}
-                </button>
-            `).join('');
-            
-        const buttons = choicesElement.querySelectorAll('.choice-button');
-        buttons.forEach(button => {
-            button.addEventListener('click', () => selectChoice(button));
-        });
-    }
-}
-
-// Rest of the quiz logic remains the same... 
+// Remove the displayQuestion function since it's handled in script.js 
