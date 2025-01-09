@@ -155,7 +155,7 @@ function updateIntroScreen() {
     let modernCssLink = document.getElementById(modernCssId);
     
     // Select random quiz version using the same logic as quiz.js
-    const versions = ['A', 'C', 'D', 'G', 'H', 'I', 'K'];
+    const versions = ['G', 'H', 'I', 'K'];
     const randomIndex = Math.floor(Math.random() * versions.length);
     const selectedVersion = versions[randomIndex];
 
