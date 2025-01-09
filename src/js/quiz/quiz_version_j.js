@@ -420,15 +420,19 @@ window.quizDataJ = [
                             
                             try {
                                 // Ensure minimum loading time of 2 seconds
-                                await Promise.all([
-                                    loadPlacesData(),
+                                const [loadedPlaces] = await Promise.all([
+                                    loadPlacesData(
+                                        window.selectedCity.latitude,
+                                        window.selectedCity.longitude,
+                                        20000 // 20km radius in meters
+                                    ),
                                     new Promise(resolve => setTimeout(resolve, 2000))
                                 ]);
                                 
                                 console.log('Selected city name:', window.selectedCity.name.split(',')[0].toLowerCase());
                                 
-                                // Filter places for the selected city
-                                const cityPlaces = placesData.filter(place => {
+                                // Filter function for nearby places
+                                const filterNearbyPlaces = place => {
                                     if (!place || !place.lat || !place.lon) {
                                         console.log('Found place without coordinates:', place);
                                         return false;
@@ -442,13 +446,19 @@ window.quizDataJ = [
                                         place.lon
                                     );
 
-                                    // Consider places within 20km radius
+                                    // Consider places within 20km radius (matching our API request radius)
                                     const isNearby = distance <= 20;
                                     if (isNearby) {
                                         console.log(`Found nearby place: ${place.title} (${distance.toFixed(2)}km)`);
                                     }
                                     return isNearby;
-                                });
+                                };
+
+                                // Filter both best places and hidden gems
+                                const nearbyBestPlaces = loadedPlaces.best_places.filter(filterNearbyPlaces);
+                                const nearbyHiddenGems = loadedPlaces.hidden_gems.filter(filterNearbyPlaces);
+                                
+                                const cityPlaces = [...nearbyBestPlaces, ...nearbyHiddenGems];
 
                                 if (cityPlaces.length === 0) {
                                     console.log('No places found for city:', window.selectedCity.name);
@@ -465,33 +475,29 @@ window.quizDataJ = [
                                     return;
                                 }
                                 
-                                console.log('Found places:', cityPlaces);
+                                console.log('Found places:', { 
+                                    best_places: nearbyBestPlaces, 
+                                    hidden_gems: nearbyHiddenGems 
+                                });
 
                                 // Sort places by total_recommendations
                                 const sortedPlaces = [...cityPlaces].sort((a, b) => 
                                     (b.total_recommendations || 0) - (a.total_recommendations || 0)
                                 );
 
-                                // Get top 3 popular places
-                                const popularPlaces = sortedPlaces.slice(0, 3);
+                                // Get top 3 popular places from best_places
+                                const popularPlaces = nearbyBestPlaces
+                                    .sort((a, b) => (b.total_recommendations || 0) - (a.total_recommendations || 0))
+                                    .slice(0, 3);
 
-                                // Find hidden gem (randomly select from less popular but safe places)
-                                const getRandomHiddenGem = (places, excludePlace = null) => {
-                                    const safeUnpopularPlaces = places
-                                        .filter(place => 
-                                            (place.safety_level === "Celiac Friendly" || 
-                                            place.safety_level === "100% Dedicated Gluten-Free") &&
-                                            (!excludePlace || place.title !== excludePlace.title)
-                                        )
-                                        .slice(3); // Skip the 3 most popular places
-
-                                    if (safeUnpopularPlaces.length === 0) return null;
-                                    
-                                    const randomIndex = Math.floor(Math.random() * safeUnpopularPlaces.length);
-                                    return safeUnpopularPlaces[randomIndex];
+                                // Find hidden gem (randomly select from hidden_gems)
+                                const getRandomHiddenGem = (places) => {
+                                    if (places.length === 0) return null;
+                                    const randomIndex = Math.floor(Math.random() * places.length);
+                                    return places[randomIndex];
                                 };
 
-                                const hiddenGem = getRandomHiddenGem(sortedPlaces);
+                                const hiddenGem = getRandomHiddenGem(nearbyHiddenGems);
 
                                 // Clear current content and add results
                                 container.innerHTML = `
@@ -534,20 +540,8 @@ window.quizDataJ = [
                                                         color: #333; 
                                                         font-size: 24px;
                                                         font-weight: 600;
+                                                        text-align: left;
                                                     ">${place.title}</h3>
-                                                    
-                                                    <div style="
-                                                        display: inline-block;
-                                                        background: rgba(0, 181, 181, 0.15);
-                                                        color: #00B5B5;
-                                                        padding: 6px 12px;
-                                                        border-radius: 8px;
-                                                        font-weight: 500;
-                                                        margin-bottom: 12px;
-                                                        font-size: 14px;
-                                                    ">
-                                                        ${place.safety_level}
-                                                    </div>
                                                     
                                                     <p style="
                                                         margin: 0 0 15px; 
@@ -557,53 +551,72 @@ window.quizDataJ = [
                                                         align-items: center;
                                                         gap: 6px;
                                                         cursor: pointer;
+                                                        text-align: left;
                                                     " onclick="window.open('https://maps.apple.com/?q=${encodeURIComponent(place.address)}', '_blank')">
                                                         📍 ${place.address}
                                                     </p>
-                                                    
-                                                    ${place.gf_criterias ? `
+
+                                                    ${place.gf_identity_data ? `
                                                         <div style="
                                                             display: flex;
                                                             flex-direction: column;
-                                                            gap: 4px;
-                                                            margin-bottom: 15px;
+                                                            gap: 8px;
+                                                            margin: 12px 0 15px;
                                                             color: #666;
                                                             font-size: 14px;
+                                                            background: rgba(0, 181, 181, 0.1);
+                                                            padding: 12px;
+                                                            border-radius: 8px;
+                                                            text-align: left;
                                                         ">
-                                                            ${(() => {
-                                                                const criteria = [];
-                                                                const appliances = [];
-                                                                
-                                                                Object.entries(place.gf_criterias).forEach(([key, value]) => {
-                                                                    if (value !== 'YES' || ['_id', 'step_id', 'created_at', 'in_vetting_process', 'based_on_user_reviews', 'checked_by_atly', 'celiac_friendly_override'].includes(key)) {
-                                                                        return;
-                                                                    }
-                                                                    
-                                                                    if (key.startsWith('separate_appliances_')) {
-                                                                        const appliance = key.replace('separate_appliances_', '')
-                                                                            .split('_')
-                                                                            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                                                                            .join(' ')
-                                                                            .replace('Pots Pans', 'Pots, Pans')
-                                                                            .replace('Pots_pans', 'Pots, Pans');
-                                                                        appliances.push(appliance);
-                                                                    } else {
-                                                                        const displayName = key
-                                                                            .split('_')
-                                                                            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                                                                            .join(' ')
-                                                                            .replace('Pots Pans', 'Pots, Pans')
-                                                                            .replace('Pots_pans', 'Pots, Pans');
-                                                                        criteria.push(`<div>✓ ${displayName}</div>`);
-                                                                    }
-                                                                });
-                                                                
-                                                                if (appliances.length > 0) {
-                                                                    criteria.push(`<div>✓ Separate Appliances: ${appliances.join(', ')}</div>`);
-                                                                }
-                                                                
-                                                                return criteria.join('');
-                                                            })()}
+                                                            <div style="font-weight: 600; color: #00B5B5; text-align: left;">
+                                                                ${place.gf_identity_data.header.title}
+                                                            </div>
+                                                            ${place.gf_identity_data.header.subtitle ? `
+                                                                <div style="color: #777; font-size: 13px; line-height: 1.2; text-align: left;">
+                                                                    ${place.gf_identity_data.header.subtitle}
+                                                                </div>
+                                                            ` : ''}
+
+                                                            ${place.gf_identity_data.elements?.items?.length > 0 ? `
+                                                                <div style="
+                                                                    display: flex;
+                                                                    flex-direction: column;
+                                                                    gap: 8px;
+                                                                    margin-top: 4px;
+                                                                    padding-top: 12px;
+                                                                    border-top: 1px solid rgba(0, 181, 181, 0.2);
+                                                                ">
+                                                                    ${(() => {
+                                                                        const criteria = [];
+                                                                        
+                                                                        place.gf_identity_data.elements.items.forEach(item => {
+                                                                            if (item.state === 'ENABLED') {
+                                                                                if (item.subelements) {
+                                                                                    // Handle dedicated appliances with subelements
+                                                                                    const appliances = item.subelements.map(sub => sub.text).join(', ');
+                                                                                    criteria.push(`
+                                                                                        <div style="display: flex; align-items: center; gap: 6px;">
+                                                                                            <span style="color: #00B5B5;">✓</span>
+                                                                                            ${item.text}: ${appliances}
+                                                                                        </div>
+                                                                                    `);
+                                                                                } else {
+                                                                                    // Handle regular criteria
+                                                                                    criteria.push(`
+                                                                                        <div style="display: flex; align-items: center; gap: 6px;">
+                                                                                            <span style="color: #00B5B5;">✓</span>
+                                                                                            ${item.text}
+                                                                                        </div>
+                                                                                    `);
+                                                                                }
+                                                                            }
+                                                                        });
+                                                                        
+                                                                        return criteria.join('');
+                                                                    })()}
+                                                                </div>
+                                                            ` : ''}
                                                         </div>
                                                     ` : ''}
                                                     
@@ -646,6 +659,23 @@ window.quizDataJ = [
                                                                 `;
                                                             }).join('')}
                                                     </div>
+
+                                                    ${place.last_review ? `
+                                                        <div style="
+                                                            margin-top: 15px;
+                                                            padding-top: 15px;
+                                                            border-top: 1px solid #eee;
+                                                        ">
+                                                            <div style="
+                                                                color: #666;
+                                                                font-size: 14px;
+                                                                line-height: 1.5;
+                                                                font-style: italic;
+                                                            ">
+                                                                "${place.last_review.text}"
+                                                            </div>
+                                                        </div>
+                                                    ` : ''}
                                                 </div>
                                             `).join('')}
                                         </div>
@@ -664,133 +694,7 @@ window.quizDataJ = [
                                                 ">
                                                     ✨ Hidden gem you might not know
                                                 </h3>
-                                                <div class="hidden-gem-card" style="
-                                                    background: white;
-                                                    border: 2px solid #FFB900;
-                                                    border-radius: 12px;
-                                                    padding: 20px;
-                                                    box-shadow: 0 4px 15px rgba(255, 185, 0, 0.1);
-                                                ">
-                                                    <h3 style="
-                                                        margin: 0 0 12px; 
-                                                        color: #333; 
-                                                        font-size: 24px;
-                                                        font-weight: 600;
-                                                    ">
-                                                        ${hiddenGem.title}
-                                                    </h3>
-                                                    
-                                                    <div style="
-                                                        display: inline-block;
-                                                        background: rgba(0, 181, 181, 0.15);
-                                                        color: #00B5B5;
-                                                        padding: 6px 12px;
-                                                        border-radius: 8px;
-                                                        font-weight: 500;
-                                                        margin-bottom: 12px;
-                                                        font-size: 14px;
-                                                    ">
-                                                        ${hiddenGem.safety_level}
-                                                    </div>
-                                                    
-                                                    <p style="
-                                                        margin: 0 0 15px; 
-                                                        color: #666; 
-                                                        font-size: 15px;
-                                                        display: flex;
-                                                        align-items: center;
-                                                        gap: 6px;
-                                                        cursor: pointer;
-                                                    " onclick="window.open('https://maps.apple.com/?q=${encodeURIComponent(hiddenGem.address)}', '_blank')">
-                                                        📍 ${hiddenGem.address}
-                                                    </p>
-                                                    
-                                                    ${hiddenGem.gf_criterias ? `
-                                                        <div style="
-                                                            display: flex;
-                                                            flex-direction: column;
-                                                            gap: 4px;
-                                                            margin-bottom: 15px;
-                                                            color: #666;
-                                                            font-size: 14px;
-                                                        ">
-                                                            ${(() => {
-                                                                const criteria = [];
-                                                                const appliances = [];
-                                                                
-                                                                Object.entries(hiddenGem.gf_criterias).forEach(([key, value]) => {
-                                                                    if (value !== 'YES' || ['_id', 'step_id', 'created_at', 'in_vetting_process', 'based_on_user_reviews', 'checked_by_atly', 'celiac_friendly_override'].includes(key)) {
-                                                                        return;
-                                                                    }
-                                                                    
-                                                                    if (key.startsWith('separate_appliances_')) {
-                                                                        const appliance = key.replace('separate_appliances_', '')
-                                                                            .split('_')
-                                                                            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                                                                            .join(' ')
-                                                                            .replace('Pots Pans', 'Pots, Pans')
-                                                                            .replace('Pots_pans', 'Pots, Pans');
-                                                                        appliances.push(appliance);
-                                                                    } else {
-                                                                        const displayName = key
-                                                                            .split('_')
-                                                                            .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                                                                            .join(' ')
-                                                                            .replace('Pots Pans', 'Pots, Pans')
-                                                                            .replace('Pots_pans', 'Pots, Pans');
-                                                                        criteria.push(`<div>✓ ${displayName}</div>`);
-                                                                    }
-                                                                });
-                                                                
-                                                                if (appliances.length > 0) {
-                                                                    criteria.push(`<div>✓ Separate Appliances: ${appliances.join(', ')}</div>`);
-                                                                }
-                                                                
-                                                                return criteria.join('');
-                                                            })()}
-                                                        </div>
-                                                    ` : ''}
-                                                    
-                                                    <div style="
-                                                        display: flex; 
-                                                        gap: 8px; 
-                                                        flex-wrap: wrap; 
-                                                        margin-bottom: 15px;
-                                                    ">
-                                                        ${(hiddenGem.selected_tags || [])
-                                                            .filter(tag => 
-                                                                !tag.toLowerCase().includes('gf') &&
-                                                                !tag.toLowerCase().includes('gluten') &&
-                                                                !tag.toLowerCase().includes('celiac') &&
-                                                                !tag.toLowerCase().includes('dedicated') &&
-                                                                !tag.toLowerCase().includes('knowledgeable staff')
-                                                            )
-                                                            .slice(0, 5)
-                                                            .map((tag, index) => {
-                                                                const colors = [
-                                                                    { bg: 'rgba(255, 87, 51, 0.1)', text: '#FF5733' },  // Coral
-                                                                    { bg: 'rgba(126, 87, 194, 0.1)', text: '#7E57C2' }, // Purple
-                                                                    { bg: 'rgba(0, 150, 136, 0.1)', text: '#009688' },  // Teal
-                                                                    { bg: 'rgba(255, 152, 0, 0.1)', text: '#FF9800' },  // Orange
-                                                                    { bg: 'rgba(233, 30, 99, 0.1)', text: '#E91E63' },  // Pink
-                                                                    { bg: 'rgba(3, 169, 244, 0.1)', text: '#03A9F4' },  // Light Blue
-                                                                    { bg: 'rgba(139, 195, 74, 0.1)', text: '#8BC34A' }, // Light Green
-                                                                    { bg: 'rgba(103, 58, 183, 0.1)', text: '#673AB7' }  // Deep Purple
-                                                                ];
-                                                                const color = colors[index % colors.length];
-                                                                return `
-                                                                    <span style="
-                                                                        background: ${color.bg};
-                                                                        color: ${color.text};
-                                                                        padding: 4px 12px;
-                                                                        border-radius: 6px;
-                                                                        font-size: 13px;
-                                                                        font-weight: 500;
-                                                                    ">${tag}</span>
-                                                                `;
-                                                            }).join('')}
-                                                    </div>
-                                                </div>
+                                                ${createHiddenGemCard(hiddenGem, false)}
                                             </div>
                                         ` : ''}
 
@@ -1026,14 +930,14 @@ window.quizDataJ = [
                                         // Show the new gem with animation
                                         gemContainer.innerHTML = `
                                             <div style="animation: slideIn 0.5s forwards;">
-                                                ${createHiddenGemCard(newHiddenGem)}
+                                                ${createHiddenGemCard(newHiddenGem, true)}
                                             </div>
                                         `;
                                     });
                                 }
 
                                 // Helper function to create hidden gem card HTML
-                                function createHiddenGemCard(gem) {
+                                function createHiddenGemCard(gem, showFullAccessButton = false) {
                                     return `
                                         <div class="hidden-gem-card" style="
                                             background: white;
@@ -1047,22 +951,10 @@ window.quizDataJ = [
                                                 color: #333; 
                                                 font-size: 24px;
                                                 font-weight: 600;
+                                                text-align: left;
                                             ">
                                                 ${gem.title}
                                             </h3>
-                                            
-                                            <div style="
-                                                display: inline-block;
-                                                background: rgba(0, 181, 181, 0.15);
-                                                color: #00B5B5;
-                                                padding: 6px 12px;
-                                                border-radius: 8px;
-                                                font-weight: 500;
-                                                margin-bottom: 12px;
-                                                font-size: 14px;
-                                            ">
-                                                ${gem.safety_level}
-                                            </div>
                                             
                                             <p style="
                                                 margin: 0 0 15px; 
@@ -1072,112 +964,93 @@ window.quizDataJ = [
                                                 align-items: center;
                                                 gap: 6px;
                                                 cursor: pointer;
+                                                text-align: left;
                                             " onclick="window.open('https://maps.apple.com/?q=${encodeURIComponent(gem.address)}', '_blank')">
                                                 📍 ${gem.address}
                                             </p>
                                             
-                                            ${gem.gf_criterias ? `
+                                            ${gem.gf_identity_data ? `
                                                 <div style="
                                                     display: flex;
                                                     flex-direction: column;
-                                                    gap: 4px;
-                                                    margin-bottom: 15px;
+                                                    gap: 8px;
+                                                    margin: 12px 0 15px;
                                                     color: #666;
                                                     font-size: 14px;
+                                                    background: rgba(0, 181, 181, 0.1);
+                                                    padding: 12px;
+                                                    border-radius: 8px;
+                                                    text-align: left;
                                                 ">
-                                                    ${(() => {
-                                                        const criteria = [];
-                                                        const appliances = [];
-                                                        
-                                                        Object.entries(gem.gf_criterias).forEach(([key, value]) => {
-                                                            if (value !== 'YES' || ['_id', 'step_id', 'created_at', 'in_vetting_process', 'based_on_user_reviews', 'checked_by_atly', 'celiac_friendly_override'].includes(key)) {
-                                                                return;
-                                                            }
-                                                            
-                                                            if (key.startsWith('separate_appliances_')) {
-                                                                const appliance = key.replace('separate_appliances_', '')
-                                                                    .split('_')
-                                                                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                                                                    .join(' ')
-                                                                    .replace('Pots Pans', 'Pots, Pans')
-                                                                    .replace('Pots_pans', 'Pots, Pans');
-                                                                appliances.push(appliance);
-                                                            } else {
-                                                                const displayName = key
-                                                                    .split('_')
-                                                                    .map(word => word.charAt(0).toUpperCase() + word.slice(1))
-                                                                    .join(' ')
-                                                                    .replace('Pots Pans', 'Pots, Pans')
-                                                                    .replace('Pots_pans', 'Pots, Pans');
-                                                                criteria.push(`<div>✓ ${displayName}</div>`);
-                                                            }
-                                                        });
-                                                        
-                                                        if (appliances.length > 0) {
-                                                            criteria.push(`<div>✓ Separate Appliances: ${appliances.join(', ')}</div>`);
-                                                        }
-                                                        
-                                                        return criteria.join('');
-                                                    })()}
+                                                    <div style="font-weight: 600; color: #00B5B5; text-align: left;">
+                                                        ${gem.gf_identity_data.header.title}
+                                                    </div>
+                                                    ${gem.gf_identity_data.header.subtitle ? `
+                                                        <div style="color: #777; font-size: 13px; line-height: 1.2; text-align: left;">
+                                                            ${gem.gf_identity_data.header.subtitle}
+                                                        </div>
+                                                    ` : ''}
+
+                                                    ${gem.gf_identity_data.elements?.items?.length > 0 ? `
+                                                        <div style="
+                                                            display: flex;
+                                                            flex-direction: column;
+                                                            gap: 8px;
+                                                            margin-top: 4px;
+                                                            padding-top: 12px;
+                                                            border-top: 1px solid rgba(0, 181, 181, 0.2);
+                                                        ">
+                                                            ${(() => {
+                                                                const criteria = [];
+                                                                
+                                                                gem.gf_identity_data.elements.items.forEach(item => {
+                                                                    if (item.state === 'ENABLED') {
+                                                                        if (item.subelements) {
+                                                                            // Handle dedicated appliances with subelements
+                                                                            const appliances = item.subelements.map(sub => sub.text).join(', ');
+                                                                            criteria.push(`
+                                                                                <div style="display: flex; align-items: center; gap: 6px;">
+                                                                                    <span style="color: #00B5B5;">✓</span>
+                                                                                    ${item.text}: ${appliances}
+                                                                                </div>
+                                                                            `);
+                                                                        } else {
+                                                                            // Handle regular criteria
+                                                                            criteria.push(`
+                                                                                <div style="display: flex; align-items: center; gap: 6px;">
+                                                                                    <span style="color: #00B5B5;">✓</span>
+                                                                                    ${item.text}
+                                                                                </div>
+                                                                            `);
+                                                                        }
+                                                                    }
+                                                                });
+                                                                
+                                                                return criteria.join('');
+                                                            })()}
+                                                        </div>
+                                                    ` : ''}
                                                 </div>
                                             ` : ''}
-                                            
-                                            <div style="
-                                                display: flex; 
-                                                gap: 8px; 
-                                                flex-wrap: wrap; 
-                                                margin-bottom: 15px;
-                                            ">
-                                                ${(gem.selected_tags || [])
-                                                    .filter(tag => 
-                                                        !tag.toLowerCase().includes('gf') &&
-                                                        !tag.toLowerCase().includes('gluten') &&
-                                                        !tag.toLowerCase().includes('celiac') &&
-                                                        !tag.toLowerCase().includes('dedicated') &&
-                                                        !tag.toLowerCase().includes('knowledgeable staff')
-                                                    )
-                                                    .slice(0, 5)
-                                                    .map((tag, index) => {
-                                                        const colors = [
-                                                            { bg: 'rgba(255, 87, 51, 0.1)', text: '#FF5733' },
-                                                            { bg: 'rgba(126, 87, 194, 0.1)', text: '#7E57C2' },
-                                                            { bg: 'rgba(0, 150, 136, 0.1)', text: '#009688' },
-                                                            { bg: 'rgba(255, 152, 0, 0.1)', text: '#FF9800' },
-                                                            { bg: 'rgba(233, 30, 99, 0.1)', text: '#E91E63' },
-                                                            { bg: 'rgba(3, 169, 244, 0.1)', text: '#03A9F4' },
-                                                            { bg: 'rgba(139, 195, 74, 0.1)', text: '#8BC34A' },
-                                                            { bg: 'rgba(103, 58, 183, 0.1)', text: '#673AB7' }
-                                                        ];
-                                                        const color = colors[index % colors.length];
-                                                        return `
-                                                            <span style="
-                                                                background: ${color.bg};
-                                                                color: ${color.text};
-                                                                padding: 4px 12px;
-                                                                border-radius: 6px;
-                                                                font-size: 13px;
-                                                                font-weight: 500;
-                                                            ">${tag}</span>
-                                                        `;
-                                                    }).join('')}
-                                            </div>
 
-                                            <button onclick="handleCheckout()" style="
-                                                background: linear-gradient(45deg, #F01E6F, #EF6F5E);
-                                                color: white;
-                                                border: none;
-                                                padding: 12px 24px;
-                                                border-radius: 12px;
-                                                font-size: 16px;
-                                                font-weight: 500;
-                                                cursor: pointer;
-                                                transition: all 0.2s ease;
-                                                box-shadow: 0 4px 6px rgba(240, 30, 111, 0.2);
-                                                width: 100%;
-                                                margin-top: 20px;
-                                            ">
-                                                Get Full Access
-                                            </button>
+                                            ${showFullAccessButton ? `
+                                                <button onclick="handleCheckout()" style="
+                                                    background: linear-gradient(45deg, #F01E6F, #EF6F5E);
+                                                    color: white;
+                                                    border: none;
+                                                    padding: 12px 24px;
+                                                    border-radius: 12px;
+                                                    font-size: 16px;
+                                                    font-weight: 500;
+                                                    cursor: pointer;
+                                                    transition: all 0.2s ease;
+                                                    box-shadow: 0 4px 6px rgba(240, 30, 111, 0.2);
+                                                    width: 100%;
+                                                    margin-top: 20px;
+                                                ">
+                                                    Get Full Access
+                                                </button>
+                                            ` : ''}
                                         </div>
                                     `;
                                 }
@@ -1207,29 +1080,38 @@ window.quizDataJ = [
 ];
 
 // Function to load places data
-async function loadPlacesData() {
-    if (placesData) return;
-    
+async function loadPlacesData(lat, lon, radius = 50000) { // radius in meters (50km default)
     try {
-        const response = await fetch('/data/GFE Places.json');
-        if (!response.ok) {
-            throw new Error('Failed to load places data');
-        }
-        placesData = await response.json();
+        console.log('Loading places data...');
+        const response = await window.getBestGfPlaces(lat, lon, radius);
+        
+        // Store both best_places and hidden_gems separately
+        const allPlaces = {
+            best_places: response.best_places || [],
+            hidden_gems: response.hidden_gems || []
+        };
+        
+        // Also maintain the combined array for backward compatibility
+        placesData = [...allPlaces.best_places, ...allPlaces.hidden_gems];
         
         // Log places data for debugging
-        console.log('Loaded places data:', placesData);
+        console.log('Loaded places data:', { best_places: allPlaces.best_places, hidden_gems: allPlaces.hidden_gems });
         
         // Check for New York places
         const nyPlaces = placesData.filter(place => 
-            place.city && place.city.toLowerCase().includes('new york')
+            place.address && place.address.toLowerCase().includes('new york')
         );
         console.log('Found New York places:', nyPlaces);
         
-        // Extract unique cities
-        availableCities = new Set(placesData.map(place => place.city));
+        // Extract unique cities from addresses
+        availableCities = new Set(placesData.map(place => {
+            const addressParts = place.address.split(',');
+            return addressParts[1]?.trim() || addressParts[0]?.trim();
+        }).filter(Boolean));
         console.log('Available cities:', Array.from(availableCities));
         console.log('Places data loaded successfully');
+        
+        return allPlaces;
     } catch (error) {
         console.error('Error loading places data:', error);
         throw error;
@@ -1260,10 +1142,20 @@ window.submitPlaces = async () => {
 // Ensure handleCheckout is available for inline onclick handlers
 if (!window.handleCheckout) {
     window.handleCheckout = function() {
-        const checkoutInfo = selectCheckoutScreen();
+        // Use the central quiz manager's checkout selection
+        const checkoutInfo = window.selectCheckoutScreen();
         const email = localStorage.getItem('atly_user_email');
         const finalUrl = `${checkoutInfo.url}${email ? `?prefilled_email=${encodeURIComponent(email)}` : ''}`;
-        trackQuizCheckout(checkoutInfo.variant, checkoutInfo.price);
+        
+        // Track the checkout event in Mixpanel
+        if (window.mixpanel) {
+            mixpanel.track('Quiz Checkout Started', {
+                variant: checkoutInfo.variant,
+                price: checkoutInfo.price,
+                source: 'city_search'
+            });
+        }
+        
         window.location.href = finalUrl;
     };
 }

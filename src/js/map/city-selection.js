@@ -124,8 +124,12 @@ if (typeof window.placesData === 'undefined') {
 
 async function loadPlacesData() {
     try {
-        const response = await fetch('GFE Places.json');
-        window.placesData = await response.json();
+        // Default to New York City coordinates as a starting point
+        const defaultLat = 40.7128;
+        const defaultLon = -74.0060;
+        const radius = 50000; // 50km radius to get a good initial dataset
+        
+        window.placesData = await window.getBestGfPlaces(defaultLat, defaultLon, radius);
         return true;
     } catch (error) {
         console.error('Error loading places data:', error);

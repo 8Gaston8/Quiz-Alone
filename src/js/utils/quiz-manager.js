@@ -92,13 +92,13 @@ function selectRandomQuiz() {
         selectedVersion = window.selectedQuizLetter;
         console.log('Using version selected by intro screen:', selectedVersion);
     } else {
-        const versions = ['G', 'H', 'I', 'J'];  // Added version J to random selection
+        const versions = ['G', 'H', 'I', 'J'];  // Keep version J in random selection
         const randomIndex = Math.floor(Math.random() * versions.length);
         selectedVersion = versions[randomIndex];
         console.log('Selected random version:', selectedVersion);
     }
     
-    // Ensure quiz data is loaded
+    // Ensure quiz data is loaded for version J
     if (selectedVersion === 'J' && typeof quizDataJ === 'undefined') {
         console.error('Quiz data J not loaded');
         return null;

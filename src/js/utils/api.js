@@ -1,6 +1,76 @@
 const CHECKOUT_URL = 'https://pay.atly.com/b/8wMeYN15Xb4ubEkfZ2';
-const API_URL = 'https://api.steps.me/v1';
-const MAP_ID = 'CwX3l0tJjXE';
+
+// Use global isLocalhost if it exists, otherwise create it
+if (typeof window.isLocalhost === 'undefined') {
+    window.isLocalhost = window.location.hostname === 'localhost' || 
+        window.location.hostname.includes('127.0.0.1') || 
+        window.location.hostname.includes('192.168.') ||
+        window.location.hostname.includes('::1');
+}
+
+// Use development URLs in local environment
+if (typeof window.API_URL === 'undefined') {
+    window.API_URL = 'https://api.steps.me/v1';  // Always use production API
+}
+
+if (typeof window.MAP_ID === 'undefined') {
+    window.MAP_ID = 'CwX3l0tJjXE';
+}
+
+// Fetch best gluten-free places from the API
+async function getBestGfPlaces(lat, lon, radius) {
+    try {
+        // Generate a fallback distinct_id if Mixpanel is not available or not initialized
+        let distinct_id;
+        try {
+            distinct_id = window.mixpanel && typeof window.mixpanel.get_distinct_id === 'function' 
+                ? window.mixpanel.get_distinct_id() 
+                : 'test_' + Math.random().toString(36).substring(2, 15);
+        } catch (e) {
+            distinct_id = 'test_' + Math.random().toString(36).substring(2, 15);
+        }
+        window.distinct_id = distinct_id; // Store it for later use
+
+        console.log('🔍 Making API request to:', `${window.API_URL}/autls/best-gf-places`);
+        const response = await fetch(
+            `${window.API_URL}/autls/best-gf-places?lat=${lat}&lon=${lon}&radius=${radius}&distinct_id=${distinct_id}&include_safety_criteria=true&include_details=true`,
+            {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'app_platform': "landing_page",
+                    'Origin': 'https://gluten-free-quiz.atly.com',
+                    'app_version': '3.12.2.0P'
+                },
+                mode: 'cors',
+                credentials: 'omit'
+            }
+        );
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            throw new Error(`Failed to fetch best GF places: ${response.status} - ${errorText}`);
+        }
+
+        const data = await response.json();
+        // Add detailed logging of the first place to see its structure
+        if (data.best_places && data.best_places.length > 0) {
+            console.log('First place data structure:', {
+                title: data.best_places[0].title,
+                gf_criterias: data.best_places[0].gf_criterias,
+                gf_identity_data: data.best_places[0].gf_identity_data,
+                all_fields: Object.keys(data.best_places[0])
+            });
+        }
+        return data;
+    } catch (error) {
+        console.error('Error fetching GF places:', error);
+        throw error;
+    }
+}
+
+// Make the function globally available
+window.getBestGfPlaces = getBestGfPlaces;
 
 // Generate a random password
 function generatePassword(length = 12) {
@@ -17,15 +87,19 @@ async function createBranchLink(userId, authToken) {
     console.log('🔗 Creating Branch.io link for user:', userId);
     
     try {
-        const url = encodeURI(`${API_URL}/autls/branch-links`);
+        const url = encodeURI(`${window.API_URL}/autls/branch-links`);
+        console.log('🔍 Making API request to:', url);
         const result = await fetch(url, {
             method: "POST",
             headers: {
                 'Content-Type': 'application/json',
                 'app_platform': "landing_page",
                 'Origin': 'https://gluten-free-quiz.atly.com',
+                'app_version': '3.12.2.0P',
                 'Authorization': `Bearer ${authToken}`
             },
+            mode: 'cors',
+            credentials: 'omit',
             body: JSON.stringify({
                 reason: "quiz",
                 get_login_token: true,
@@ -39,7 +113,7 @@ async function createBranchLink(userId, authToken) {
                 distinct_id: userId,
                 channel: document.referrer.includes(".google.") ? "paid_advertising" : "paid_advertising",
                 data: {
-                    map_id: MAP_ID,
+                    map_id: window.MAP_ID,
                     conversion_tool: "Indirect",
                     product: "Indirect Quiz",
                     user_source: "paid_advertising",
@@ -51,7 +125,8 @@ async function createBranchLink(userId, authToken) {
         });
 
         if (!result.ok) {
-            throw new Error(`Branch link creation failed with status: ${result.status}`);
+            const errorText = await result.text();
+            throw new Error(`Branch link creation failed with status: ${result.status} - ${errorText}`);
         }
 
         const { link } = await result.json();
@@ -69,8 +144,9 @@ window.handleEmailSubmission = async function(email) {
         console.log('📧 Starting email submission for:', email);
         
         // Make the signup API call directly
-        console.log('👤 Attempting signup...');
-        const signupResponse = await fetch(`${API_URL}/signup`, {
+        const signupUrl = `${window.API_URL}/signup`;
+        console.log('👤 Making signup request to:', signupUrl);
+        const signupResponse = await fetch(signupUrl, {
             method: "POST",
             body: JSON.stringify({
                 email,
@@ -82,7 +158,8 @@ window.handleEmailSubmission = async function(email) {
             headers: {
                 'Content-Type': 'application/json',
                 'app_platform': "landing_page",
-                'Origin': 'https://gluten-free-quiz.atly.com'
+                'Origin': 'https://gluten-free-quiz.atly.com',
+                'app_version': '3.12.2.0P'
             },
             mode: 'cors',
             credentials: 'omit'
@@ -98,7 +175,8 @@ window.handleEmailSubmission = async function(email) {
         }
         
         if (!signupResponse.ok) {
-            throw new Error(`Signup failed with status: ${signupResponse.status}`);
+            const errorText = await signupResponse.text();
+            throw new Error(`Signup failed with status: ${signupResponse.status} - ${errorText}`);
         }
 
         const signupData = await signupResponse.json();

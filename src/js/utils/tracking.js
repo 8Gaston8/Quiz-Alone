@@ -39,7 +39,7 @@ function trackQuizScreenView(screenName, additionalProps = {}) {
 }
 
 function trackQuizCheckout(variant, checkoutPrice) {
-    const screen = CHECKOUT_SCREENS[variant];
+    const screen = CHECKOUT_SCREENS[variant] || {};
     // Get progress bar visibility state directly from the DOM
     const progressTracker = document.querySelector('.progress-tracker');
     const progressBarVisible = progressTracker ? progressTracker.style.display === 'block' : false;
@@ -48,8 +48,8 @@ function trackQuizCheckout(variant, checkoutPrice) {
         quiz_version: currentQuizVersion,
         quiz_description: getQuizDescription(currentQuizVersion),
         checkout_price: checkoutPrice,
-        trial_status: screen.trial_status,
-        checkout_medium: screen.checkout_medium,
+        trial_status: screen.trial_status || 'none',
+        checkout_medium: screen.checkout_medium || 'direct',
         is_trial_flow: variant === 'TRIAL_CHECKOUT',
         style_version: 'light',
         hide_page_numbers: hidePageNumbers,
