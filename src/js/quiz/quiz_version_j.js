@@ -1211,7 +1211,7 @@ async function loadPlacesData() {
     if (placesData) return;
     
     try {
-        const response = await fetch('GFE Places.json');
+        const response = await fetch('/data/GFE Places.json');
         if (!response.ok) {
             throw new Error('Failed to load places data');
         }
