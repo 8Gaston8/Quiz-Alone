@@ -2,100 +2,100 @@ console.log('Loading quiz version H data...');
 
 const quizDataH = [
     {
-        question: "How often do you worry about gluten when dining out?",
+        question: "What's your biggest frustration with gluten-free dining?",
         options: [
-            "All the time",
-            "Sometimes",
-            "Rarely"
+            "Finding desserts",
+            "Social situations",
+            "Menu confusion"
         ],
-        funFact: "Celiac disease affects about 1% of the global population, but many cases go undiagnosed. Apps like Atly help users feel safer by highlighting verified gluten-free options."
+        funFact: "Over 60% of people following a gluten-free diet report social challenges when dining out. Atly makes it easier to find inclusive dining spots!"
     },
     {
         question: "What's your email address? (We'll save your progress)",
         options: [],
         type: "email",
-        funFact: "Your email is safe with us! We'll use it to save your progress and send you personalized gluten-free recommendations."
+        funFact: "We'll use your email to create your personalized gluten-free restaurant guide!"
     },
     {
-        question: "What's your biggest challenge finding gluten-free spots?",
+        question: "Who do you usually dine out with?",
         options: [
-            "Unclear menu labeling",
-            "Lack of trusted reviews",
-            "Time-consuming research"
+            "Family",
+            "Friends",
+            "Solo"
         ],
-        funFact: "Studies show that up to 50% of gluten-free restaurant menus contain errors, making trusted recommendations essential."
+        funFact: "Atly's group dining feature helps you find restaurants that cater to mixed dietary needs!"
     },
     {
-        question: "How do you discover new gluten-free places?",
+        question: "What's your favorite meal of the day?",
         options: [
-            "Search engines",
-            "Friend recommendations",
-            "Trial and error"
+            "Breakfast",
+            "Lunch",
+            "Dinner"
         ],
-        funFact: "With Atly, you can discover gluten-free spots curated by people who share your needs, ensuring safe dining experiences."
+        funFact: "Atly categorizes restaurants by meal type, making it easy to find gluten-free options any time of day."
     },
     {
-        question: "Ever had a reaction from a 'gluten-free' menu item?",
+        question: "How do you feel about shared kitchens?",
         options: [
-            "Yes, multiple times",
-            "Yes, but rarely",
-            "No, never"
+            "Very concerned",
+            "Somewhat worried",
+            "Not concerned"
         ],
-        funFact: "Cross-contamination in kitchens is a common issue. Atly helps you find places that truly understand gluten-free safety."
+        funFact: "Atly provides detailed information about kitchen practices and cross-contamination protocols."
     },
     {
-        question: "How far would you travel for safe gluten-free food?",
+        question: "What's your ideal restaurant atmosphere?",
         options: [
-            "5-10 minutes",
-            "20-30 minutes",
-            "Over 30 minutes"
+            "Quiet and cozy",
+            "Lively and social",
+            "Quick and casual"
         ],
-        funFact: "Atly allows you to explore gluten-free spots near and far, so you can plan ahead for your next meal."
+        funFact: "Atly includes atmosphere ratings to help you find the perfect dining environment."
     },
     {
-        question: "What's your favorite type of cuisine?",
+        question: "Do you have other dietary restrictions?",
         options: [
-            "Italian",
-            "Asian",
-            "American"
+            "Yes, several",
+            "Just one other",
+            "No, just gluten"
         ],
-        funFact: "Atly offers filtering options by cuisine type, so you can satisfy your cravings safely."
+        funFact: "Atly lets you filter restaurants by multiple dietary restrictions for a perfectly tailored experience."
     },
     {
-        question: "Feel confident asking staff about gluten-free options?",
+        question: "How important is organic/natural food?",
         options: [
-            "Not really",
-            "Sometimes",
-            "Very confident"
+            "Very important",
+            "Somewhat important",
+            "Not important"
         ],
-        funFact: "Atly's user reviews include detailed feedback on staff knowledge and safety measures."
+        funFact: "Many gluten-free restaurants on Atly also specialize in organic and natural ingredients!"
     },
     {
-        question: "How often do you cook instead of eating out?",
+        question: "What's your favorite comfort food?",
         options: [
-            "Almost always",
-            "Sometimes",
-            "Rarely"
+            "Pizza",
+            "Pasta",
+            "Sandwiches"
         ],
-        funFact: "Atly's verified gluten-free places let you confidently dine out without stress."
+        funFact: "Atly helps you find the best gluten-free versions of your favorite comfort foods!"
     },
     {
-        question: "Struggle to find gluten-free spots while traveling?",
+        question: "How far are your favorite restaurants?",
         options: [
-            "Yes, always",
-            "Sometimes",
-            "Not really"
+            "Within 5 miles",
+            "5-15 miles",
+            "15+ miles"
         ],
-        funFact: "Atly's global map ensures you can find gluten-free spots wherever you go."
+        funFact: "Atly's location-based search helps you discover hidden gems in your preferred radius!"
     },
     {
-        question: "Ready to make gluten-free dining easier?",
+        question: "Ready to discover your new favorite spots?",
         options: [
-            "Yes, definitely!",
+            "Can't wait!",
             "Tell me more",
-            "Not sure yet"
+            "Still deciding"
         ],
-        funFact: "Users report saving hours of research with Atly, finding safe gluten-free places in seconds!"
+        funFact: "Join the Atly community and never worry about finding safe, delicious gluten-free food again!"
     }
 ];
 
