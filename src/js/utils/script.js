@@ -85,9 +85,8 @@ window.addEventListener('quizManagerReady', () => {
     }
 
     function shouldShowProgressBar() {
-        // Do a fresh random assignment each time
-        const progressBarVisible = Math.random() < 0.5;
-        return progressBarVisible;
+        // Progress bar A/B test concluded - always show progress bar
+        return true;
     }
 
     function createEmojiConfetti() {
