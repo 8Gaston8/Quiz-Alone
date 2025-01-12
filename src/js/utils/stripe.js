@@ -42,7 +42,7 @@ async function createCheckoutSession(priceId, email, couponId = null) {
                 price_id: priceId,
                 email: email,
                 coupon: couponId,
-                success_url: `${window.location.origin}/src/html/success.html`,
+                success_url: `${window.location.origin}/success.html`,
                 cancel_url: window.location.href
             })
         });
