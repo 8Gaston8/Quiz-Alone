@@ -39,7 +39,7 @@ function initializeCityAutocomplete() {
                 window.location.hostname.includes('192.168.') ||
                 window.location.hostname.includes('::1');
             const mapKitToken = isLocalhost
-                ? 'eyJraWQiOiIzNFAyOFY1NTNIIiwidHlwIjoiSldUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiI5N0FWNzZEVUQ0IiwiaWF0IjoxNzM1ODIwOTgxLCJleHAiOjE3MzY0OTU5OTl9.i5AXHawcIs1Db-S_l_iazyWGjwhZbJfA6dwX4iSMPiIL9LbPOFaZV8Qc85dv9555gswewDDkyjZgHny5LMr9xg'
+                ? 'eyJraWQiOiJDOU40VzlaQzdWIiwidHlwIjoiSldUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiI5N0FWNzZEVUQ0IiwiaWF0IjoxNzM2NjcyNDY1LCJleHAiOjE3MzczNTk5OTl9.w-2XlPIiwTcYjXtGSKvCpGFkFOV056gCElEheTj_e21l3EWNvUjcypQZPeKwPznkXi90Cxkxui7mkBRVgxyWwg'
                 : 'eyJraWQiOiJHUEtMQzdVV0NRIiwidHlwIjoiSldUIiwiYWxnIjoiRVMyNTYifQ.eyJpc3MiOiI5N0FWNzZEVUQ0IiwiaWF0IjoxNzM1MDU0MDEzLCJvcmlnaW4iOiJnbHV0ZW4tZnJlZS1xdWl6LmF0bHkuY29tIn0.bfwG1VUJ-JzDBhP_WGPyUBreFHkjKKflcKn02Z7Oizb1FMkJTCNnKyrn740H_2rYes-iFiZeXPw5Dn1H2q3F_w';
             done(mapKitToken);
         }

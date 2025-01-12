@@ -1,4 +1,5 @@
 // City validation and auto-suggestion
+
 function createCitySelectionPage(questionData) {
     const container = document.createElement('div');
     container.className = 'city-selection-container';
@@ -204,6 +205,11 @@ function createPlaceCard(place, isHiddenGem = false) {
 }
 
 async function showCityResults(city) {
+    // Track the final results view
+    trackQuizScreenView('final_results', {
+        selected_city: city
+    });
+
     const container = document.createElement('div');
     container.className = 'results-container';
 
