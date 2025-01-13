@@ -771,7 +771,7 @@ window.quizDataJ = [
                                                     position: relative;
                                                     overflow: hidden;
                                                 ">
-                                                    <span style="position: relative; z-index: 1;">Get Full Access →</span>
+                                                    <span style="position: relative; z-index: 1;">Get Atly Now 🚀</span>
                                                 </button>
                                             </div>
                                         </div>
@@ -929,7 +929,7 @@ window.quizDataJ = [
                                                         transition: all 0.2s ease;
                                                         box-shadow: 0 4px 6px rgba(240, 30, 111, 0.2);
                                                     ">
-                                                        Get Full Access
+                                                        Get Atly Now 🚀
                                                     </button>
                                                 </div>
                                             `;
@@ -1057,7 +1057,7 @@ window.quizDataJ = [
                                                     width: 100%;
                                                     margin-top: 20px;
                                                 ">
-                                                    Get Full Access
+                                                    Get Atly Now 🚀
                                                 </button>
                                             ` : ''}
                                         </div>
