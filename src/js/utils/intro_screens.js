@@ -155,7 +155,7 @@ function updateIntroScreen() {
     let modernCssLink = document.getElementById(modernCssId);
     
     // Select random quiz version using the same logic as quiz.js
-    const versions = ['G', 'H', 'I', 'J', 'K'];
+    const versions = ['G', 'I'];  // Only Aha Quiz and Discount Quiz
     const randomIndex = Math.floor(Math.random() * versions.length);
     const selectedVersion = versions[randomIndex];
 
@@ -165,26 +165,11 @@ function updateIntroScreen() {
     // Map version letter to actual quiz version name
     let selectedQuizVersion;
     switch(selectedVersion) {
-        case 'A':
-            selectedQuizVersion = 'Classic_Quiz';
-            break;
-        case 'C':
-            selectedQuizVersion = 'Experience_Quiz';
-            break;
-        case 'D':
-            selectedQuizVersion = 'Quick_Quiz';
-            break;
         case 'G':
             selectedQuizVersion = 'Aha_Quiz';
             break;
-        case 'H':
-            selectedQuizVersion = 'Value_Quiz';
-            break;
         case 'I':
             selectedQuizVersion = 'Discount_Quiz';
-            break;
-        case 'K':
-            selectedQuizVersion = 'Direct_Access';
             break;
     }
     

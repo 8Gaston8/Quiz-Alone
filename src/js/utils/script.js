@@ -152,8 +152,8 @@ window.addEventListener('quizManagerReady', () => {
         let screenName;
         if (sectionToShow === landingEl) {
             screenName = 'welcome_screen';
-        } else if (sectionToShow === quizEl && window.selectedQuizLetter !== 'K') {
-            // Only get question-based screen name if not version K
+        } else if (sectionToShow === quizEl) {
+            // Get question-based screen name
             const question = quizData[currentQuestion];
             if (question) {
                 // Generate a screen name based on the question content
@@ -165,8 +165,8 @@ window.addEventListener('quizManagerReady', () => {
             } else {
                 screenName = `question_${currentQuestion + 1}`;
             }
-        } else if (sectionToShow === statementEl && window.selectedQuizLetter !== 'K') {
-            // Only get fact-based screen name if not version K
+        } else if (sectionToShow === statementEl) {
+            // Get fact-based screen name
             const question = quizData[currentQuestion];
             if (question) {
                 // Generate a fact screen name based on the fun fact content
@@ -189,13 +189,6 @@ window.addEventListener('quizManagerReady', () => {
             const progressBarVisible = progressTracker.style.display === 'block';
             // Add progress bar visibility to tracking event
             const additionalProps = { progress_bar_visible: progressBarVisible };
-            
-            // For version K, override the quiz_version property
-            if (window.selectedQuizLetter === 'K') {
-                additionalProps.quiz_version = 'Direct_Access';
-                additionalProps.quiz_description = 'Direct_Access Quiz';
-            }
-            
             trackQuizScreenView(screenName, additionalProps);
         }
     }
@@ -498,20 +491,6 @@ window.addEventListener('quizManagerReady', () => {
     }
 
     function startQuiz() {
-        // For version K, redirect directly to Atly payment page
-        if (window.selectedQuizLetter === 'K') {
-            mixpanel.track('indirectQuiz_Checkout', {
-                price: '99.99 trial (30 days)',
-                quiz_version: 'Direct_Access',
-                quiz_description: 'Direct_Access Quiz',
-                style_version: 'light'
-            }, function() {
-                // Only redirect after tracking is complete
-                window.location.href = 'https://pay.atly.com/b/00gdUJ8yp3C2cIofZf';
-            });
-            return;
-        }
-
         // Initialize quiz state
         currentQuestion = 0;
         userAnswers = [];

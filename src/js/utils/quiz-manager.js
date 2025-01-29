@@ -92,48 +92,24 @@ function selectRandomQuiz() {
         selectedVersion = window.selectedQuizLetter;
         console.log('Using version selected by intro screen:', selectedVersion);
     } else {
-        const versions = ['G', 'H', 'I', 'J'];  // Keep version J in random selection
+        const versions = ['G', 'I'];  // Only Aha Quiz and Discount Quiz
         const randomIndex = Math.floor(Math.random() * versions.length);
         selectedVersion = versions[randomIndex];
         console.log('Selected random version:', selectedVersion);
     }
     
-    // Ensure quiz data is loaded for version J
-    if (selectedVersion === 'J' && typeof quizDataJ === 'undefined') {
-        console.error('Quiz data J not loaded');
-        return null;
-    }
-    
     switch(selectedVersion) {
-        case 'A':
-            quizData = quizDataA;
-            currentQuizVersion = 'Classic_Quiz';
-            break;
-        case 'C':
-            quizData = quizDataC;
-            currentQuizVersion = 'Experience_Quiz';
-            break;
-        case 'D':
-            quizData = quizDataD;
-            currentQuizVersion = 'Quick_Quiz';
-            break;
         case 'G':
             quizData = quizDataG;
             currentQuizVersion = 'Aha_Quiz';
-            break;
-        case 'H':
-            quizData = quizDataH;
-            currentQuizVersion = 'Value_Quiz';
             break;
         case 'I':
             quizData = quizDataI;
             currentQuizVersion = 'Discount_Quiz';
             break;
-        case 'J':
-            quizData = quizDataJ;
-            currentQuizVersion = 'City_Quiz';
-            document.body.setAttribute('data-quiz-version', 'City_Quiz');
-            break;
+        default:
+            console.error('Invalid quiz version selected');
+            return null;
     }
     
     // Store the selected version globally
