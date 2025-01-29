@@ -55,30 +55,9 @@ const CHECKOUT_SCREENS = {
         trial_status: 'trial',
         active: false
     },
-    TRIAL_CHECKOUT_B: {
-        url: 'https://pay.atly.com/b/bIY03T4i9a0q8s86oB',
-        price: '99.99 trial (1 day)',
-        checkout_medium: 'web',
-        trial_status: 'trial',
-        active: false
-    },
     TRIAL_3_DAYS: {
         url: 'https://pay.atly.com/b/cN25odeWNb4u5fWdR4',
         price: '99.99 trial (3 days)',
-        checkout_medium: 'web',
-        trial_status: 'trial',
-        active: false
-    },
-    TRIAL_14_DAYS: {
-        url: 'https://pay.atly.com/b/cN29EtbKBdcCeQwdR5',
-        price: '99.99 trial (14 days)',
-        checkout_medium: 'web',
-        trial_status: 'trial',
-        active: false
-    },
-    TRIAL_30_DAYS: {
-        url: 'https://pay.atly.com/b/7sI4k94i9goO4bS28o',
-        price: '99.99 trial (30 days)',
         checkout_medium: 'web',
         trial_status: 'trial',
         active: false
